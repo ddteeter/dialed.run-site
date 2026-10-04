@@ -24,7 +24,8 @@ import type { T1Pair } from "./t1.ts";
 
 export interface TypeStep {
   family: string;
-  size: number;
+  /** px, or a CSS clamp() for MARKETING.hero, the one fluid step. */
+  size: number | string;
   lineHeight: number;
   tracking: number;
   transform: string;
@@ -36,6 +37,8 @@ export interface Tokens {
   WEIGHT: Record<string, number>;
   TYPE: Record<string, TypeStep>;
   MONO: Record<string, TypeStep>;
+  /** Round 31: one fluid step for the M1 (and later M8) h1 only. */
+  MARKETING: Record<string, TypeStep>;
   SPACE: Record<string, number>;
   HEIGHT: Record<string, number>;
   RADIUS: Record<string, number>;
@@ -69,9 +72,9 @@ function typeUtility(
 ): string {
   const lines = [
     `font-family: var(--font-${step.family});`,
-    `font-size: ${String(step.size)}px;`,
+    `font-size: ${typeof step.size === "number" ? `${String(step.size)}px` : step.size};`,
     `line-height: ${String(step.lineHeight)};`,
-    `letter-spacing: var(--track-${prefix === "type" ? key : `mono-${key}`});`,
+    `letter-spacing: var(--track-${prefix === "mono" ? `mono-${key}` : key});`,
     `text-transform: ${step.transform};`,
   ];
   const weight = step.family === "display" ? weights.black : step.weight;
@@ -144,6 +147,9 @@ export function deriveThemeCss(tokens: Tokens, pairs: T1Pair[]): string {
       ),
       ...Object.entries(tokens.MONO).map(([key, step]) =>
         typeUtility("mono", key, step, tokens.WEIGHT),
+      ),
+      ...Object.entries(tokens.MARKETING).map(([key, step]) =>
+        typeUtility("type", key, step, tokens.WEIGHT),
       ),
     ].join("\n\n") + "\n"
   );

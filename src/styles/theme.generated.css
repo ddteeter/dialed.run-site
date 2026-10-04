@@ -25,6 +25,8 @@
   --track-micro: 0em;
   --type-field: 16px/1.4 Archivo, Helvetica, sans-serif;
   --track-field: 0em;
+  --type-hero: clamp(44px, calc(28px + 4.05vw), 76px)/0.95 'Archivo Black', Archivo, Helvetica, sans-serif;
+  --track-hero: -0.035em;
   --mono-xs: 10px/1.3 'IBM Plex Mono', ui-monospace, monospace;
   --track-mono-xs: 0.1em;
   --mono-sm: 11px/1.4 'IBM Plex Mono', ui-monospace, monospace;
@@ -286,4 +288,13 @@
   line-height: 1.2;
   letter-spacing: var(--track-mono-lg);
   text-transform: none;
+}
+
+@utility type-hero {
+  font-family: var(--font-display);
+  font-size: clamp(44px, calc(28px + 4.05vw), 76px);
+  line-height: 0.95;
+  letter-spacing: var(--track-hero);
+  text-transform: uppercase;
+  font-weight: 400;
 }

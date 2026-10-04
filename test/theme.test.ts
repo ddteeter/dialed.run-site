@@ -33,10 +33,13 @@ describe("theme.generated.css", () => {
     for (const [prefix, steps] of [
       ["type", tokens.TYPE],
       ["mono", tokens.MONO],
+      ["type", tokens.MARKETING],
     ] as const) {
       for (const [key, step] of Object.entries(steps)) {
         const utility = blockOf(css, `@utility ${prefix}-${key}`);
-        expect(utility).toContain(`font-size: ${String(step.size)}px;`);
+        const size =
+          typeof step.size === "number" ? `${String(step.size)}px` : step.size;
+        expect(utility).toContain(`font-size: ${size};`);
         expect(utility).toContain(`line-height: ${String(step.lineHeight)};`);
         expect(utility).toContain(`font-family: var(--font-${step.family});`);
         expect(utility).toContain(`text-transform: ${step.transform};`);
@@ -92,6 +95,12 @@ describe("theme.generated.css", () => {
     const ink = pairs.find((pair) => pair.token === "--ink");
     expect(css).toContain(`--on-accent: ${String(ink?.light)};`);
     expect(css.match(/--on-accent:/g)?.length).toBe(1);
+  });
+
+  it("has the marketing hero as one fluid step, Round 31", () => {
+    expect(blockOf(css, "@utility type-hero")).toContain(
+      "font-size: clamp(44px, calc(28px + 4.05vw), 76px);",
+    );
   });
 
   it("drifts loudly when a token changes", () => {
