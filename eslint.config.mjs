@@ -12,7 +12,7 @@ export default defineConfig(
       ".astro/",
       "node_modules/",
       "design-reference/",
-      "test/__snapshots__/",
+      "test/dist/__snapshots__/",
       ".wrangler/",
       "test-results/",
       "playwright-report/",

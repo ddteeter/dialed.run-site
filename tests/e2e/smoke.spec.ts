@@ -57,6 +57,16 @@ for (const path of PAGES) {
       await expect(page.locator('link[rel="canonical"]')).toHaveCount(0);
     });
 
+    test("names its own apex URL, never a built file", async ({ page }) => {
+      await page.goto(path);
+      const expected =
+        path === "/" ? "https://dialed.run" : `https://dialed.run${path}`;
+      await expect(page.locator('meta[property="og:url"]')).toHaveAttribute(
+        "content",
+        expected,
+      );
+    });
+
     test("has a one-sentence description and a title", async ({ page }) => {
       await page.goto(path);
       const description = await page

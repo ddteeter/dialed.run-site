@@ -26,9 +26,22 @@ export interface Head {
   };
 }
 
+/**
+ * A page's one public path. With file-format output Astro reports the
+ * built file ("/how-it-works.html", "/index.html"); the site serves
+ * "/how-it-works" and "/" (wrangler.jsonc, drop-trailing-slash).
+ */
+export function canonicalPath(path: string): string {
+  const bare = path
+    .replace(/\.html$/, "")
+    .replace(/\/index$/, "/")
+    .replace(/(.)\/$/, "$1");
+  return bare === "" ? "/" : bare;
+}
+
 export function buildHead(input: HeadInput): Head {
   const indexed = input.indexable && input.noindex !== true;
-  const url = absolute(input.path);
+  const url = absolute(canonicalPath(input.path));
   return {
     title: input.title,
     description: input.description,

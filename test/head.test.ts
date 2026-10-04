@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { buildHead } from "@/lib/head";
+import { buildHead, canonicalPath } from "@/lib/head";
 import { robotsTxt } from "@/lib/robots";
 import { contentSecurityPolicy, headersFile } from "@/lib/headers";
 
@@ -32,6 +32,30 @@ describe("buildHead", () => {
     const head = buildHead({ ...page, indexable: true, noindex: true });
     expect(head.robots).toBe("noindex");
     expect(head.canonical).toBeUndefined();
+  });
+});
+
+describe("canonicalPath", () => {
+  it.each([
+    ["/index.html", "/"],
+    ["/", "/"],
+    ["/how-it-works.html", "/how-it-works"],
+    ["/how-it-works", "/how-it-works"],
+    ["/how-it-works/", "/how-it-works"],
+    ["/invite/sent.html", "/invite/sent"],
+    ["/invite/index.html", "/invite"],
+  ])("%s is %s", (path, canonical) => {
+    expect(canonicalPath(path)).toBe(canonical);
+  });
+
+  it("gives the built file's page its served URL", () => {
+    const head = buildHead({
+      ...page,
+      path: "/how-it-works.html",
+      indexable: true,
+    });
+    expect(head.canonical).toBe("https://dialed.run/how-it-works");
+    expect(head.og.url).toBe("https://dialed.run/how-it-works");
   });
 });
 
