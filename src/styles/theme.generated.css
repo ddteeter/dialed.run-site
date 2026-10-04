@@ -70,10 +70,10 @@
   --tint: #EDECE3;
   --hairline: #DCDBD2;
   --hairline-2: #C9C8BE;
-  --muted: #7A7A70;
+  --muted: #6E6E64;
   --label: #6E6E64;
   --quiet: #4E4E44;
-  --placeholder: #9A9A90;
+  --placeholder: #6E6E64;
   --photo: #E3E2D8;
   --dialed-text: #00776A;
   --cold-text: #C21A6B;
@@ -99,7 +99,7 @@
     --muted: #8B8B93;
     --label: #8B8B93;
     --quiet: #B9B8AE;
-    --placeholder: #6E6E74;
+    --placeholder: #8B8B93;
     --photo: #24242B;
     --dialed-text: #00E0C6;
     --cold-text: #FF2D8A;
@@ -124,7 +124,7 @@
   --muted: #8B8B93;
   --label: #8B8B93;
   --quiet: #B9B8AE;
-  --placeholder: #6E6E74;
+  --placeholder: #8B8B93;
   --photo: #24242B;
   --dialed-text: #00E0C6;
   --cold-text: #FF2D8A;

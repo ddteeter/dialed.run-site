@@ -15,7 +15,7 @@ export const FAQS: readonly Faq[] = [
   {
     question: "Where does the weather come from?",
     answer:
-      "Visual Crossing, for the time and place your run started. You never type it.",
+      "Visual Crossing, for the time and place your run started. If there's no record for that hour, you set it yourself, and that run stays out of the guides.",
   },
   {
     question: "Who sees my runs?",

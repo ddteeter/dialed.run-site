@@ -7,6 +7,9 @@
  *    a raw value in a class name;
  *  - no `disabled` attribute (Accessibility Contract 07: aria-disabled).
  *
+ * tokens.js also exports LINT_FIXTURES, the cases its rules must reject
+ * and pass; test/contract-lint.test.ts runs them.
+ *
  * test/contract-lint.test.ts runs it over src/.
  */
 export interface LintRule {
@@ -33,9 +36,6 @@ interface TokensLintEntry {
   allow: string;
 }
 
-const borderWidth = (match: string, before: string) =>
-  before.endsWith("border-") && /:\s*[12]px\b/.test(match);
-
 export function contractRules(
   tokensLint: readonly TokensLintEntry[],
 ): LintRule[] {
@@ -46,7 +46,6 @@ export function contractRules(
             id: entry.id,
             reject: entry.reject,
             allow: entry.allow,
-            ...(entry.id === "no-raw-spacing" ? { exempt: borderWidth } : {}),
           },
         ]
       : [],

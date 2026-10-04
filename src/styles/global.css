@@ -25,14 +25,13 @@
   }
 
   /*
-   * Form Contract 02: a field failure is border weight, not colour. The
-   * border goes 1px to 2px ink, and the padding gives back 1px so the box
-   * doesn't resize.
+   * Form Contract 02: a field failure is border weight, not colour: 1px to
+   * 2px ink. The second pixel is an inset ring inside the 1px border, so
+   * the box never resizes and no spacing value changes.
    */
   input[aria-invalid="true"] {
-    border-width: 2px;
     border-color: var(--ink);
-    padding: calc(var(--space-3) - 1px) calc(var(--space-4) - 1px);
+    box-shadow: inset 0 0 0 1px var(--ink);
   }
 
   /* The current page in the nav, as the boards draw it (M4). */

@@ -45,7 +45,7 @@ const years = monthIndex(entries);
   >
     {years.map(({ year, months }) => (
       <>
-        <h2 class="m-0 pb-2 mono-xs text-label">{year}</h2>
+        <h2 class="m-0 pb-2 mono-xs text-muted">{year}</h2>
         <ul class="m-0 list-none p-0">
           {months.map(({ label, href }) => (
             <li>
@@ -62,7 +62,7 @@ const years = monthIndex(entries);
     ))}
     <a
       href={paths.changelogFeed}
-      class="mt-4 inline-flex min-h-target items-center mono-sm text-label underline"
+      class="mt-4 inline-flex min-h-target items-center mono-sm text-muted underline"
     >
       RSS feed
     </a>

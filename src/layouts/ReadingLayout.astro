@@ -30,7 +30,7 @@ const { title, heading, description, contents, noindex = false } = Astro.props;
     <slot name="nav">
       {contents.length > 0 && (
         <nav aria-labelledby="contents-title" id="contents" class="reading-nav">
-          <h2 id="contents-title" class="m-0 pb-2 mono-xs text-label">
+          <h2 id="contents-title" class="m-0 pb-2 mono-xs text-muted">
             Contents
           </h2>
           <ul class="m-0 list-none p-0">

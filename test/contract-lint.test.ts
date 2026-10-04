@@ -1,7 +1,7 @@
 import { readFileSync, readdirSync } from "node:fs";
 import { join, relative } from "node:path";
 import { describe, expect, it } from "vitest";
-import { LINT } from "../design-reference/contracts/tokens.js";
+import { LINT, LINT_FIXTURES } from "../design-reference/contracts/tokens.js";
 import { contractRules, lintSource } from "@/theme/contract-lint";
 
 const rules = contractRules(LINT);
@@ -54,6 +54,18 @@ describe("contract rules", () => {
   it("reads a # number in TypeScript as a number, not a colour", () => {
     expect(ids("// review of PR #130", "x.ts")).toEqual([]);
   });
+
+  describe.each(Object.entries(LINT_FIXTURES))(
+    "tokens.js LINT_FIXTURES for %s",
+    (rule, cases) => {
+      it.each(cases.bad)("rejects %s", (text) => {
+        expect(ids(text, "x.astro")).toContain(rule);
+      });
+      it.each(cases.good)("passes %s", (text) => {
+        expect(ids(text, "x.astro")).not.toContain(rule);
+      });
+    },
+  );
 
   it("reports the line of each violation", () => {
     const [violation] = lintSource(
