@@ -238,7 +238,8 @@ There's no mutation ratchet.
 
 - **Hosting:** Cloudflare Workers with static assets (or Pages), configured in `wrangler.jsonc`, on the apex `dialed.run`.
 - **Redirects:** `www` returns a 301 to the apex.
-- **Account:** the same Cloudflare account as the app.
+- **Account:** the same Cloudflare account as the app, since the apex and `app.` live in one DNS zone.
+- **CI deploy token:** give it its own Cloudflare API token, scoped to editing this site's Worker and assets only, never account-wide. If a token leaks from this public repo's CI, it must not be able to reach the app, D1 or R2.
 - **Secrets:** in CI only. Never write a secret, token or key into the repo.
 - **Before the public launch:** `SITE_INDEXABLE=false`.
 
