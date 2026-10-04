@@ -66,8 +66,13 @@ interface QueryNode {
   repository?: unknown;
 }
 
-function repositoryUrl(repository: unknown): string | undefined {
-  const url =
+/**
+ * A package's repository as a web URL. package.json allows a git URL, an
+ * object with one, or npm's shorthand ("owner/repo", "github:owner/repo");
+ * anything else gets no link rather than a broken relative one.
+ */
+export function repositoryUrl(repository: unknown): string | undefined {
+  const raw =
     typeof repository === "string"
       ? repository
       : typeof repository === "object" &&
@@ -75,10 +80,15 @@ function repositoryUrl(repository: unknown): string | undefined {
           "url" in repository
         ? String(repository.url)
         : undefined;
-  return url
-    ?.replace(/^git\+/, "")
+  if (raw === undefined) return undefined;
+  const shorthand = /^(?:github:)?([\w.-]+\/[\w.-]+)$/.exec(raw);
+  if (shorthand) return `https://github.com/${String(shorthand[1])}`;
+  const url = raw
+    .replace(/^git\+/, "")
     .replace(/^git:\/\//, "https://")
+    .replace(/^ssh:\/\/git@/, "https://")
     .replace(/\.git$/, "");
+  return url.startsWith("https://") ? url : undefined;
 }
 
 function licenceOf(node: QueryNode): string | undefined {

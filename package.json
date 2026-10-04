@@ -24,7 +24,8 @@
     "og": "node scripts/generate-og.ts",
     "changelog:since": "node scripts/changelog-since.ts",
     "test:e2e": "playwright test",
-    "verify:all": "npm run verify && npm run test:e2e"
+    "verify:all": "npm run verify && npm run linkcheck && npm run test:e2e",
+    "linkcheck": "lychee --config lychee.toml --root-dir \"$PWD/dist\" \"dist/**/*.html\""
   },
   "simple-git-hooks": {
     "pre-commit": "npx lint-staged"

@@ -4,6 +4,7 @@ import {
   fromQuery,
   installedProductionPackages,
   isRecognised,
+  repositoryUrl,
 } from "@/lib/oss/licences";
 
 describe("isRecognised", () => {
@@ -92,6 +93,26 @@ describe("fromQuery", () => {
         homepage: undefined,
       },
     ]);
+  });
+});
+
+describe("repositoryUrl", () => {
+  it.each([
+    [
+      "syntax-tree/mdast-util-from-markdown",
+      "https://github.com/syntax-tree/mdast-util-from-markdown",
+    ],
+    ["github:colinhacks/zod", "https://github.com/colinhacks/zod"],
+    [
+      { type: "git", url: "git+https://github.com/withastro/astro.git" },
+      "https://github.com/withastro/astro",
+    ],
+    ["git://github.com/x/y.git", "https://github.com/x/y"],
+    ["gitlab:x/y", undefined],
+    ["file:../local", undefined],
+    [undefined, undefined],
+  ])("%j is %j", (repository, url) => {
+    expect(repositoryUrl(repository)).toBe(url);
   });
 });
 
