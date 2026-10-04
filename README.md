@@ -14,14 +14,15 @@ npx playwright install chromium   # once, for the e2e suite and Lighthouse
 npm run dev                       # http://localhost:4321, from the fixture data
 ```
 
-| Command                   | What it does                                                                                                   |
-| ------------------------- | -------------------------------------------------------------------------------------------------------------- |
-| `npm run verify`          | Format check, lint, `astro check` and `tsc`, unit tests, a fixture build, and the dist and snapshot tests.     |
-| `npm run verify:all`      | `verify`, then the link check and the Playwright suite (axe, routing, contract checks) against `wrangler dev`. |
-| `npm run lighthouse`      | Lighthouse budgets on Home, Invite and How it works.                                                           |
-| `npm run theme`           | Regenerates the theme and font CSS from `design-reference/` (`tokens.js` and the T1 table).                    |
-| `npm run og`              | Re-renders the Open Graph card, `public/og.png`.                                                               |
-| `npm run changelog:since` | Prints the `gh` command that lists the app PRs to draft entries from.                                          |
+| Command                   | What it does                                                                                                                                                                     |
+| ------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `npm run verify`          | Format check, lint, `astro check` and `tsc`, unit tests, a fixture build, and the dist and snapshot tests.                                                                       |
+| `npm run verify:all`      | `verify`, then the link check and the Playwright suite (axe, routing, contract checks) against `wrangler dev`.                                                                   |
+| `npm run lighthouse`      | Lighthouse budgets on Home, Invite and How it works.                                                                                                                             |
+| `npm run demo`            | Records the site's demo journey (`tests/e2e/site.demo.spec.ts`) to `test-results/…/video.webm`, captioned and paced. Unpaced, the same journey runs in `test:e2e` as assertions. |
+| `npm run theme`           | Regenerates the theme and font CSS from `design-reference/` (`tokens.js` and the T1 table).                                                                                      |
+| `npm run og`              | Re-renders the Open Graph card, `public/og.png`.                                                                                                                                 |
+| `npm run changelog:since` | Prints the `gh` command that lists the app PRs to draft entries from.                                                                                                            |
 
 ## Configuration
 

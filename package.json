@@ -26,7 +26,8 @@
     "test:e2e": "playwright test",
     "verify:all": "npm run verify && npm run linkcheck && npm run test:e2e",
     "linkcheck": "lychee --config lychee.toml --root-dir \"$PWD/dist\" \"dist/**/*.html\"",
-    "lighthouse": "npx --yes @lhci/cli@0.15.1 autorun"
+    "lighthouse": "npx --yes @lhci/cli@0.15.1 autorun",
+    "demo": "DEMO_SLOWMO=250 playwright test --project=demo"
   },
   "simple-git-hooks": {
     "pre-commit": "npx lint-staged"
