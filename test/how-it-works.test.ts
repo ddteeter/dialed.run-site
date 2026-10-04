@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import VerdictRow from "@/components/VerdictRow.astro";
 import { FAQS } from "@/data/content/how-it-works";
-import HowItWorks from "@/pages/how-it-works.astro";
+import HowItWorks from "@/components/HowItWorksPage.astro";
 import { parse, render } from "./render";
 
 describe("How it works", async () => {
@@ -36,11 +36,6 @@ describe("How it works", async () => {
     expect(totals?.textContent).toContain("at least 5 different runners");
     expect(totals?.textContent).toContain("20 if it's about a brand");
     expect(totals?.textContent).toContain("Confirmed accounts only");
-  });
-
-  it("marks How it works as the current page in the nav", () => {
-    const current = doc.querySelector('nav a[aria-current="page"]');
-    expect(current?.textContent.trim()).toBe("How it works");
   });
 
   it("states the same questions and answers in the page and the FAQPage JSON-LD", () => {

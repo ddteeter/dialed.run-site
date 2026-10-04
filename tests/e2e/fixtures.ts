@@ -10,7 +10,6 @@ export const PAGES = [
   "/",
   "/invite",
   "/invite/sent",
-  "/how-it-works",
   "/privacy",
   "/open-source",
 ] as const;

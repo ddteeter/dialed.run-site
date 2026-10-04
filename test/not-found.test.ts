@@ -28,6 +28,6 @@ describe("404", async () => {
       [...(main?.querySelectorAll("a") ?? [])].map((a) =>
         a.getAttribute("href"),
       ),
-    ).toEqual(["/", "/how-it-works"]);
+    ).toEqual(["/"]);
   });
 });

@@ -1,7 +1,7 @@
 /**
  * Every internal href is already the URL the site serves: root-relative,
  * no trailing slash, no ".html". lychee (npm run linkcheck) can't see this
- * offline: it resolves /how-it-works/ to the file on disk without the 307
+ * offline: it resolves /invite/ to the file on disk without the 307
  * a server would answer with. Read off the live DOM, never by grepping
  * built HTML.
  */

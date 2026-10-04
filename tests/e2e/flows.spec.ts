@@ -48,6 +48,10 @@ test.describe("Cloudflare routing", () => {
     expect((await page.goto("/changelog.xml"))?.status()).toBe(404);
   });
 
+  test("How it works waits for the public launch", async ({ page }) => {
+    expect((await page.goto("/how-it-works"))?.status()).toBe(404);
+  });
+
   test("an unpublished legal text is a 404", async ({ page }) => {
     expect((await page.goto("/terms"))?.status()).toBe(404);
   });
@@ -70,7 +74,7 @@ test.describe("Cloudflare routing", () => {
     });
   }
 
-  for (const variant of ["/how-it-works/", "/how-it-works.html"]) {
+  for (const variant of ["/invite/", "/invite.html"]) {
     test(`${variant} redirects to the one canonical URL`, async ({
       request,
     }) => {
@@ -78,7 +82,7 @@ test.describe("Cloudflare routing", () => {
       expect(response.status()).toBe(307);
       expect(
         new URL(String(response.headers().location), "http://x").pathname,
-      ).toBe("/how-it-works");
+      ).toBe("/invite");
     });
   }
 

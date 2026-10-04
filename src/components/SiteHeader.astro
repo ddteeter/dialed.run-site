@@ -3,6 +3,12 @@ import PillLink from "./PillLink.astro";
 import Wordmark from "./Wordmark.astro";
 import { app, paths } from "@/config/urls";
 
+interface Props {
+  /** After the public launch (SITE_INDEXABLE): How it works joins the nav. */
+  launched: boolean;
+}
+
+const { launched } = Astro.props;
 const current = Astro.url.pathname;
 const link =
   "inline-flex min-h-target min-w-target items-center justify-center";
@@ -15,15 +21,17 @@ const link =
     </a>
     <nav aria-label="Main">
       <ul class="m-0 flex list-none items-center gap-8 p-0">
-        <li class="hidden wide:block">
-          <a
-            href={paths.howItWorks}
-            class={link}
-            aria-current={current === paths.howItWorks ? "page" : undefined}
-          >
-            How it works
-          </a>
-        </li>
+        {launched && (
+          <li class="hidden wide:block">
+            <a
+              href={paths.howItWorks}
+              class={link}
+              aria-current={current === paths.howItWorks ? "page" : undefined}
+            >
+              How it works
+            </a>
+          </li>
+        )}
         <li>
           <a
             href={app.login}

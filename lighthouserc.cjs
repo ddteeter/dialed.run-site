@@ -1,7 +1,7 @@
 /**
  * Lighthouse budgets (HANDOFF §5): performance ≥ 0.95, and accessibility,
  * best practices and SEO at 1.0, on the fixture build served by wrangler
- * dev. Guide pages join with the guides. `is-crawlable` is skipped while
+ * dev. How it works joins at the public launch. Guide pages join with the guides. `is-crawlable` is skipped while
  * SITE_INDEXABLE is off: noindex everywhere is the point until launch.
  * A local server doesn't compress like Cloudflare does, so a local
  * performance score runs a few points under production.
@@ -19,7 +19,7 @@ module.exports = {
       startServerCommand: `WRANGLER_SEND_METRICS=false npx wrangler dev --port ${PORT} --ip 127.0.0.1`,
       startServerReadyPattern: "Ready on",
       startServerReadyTimeout: 60000,
-      url: [`${base}/`, `${base}/invite`, `${base}/how-it-works`],
+      url: [`${base}/`, `${base}/invite`, `${base}/privacy`],
       numberOfRuns: 1,
       settings: {
         preset: "desktop",

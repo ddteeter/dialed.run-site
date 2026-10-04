@@ -7,17 +7,17 @@ import { parse, render } from "./render";
 const texts = (doc: Document, selector: string) =>
   [...doc.querySelectorAll(selector)].map((el) => el.textContent.trim());
 
-describe("SiteHeader", async () => {
+describe("SiteHeader, before the public launch", async () => {
   const doc = parse(
-    await render(SiteHeader, {}, { url: "https://dialed.run/" }),
+    await render(
+      SiteHeader,
+      { launched: false },
+      { url: "https://dialed.run/" },
+    ),
   );
 
-  it("links How it works, Log in and Request an invite, in that order", () => {
-    expect(texts(doc, "nav a")).toEqual([
-      "How it works",
-      "Log in",
-      "Request an invite",
-    ]);
+  it("links Log in and Request an invite only: the site is Home and Invite", () => {
+    expect(texts(doc, "nav a")).toEqual(["Log in", "Request an invite"]);
   });
 
   it("logs in on the app's host", () => {
@@ -35,6 +35,27 @@ describe("SiteHeader", async () => {
     expect(visibleAtPhone.map((li) => li.textContent.trim())).toEqual([
       "Log in",
     ]);
+  });
+});
+
+describe("SiteHeader, after the public launch", async () => {
+  const doc = parse(
+    await render(
+      SiteHeader,
+      { launched: true },
+      { url: "https://dialed.run/how-it-works" },
+    ),
+  );
+
+  it("adds How it works, and marks it on its own page", () => {
+    expect(texts(doc, "nav a")).toEqual([
+      "How it works",
+      "Log in",
+      "Request an invite",
+    ]);
+    expect(
+      doc.querySelector('nav a[aria-current="page"]')?.textContent.trim(),
+    ).toBe("How it works");
   });
 
   it("has no What to wear link until a guide is published", () => {
