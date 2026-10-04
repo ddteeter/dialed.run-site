@@ -1,8 +1,12 @@
 import { readFileSync } from "node:fs";
+import { pathToFileURL } from "node:url";
 import type { Tokens } from "./derive.ts";
 import { parseT1, type T1Pair } from "./t1.ts";
 
-const root = new URL("../../", import.meta.url);
+// The repo root, from the working directory rather than import.meta.url:
+// npm scripts, Vitest and the Astro build all run there, and a bundled
+// page's import.meta.url points into dist/.
+const root = pathToFileURL(`${process.cwd()}/`);
 
 export const TOKENS_SOURCE = new URL(
   "design-reference/contracts/tokens.js",

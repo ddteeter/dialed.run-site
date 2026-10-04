@@ -20,7 +20,8 @@
     "test:watch": "vitest --project unit",
     "verify": "npm run format:check && npm run lint && npm run check && npm run test && npm run build:fixture && npm run test:dist",
     "theme": "node scripts/generate-theme.ts",
-    "test:dist": "vitest run --project dist"
+    "test:dist": "vitest run --project dist",
+    "og": "node scripts/generate-og.ts"
   },
   "simple-git-hooks": {
     "pre-commit": "npx lint-staged"

@@ -17,7 +17,13 @@ export interface Head {
   description: string;
   robots: "noindex" | undefined;
   canonical: string | undefined;
-  og: { type: "website"; title: string; description: string; url: string };
+  og: {
+    type: "website";
+    title: string;
+    description: string;
+    url: string;
+    image: string;
+  };
 }
 
 export function buildHead(input: HeadInput): Head {
@@ -33,6 +39,8 @@ export function buildHead(input: HeadInput): Head {
       title: input.title,
       description: input.description,
       url,
+      // One static brand card for every page (design round 31 #6).
+      image: absolute("/og.png"),
     },
   };
 }

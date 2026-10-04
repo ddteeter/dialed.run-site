@@ -22,6 +22,12 @@ describe("buildHead", () => {
     expect(head.canonical).toBe("https://dialed.run/changelog");
   });
 
+  it("uses the one static brand card for every page", () => {
+    expect(buildHead({ ...page, indexable: false }).og.image).toBe(
+      "https://dialed.run/og.png",
+    );
+  });
+
   it("keeps a page that opts out noindexed after launch", () => {
     const head = buildHead({ ...page, indexable: true, noindex: true });
     expect(head.robots).toBe("noindex");

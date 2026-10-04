@@ -1,5 +1,6 @@
 ---
 import PillLink from "./PillLink.astro";
+import Wordmark from "./Wordmark.astro";
 import { app, paths } from "@/config/urls";
 
 const current = Astro.url.pathname;
@@ -8,12 +9,8 @@ const link = "inline-flex min-h-target items-center";
 
 <header class="border-b border-hairline">
   <div class="mx-auto flex max-w-page items-center justify-between gap-4 px-5 py-3 wide:px-6 wide:py-4">
-    <a
-      href={paths.home}
-      class:list={[link, "type-title"]}
-      aria-label="dialed.run home"
-    >
-      [dialed]
+    <a href={paths.home} class={link} aria-label="dialed.run home">
+      <Wordmark />
     </a>
     <nav aria-label="Main">
       <ul class="m-0 flex list-none items-center gap-8 p-0">

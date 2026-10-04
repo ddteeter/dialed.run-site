@@ -44,7 +44,7 @@ const steps = [
       <p class="m-0 mono-xs text-quiet">
         What to wear running · from your own runs
       </p>
-      <h1 class="m-0 type-display">Wear what worked.</h1>
+      <h1 class="m-0 type-hero">Wear what worked.</h1>
       <p class="m-0 type-lead">
         dialed.run remembers what you wore, the weather you ran in, and whether
         you got it right. The night before your next run, it makes the call.
@@ -69,7 +69,7 @@ const steps = [
     <ol class="mx-auto m-0 grid max-w-page list-none p-0 wide:grid-cols-3">
       {steps.map((step, index) => (
         <li class="flex flex-col gap-2 border-hairline px-5 py-8 not-last:border-b wide:px-6 wide:not-last:border-r wide:not-last:border-b-0">
-          <span class="mono-sm text-quiet" aria-hidden="true">
+          <span class="mono-sm text-muted" aria-hidden="true">
             {String(index + 1).padStart(2, "0")}
           </span>
           <h3 class="m-0 type-heading">{step.title}</h3>
