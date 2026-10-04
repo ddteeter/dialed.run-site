@@ -26,22 +26,27 @@ const { title, heading, description, contents, noindex = false } = Astro.props;
       </h1>
       <slot name="lead" />
     </header>
-    {contents.length > 0 && (
-      <nav aria-labelledby="contents-title" id="contents" class="reading-nav">
-        <h2 id="contents-title" class="m-0 pb-2 mono-xs text-muted">
-          Contents
-        </h2>
-        <ul class="m-0 list-none p-0">
-          {contents.map(({ id, title: label }) => (
-            <li>
-              <a href={`#${id}`} class="inline-flex min-h-target items-center">
-                {label}
-              </a>
-            </li>
-          ))}
-        </ul>
-      </nav>
-    )}
+    <slot name="nav">
+      {contents.length > 0 && (
+        <nav aria-labelledby="contents-title" id="contents" class="reading-nav">
+          <h2 id="contents-title" class="m-0 pb-2 mono-xs text-muted">
+            Contents
+          </h2>
+          <ul class="m-0 list-none p-0">
+            {contents.map(({ id, title: label }) => (
+              <li>
+                <a
+                  href={`#${id}`}
+                  class="inline-flex min-h-target items-center"
+                >
+                  {label}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </nav>
+      )}
+    </slot>
     <div class="reading-body flex flex-col gap-6">
       <slot />
     </div>
@@ -65,7 +70,7 @@ const { title, heading, description, contents, noindex = false } = Astro.props;
     .reading-body {
       grid-column: 2;
     }
-    .reading-nav {
+    :global(.reading-nav) {
       grid-column: 1;
       grid-row: 1 / span 2;
       position: sticky;

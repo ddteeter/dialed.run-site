@@ -43,14 +43,23 @@ describe("SiteHeader", async () => {
 });
 
 describe("SiteFooter", () => {
-  const footer = async (published: LegalSlug[]) =>
+  const footer = async (published: LegalSlug[], hasChangelog = true) =>
     texts(
-      parse(await render(SiteFooter, { published: new Set(published) })),
+      parse(
+        await render(SiteFooter, {
+          published: new Set(published),
+          hasChangelog,
+        }),
+      ),
       "a",
     );
 
   it("leaves out every unpublished legal text", async () => {
     expect(await footer([])).toEqual(["Changelog", "Open source"]);
+  });
+
+  it("leaves out the changelog until it has an entry", async () => {
+    expect(await footer([], false)).toEqual(["Open source"]);
   });
 
   it("lists published legal texts in the board's order", async () => {
@@ -64,7 +73,9 @@ describe("SiteFooter", () => {
   });
 
   it("credits the weather provider", async () => {
-    const doc = parse(await render(SiteFooter, { published: new Set() }));
+    const doc = parse(
+      await render(SiteFooter, { published: new Set(), hasChangelog: false }),
+    );
     expect(doc.querySelector("footer")?.textContent).toContain(
       "Weather by Visual Crossing",
     );

@@ -1,0 +1,21 @@
+---
+import Blocks from "./Blocks.astro";
+import ReadingLayout from "@/layouts/ReadingLayout.astro";
+import type { LegalDoc } from "@/lib/legal/markdown";
+
+interface Props {
+  doc: LegalDoc;
+  label: string;
+}
+
+const { doc, label } = Astro.props;
+---
+
+<ReadingLayout
+  title={`${label} · dialed.run`}
+  heading={doc.title}
+  description={`The dialed.run ${label.toLowerCase()}.`}
+  contents={doc.contents}
+>
+  <Blocks blocks={doc.blocks} />
+</ReadingLayout>

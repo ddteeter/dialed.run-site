@@ -1,0 +1,141 @@
+---
+/**
+ * M7 Changelog: newest first, with a dated anchor per entry and an index of
+ * months in the contents column. Tags are MONO.xs ink in a 1px box, with no
+ * fill and no hue, so a tag never competes with the pink action.
+ */
+import { Image } from "astro:assets";
+import { paths } from "@/config/urls";
+import ReadingLayout from "@/layouts/ReadingLayout.astro";
+import {
+  entryDate,
+  monthIndex,
+  type ChangelogEntry,
+} from "@/lib/changelog/entries";
+
+interface Props {
+  entries: readonly ChangelogEntry[];
+}
+
+const { entries } = Astro.props;
+const years = monthIndex(entries);
+---
+
+<ReadingLayout
+  title="Changelog · dialed.run"
+  heading="Changelog"
+  description="What's new in dialed.run, newest first."
+  contents={[]}
+>
+  <link
+    slot="head"
+    rel="alternate"
+    type="application/atom+xml"
+    title="dialed.run changelog"
+    href={paths.changelogFeed}
+  />
+  <p slot="lead" class="m-0 type-lead">
+    What's new in dialed.run, newest first.
+  </p>
+  <nav
+    slot="nav"
+    aria-label="Changelog by month"
+    id="contents"
+    class="reading-nav"
+  >
+    {years.map(({ year, months }) => (
+      <>
+        <h2 class="m-0 pb-2 mono-xs text-muted">{year}</h2>
+        <ul class="m-0 list-none p-0">
+          {months.map(({ label, href }) => (
+            <li>
+              <a href={href} class="inline-flex min-h-target items-center">
+                {label}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </>
+    ))}
+    <a
+      href={paths.changelogFeed}
+      class="mt-4 inline-flex min-h-target items-center mono-sm text-muted underline"
+    >
+      RSS feed
+    </a>
+  </nav>
+
+  <ol class="entries m-0 flex list-none flex-col p-0">
+    {entries.map((entry, index) => (
+      <li
+        id={entry.id}
+        class:list={[
+          "entry grid gap-3 border-t py-6 wide:gap-6",
+          index === 0 ? "border-ink" : "border-hairline",
+        ]}
+      >
+        <div class="flex flex-row items-start gap-3 wide:flex-col wide:gap-2">
+          <time
+            datetime={entry.date.toISOString().slice(0, 10)}
+            class="mono-sm"
+          >
+            {entryDate(entry.date)}
+          </time>
+          <span class="border border-ink px-2 py-1 mono-xs">{entry.tag}</span>
+        </div>
+        <div class="flex flex-col gap-3">
+          <h2 class="m-0 type-heading">
+            <a href={`#${entry.id}`}>{entry.headline}</a>
+          </h2>
+          <div
+            class="changelog-body flex flex-col gap-3"
+            set:html={entry.html}
+          />
+          {entry.media?.kind === "image" && (
+            <Image
+              src={entry.media.src}
+              width={entry.media.width}
+              height={entry.media.height}
+              alt={entry.media.alt}
+              class="h-auto w-full rounded-card"
+            />
+          )}
+          {entry.media?.kind === "video" && (
+            <video
+              src={entry.media.src}
+              poster={entry.media.poster}
+              aria-label={entry.media.alt}
+              controls
+              muted
+              playsinline
+              preload="none"
+              class="w-full rounded-card"
+            />
+          )}
+        </div>
+      </li>
+    ))}
+  </ol>
+</ReadingLayout>
+
+<style>
+  /* One date column shared by every entry, as wide as the widest date. */
+  @media (width >= 720px) {
+    .entries {
+      display: grid;
+      grid-template-columns: max-content minmax(0, 1fr);
+    }
+    .entry {
+      grid-column: 1 / -1;
+      grid-template-columns: subgrid;
+    }
+  }
+  .changelog-body :global(p),
+  .changelog-body :global(ul) {
+    margin: 0;
+  }
+  .changelog-body :global(ul) {
+    padding-left: var(--space-6);
+    list-style: disc;
+  }
+</style>

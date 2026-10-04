@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from "vitest";
-import LegalPage from "@/pages/[legal].astro";
+import LegalPage from "@/components/legal/LegalPage.astro";
 import { getLegalDocs } from "@/data/legal";
 import { parseLegalDoc } from "@/lib/legal/markdown";
 import {

@@ -4,11 +4,13 @@ import { paths } from "@/config/urls";
 
 interface Props {
   published: ReadonlySet<LegalSlug>;
+  /** No entries yet means no changelog page to link (design round 31 #5a). */
+  hasChangelog: boolean;
 }
 
-const { published } = Astro.props;
+const { published, hasChangelog } = Astro.props;
 const links = [
-  { href: paths.changelog, label: "Changelog" },
+  ...(hasChangelog ? [{ href: paths.changelog, label: "Changelog" }] : []),
   ...LEGAL_PAGES.filter(({ slug }) => published.has(slug))
     .filter(({ slug }) => slug !== "copyright")
     .map(({ slug, label }) => ({ href: paths[slug], label })),
