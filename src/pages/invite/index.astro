@@ -1,0 +1,30 @@
+---
+import HaveACode from "@/components/HaveACode.astro";
+import InviteRequest from "@/components/InviteRequest.astro";
+import { env } from "@/config/env";
+import { app } from "@/config/urls";
+import { getPublishedLegalSlugs } from "@/data/legal";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+
+const published = await getPublishedLegalSlugs();
+---
+
+<BaseLayout
+  title="Request an invite · dialed.run"
+  description="Request an invite to dialed.run, or join with the code you were sent."
+>
+  <div class="mx-auto flex max-w-panel flex-col gap-4 px-5 py-8 wide:mt-12">
+    <h1 class="m-0 type-title">Request an invite</h1>
+    <p class="m-0">
+      We send codes in small batches. One email when yours is ready, and nothing
+      else.
+    </p>
+    <InviteRequest
+      endpoint={env.INVITE_ENDPOINT}
+      turnstileSiteKey={env.TURNSTILE_SITE_KEY}
+      requestAccessUrl={app.requestAccess}
+      privacyPublished={published.has("privacy")}
+    />
+    <HaveACode joinUrl={app.join} />
+  </div>
+</BaseLayout>
