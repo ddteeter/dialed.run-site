@@ -10,6 +10,8 @@ export default getViteConfig({
           name: "unit",
           include: ["test/**/*.test.ts"],
           exclude: ["test/dist/**"],
+          // Pages read the guide artifact; unit tests read the fixture.
+          env: { USE_FIXTURE_DATA: "true" },
         },
       },
       {

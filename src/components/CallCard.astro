@@ -1,0 +1,54 @@
+---
+/**
+ * The proof on Home (M1): a real Call, as static markup filled at build time
+ * from the artifact's callCard, which is the owner's own published run. Not a
+ * phone screenshot.
+ *
+ * An ink block on a light page (the dark T1 column via data-ground="ink"),
+ * and a --tint block on a dark page, as the Dark board draws it. Below the
+ * wide breakpoint the kit folds into one line without counts or the note.
+ */
+import type { CallCard } from "@/data/artifact/schema";
+import { conditionsLine, dialedCount } from "@/lib/callCard";
+
+interface Props {
+  card: CallCard;
+}
+
+const { card } = Astro.props;
+---
+
+<section
+  data-ground="ink"
+  aria-labelledby="call-card-title"
+  class="call-card flex flex-col gap-3 rounded-card bg-ground p-4 text-ink dark:bg-tint wide:gap-4 wide:rounded-sheet wide:p-6"
+>
+  <h2 id="call-card-title" class="sr-only">
+    A real call from dialed.run
+  </h2>
+  <p class="m-0 mono-xs text-muted">{card.when}</p>
+  <p class="m-0 mono-lg text-dialed-text">{conditionsLine(card)}</p>
+  <ul class="kit m-0 list-none p-0 wide:border-t wide:border-hairline">
+    {card.items.map((item) => (
+      <li class="wide:flex wide:items-baseline wide:justify-between wide:gap-3 wide:border-b wide:border-hairline wide:py-3">
+        <span class="wide:font-semibold">{item.type}</span>
+        <span class="hidden mono-sm text-muted wide:inline">
+          {dialedCount(item)}
+        </span>
+      </li>
+    ))}
+  </ul>
+  <p class="m-0 hidden type-small text-quiet wide:block">{card.note}</p>
+</section>
+
+<style>
+  /* Below wide: "Long sleeve, merino · Tights · Light gloves". */
+  @media (width < 720px) {
+    .kit li {
+      display: inline;
+    }
+    .kit li + li::before {
+      content: " · ";
+    }
+  }
+</style>
