@@ -35,6 +35,16 @@ export default defineConfig(
     languageOptions: {
       parserOptions: { projectService: false, project: "./tsconfig.json" },
     },
+    // The type-aware parser sees a template's JSX as an error type, so the
+    // no-unsafe-* rules fire on every `{list.map(...)}`. `astro check`
+    // type-checks templates properly.
+    rules: {
+      "@typescript-eslint/no-unsafe-return": "off",
+      "@typescript-eslint/no-unsafe-assignment": "off",
+      "@typescript-eslint/no-unsafe-call": "off",
+      "@typescript-eslint/no-unsafe-member-access": "off",
+      "@typescript-eslint/no-unsafe-argument": "off",
+    },
   },
   {
     files: ["**/*.{js,mjs,cjs}"],

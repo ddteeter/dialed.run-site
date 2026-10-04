@@ -64,7 +64,7 @@ describe("contract rules", () => {
 
 describe("src/", () => {
   const root = new URL("../src/", import.meta.url).pathname;
-  const skip = [/^styles\/theme\.generated\.css$/, /^theme\//];
+  const skip = [/^styles\/[a-z]+\.generated\.css$/, /^theme\//];
 
   const files = (dir: string): string[] =>
     readdirSync(dir, { withFileTypes: true }).flatMap((entry) => {

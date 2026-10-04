@@ -6,3 +6,4 @@ package-lock.json
 src/styles/theme.generated.css
 test/__snapshots__/
 docs/HANDOFF.md
+src/styles/fonts.generated.css

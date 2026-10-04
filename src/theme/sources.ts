@@ -10,6 +10,10 @@ export const TOKENS_SOURCE = new URL(
 );
 export const T1_SOURCE = new URL("design-reference/boards/Theme.dc.html", root);
 export const THEME_OUTPUT = new URL("src/styles/theme.generated.css", root);
+export const FONTS_OUTPUT = new URL("src/styles/fonts.generated.css", root);
+export const FONTS_DIR = new URL("design-reference/fonts/", root);
+/** FONTS_DIR as the generated CSS sees it, for Vite to resolve and hash. */
+export const FONTS_URL_BASE = "../../design-reference/fonts";
 
 export async function readThemeSources(): Promise<{
   tokens: Tokens;

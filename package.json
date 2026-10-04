@@ -16,10 +16,11 @@
     "lint:fix": "eslint --fix .",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "test": "vitest run",
-    "test:watch": "vitest",
-    "verify": "npm run format:check && npm run lint && npm run check && npm run test && npm run build:fixture",
-    "theme": "node scripts/generate-theme.ts"
+    "test": "vitest run --project unit",
+    "test:watch": "vitest --project unit",
+    "verify": "npm run format:check && npm run lint && npm run check && npm run test && npm run build:fixture && npm run test:dist",
+    "theme": "node scripts/generate-theme.ts",
+    "test:dist": "vitest run --project dist"
   },
   "simple-git-hooks": {
     "pre-commit": "npx lint-staged"

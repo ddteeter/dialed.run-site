@@ -16,7 +16,8 @@
  *    and case together, because tracking is a function of size (tokens.js
  *    law 1).
  */
-import type { T1Pair } from "./t1";
+import { FONT_FILES, fontFaceCss, type FamilyKey } from "./fonts.ts";
+import type { T1Pair } from "./t1.ts";
 
 export interface TypeStep {
   family: string;
@@ -135,4 +136,13 @@ export function deriveThemeCss(tokens: Tokens, pairs: T1Pair[]): string {
       ),
     ].join("\n\n") + "\n"
   );
+}
+
+export function deriveFontsCss(tokens: Tokens, urlBase: string): string {
+  const family = tokens.FAMILY as Record<FamilyKey, string>;
+  const header = HEADER.replace(
+    "Sources: design-reference/contracts/tokens.js and the T1 table in\n * design-reference/boards/Theme.dc.html.",
+    "Sources: src/theme/fonts.ts, with family names from\n * design-reference/contracts/tokens.js FAMILY.",
+  );
+  return `${header}\n\n${fontFaceCss(FONT_FILES, family, urlBase)}\n`;
 }

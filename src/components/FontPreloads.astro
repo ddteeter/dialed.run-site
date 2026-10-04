@@ -1,0 +1,24 @@
+---
+/**
+ * Preloads the faces src/theme/fonts.ts marks `preload`: the two used above
+ * the fold on every page. The URLs are Vite's hashed ones, the same files
+ * fonts.generated.css asks for.
+ */
+import { FONT_FILES } from "@/theme/fonts";
+
+const urls = import.meta.glob<string>("../../design-reference/fonts/*.woff2", {
+  query: "?url",
+  import: "default",
+  eager: true,
+});
+
+const preloads = FONT_FILES.filter((font) => font.preload).map((font) => {
+  const url = urls[`../../design-reference/fonts/${font.file}`];
+  if (url === undefined) throw new Error(`no font file ${font.file}`);
+  return url;
+});
+---
+
+{preloads.map((href) => (
+  <link rel="preload" href={href} as="font" type="font/woff2" crossorigin />
+))}
