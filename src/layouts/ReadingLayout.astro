@@ -21,6 +21,7 @@ const { title, heading, description, contents, noindex = false } = Astro.props;
   <slot name="head" slot="head" />
   <div class="reading mx-auto grid max-w-page gap-8 px-5 py-8 wide:px-6 wide:py-12 desk:gap-12">
     <header class="reading-head flex flex-col gap-6">
+      <slot name="eyebrow" />
       <h1 class="m-0 type-display" id="top">
         {heading}
       </h1>
