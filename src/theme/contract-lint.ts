@@ -15,6 +15,8 @@ export interface LintRule {
   allow: string;
   /** Lets a match through, e.g. a 1px border on `border-bottom`. */
   exempt?: (match: string, before: string) => boolean;
+  /** Limits the rule to some files; every file when absent. */
+  files?: RegExp;
 }
 
 export interface Violation {
@@ -53,6 +55,8 @@ export function contractRules(
     ...fromTokens,
     {
       id: "no-raw-hex",
+      // Not .ts: "#130" in a comment is a PR number, and colours live in CSS.
+      files: /\.(css|astro)$/,
       reject: /(?<![\w"'/=&])#(?:[0-9a-fA-F]{6}|[0-9a-fA-F]{3})\b/,
       allow: "a T1 variable: var(--ink), or a colour utility like text-ink",
     },
@@ -79,6 +83,7 @@ export function lintSource(
 ): Violation[] {
   const violations: Violation[] = [];
   for (const rule of rules) {
+    if (rule.files !== undefined && !rule.files.test(file)) continue;
     const global = new RegExp(
       rule.reject.source,
       `${rule.reject.flags.replace("g", "")}g`,

@@ -1,0 +1,76 @@
+---
+/**
+ * The legal reading layout (HANDOFF §4 M4, §7): one column at the 620
+ * measure, with the contents in a sticky column at desk width. Below desk
+ * the contents sit under the title, and each section ends with a way back.
+ */
+import BaseLayout from "./BaseLayout.astro";
+
+interface Props {
+  title: string;
+  heading: string;
+  description: string;
+  contents: readonly { id: string; title: string }[];
+  noindex?: boolean;
+}
+
+const { title, heading, description, contents, noindex = false } = Astro.props;
+---
+
+<BaseLayout title={title} description={description} noindex={noindex}>
+  <slot name="head" slot="head" />
+  <div class="reading mx-auto grid max-w-page gap-8 px-5 py-8 wide:px-6 wide:py-12 desk:gap-12">
+    <header class="reading-head flex flex-col gap-6">
+      <h1 class="m-0 type-display" id="top">
+        {heading}
+      </h1>
+      <slot name="lead" />
+    </header>
+    {contents.length > 0 && (
+      <nav aria-labelledby="contents-title" id="contents" class="reading-nav">
+        <h2 id="contents-title" class="m-0 pb-2 mono-xs text-muted">
+          Contents
+        </h2>
+        <ul class="m-0 list-none p-0">
+          {contents.map(({ id, title: label }) => (
+            <li>
+              <a href={`#${id}`} class="inline-flex min-h-target items-center">
+                {label}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+    )}
+    <div class="reading-body flex flex-col gap-6">
+      <slot />
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .reading {
+    grid-template-columns: minmax(0, var(--measure-column));
+    justify-content: center;
+  }
+  @media (width >= 1040px) {
+    .reading {
+      /* The contents column on the left, balanced by an empty one on the right. */
+      grid-template-columns:
+        minmax(0, 1fr) minmax(0, var(--measure-column))
+        minmax(0, 1fr);
+      justify-content: stretch;
+    }
+    .reading-head,
+    .reading-body {
+      grid-column: 2;
+    }
+    .reading-nav {
+      grid-column: 1;
+      grid-row: 1 / span 2;
+      position: sticky;
+      top: var(--space-6);
+      align-self: start;
+    }
+  }
+</style>

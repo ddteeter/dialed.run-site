@@ -51,6 +51,10 @@ describe("contract rules", () => {
     expect(ids(text)).toEqual([]);
   });
 
+  it("reads a # number in TypeScript as a number, not a colour", () => {
+    expect(ids("// review of PR #130", "x.ts")).toEqual([]);
+  });
+
   it("reports the line of each violation", () => {
     const [violation] = lintSource(
       "a.css",

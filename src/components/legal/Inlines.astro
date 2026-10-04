@@ -1,0 +1,25 @@
+---
+import type { Inline } from "@/lib/legal/markdown";
+
+interface Props {
+  inlines: readonly Inline[];
+}
+
+const { inlines } = Astro.props;
+---
+
+{inlines.map((inline) =>
+  inline.kind === "text" ? (
+    inline.text
+  ) : inline.kind === "code" ? (
+    <code class="mono-md">{inline.text}</code>
+  ) : inline.kind === "strong" ? (
+    <strong class="font-semibold">
+      <Astro.self inlines={inline.children} />
+    </strong>
+  ) : (
+    <a href={inline.href} class="underline">
+      <Astro.self inlines={inline.children} />
+    </a>
+  ),
+)}

@@ -1,8 +1,12 @@
 /**
- * Which legal texts are published. A text the app repo hasn't marked
- * `published: true` has no page here and no link to it (HANDOFF §7).
+ * The published legal texts for this build. A text the app repo hasn't
+ * marked `published: true` has no page here and no link to it (HANDOFF §7).
  */
-export type LegalSlug = "privacy" | "terms" | "copyright";
+import { env } from "@/config/env";
+import type { LegalDoc } from "@/lib/legal/markdown";
+import { loadLegalDocs, type LegalSlug } from "@/lib/legal/source";
+
+export type { LegalSlug };
 
 export const LEGAL_PAGES: readonly { slug: LegalSlug; label: string }[] = [
   { slug: "privacy", label: "Privacy policy" },
@@ -10,7 +14,16 @@ export const LEGAL_PAGES: readonly { slug: LegalSlug; label: string }[] = [
   { slug: "copyright", label: "Copyright" },
 ];
 
-/** Replaced by the real source when the legal pages land. */
-export function getPublishedLegalSlugs(): Promise<ReadonlySet<LegalSlug>> {
-  return Promise.resolve(new Set());
+let cached: Promise<ReadonlyMap<LegalSlug, LegalDoc>> | undefined;
+
+/** Fetched once per build and shared by every page. */
+export function getLegalDocs(): Promise<ReadonlyMap<LegalSlug, LegalDoc>> {
+  cached ??= loadLegalDocs(env);
+  return cached;
+}
+
+export async function getPublishedLegalSlugs(): Promise<
+  ReadonlySet<LegalSlug>
+> {
+  return new Set((await getLegalDocs()).keys());
 }

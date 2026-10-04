@@ -1,0 +1,37 @@
+---
+/**
+ * /privacy, /terms and /copyright: only the texts the app repo has marked
+ * published. An unpublished text has no route, so it's a 404 here too.
+ */
+import type { GetStaticPaths } from "astro";
+import Blocks from "@/components/legal/Blocks.astro";
+import { getLegalDocs, LEGAL_PAGES } from "@/data/legal";
+import ReadingLayout from "@/layouts/ReadingLayout.astro";
+import type { LegalDoc } from "@/lib/legal/markdown";
+
+export const getStaticPaths = (async () => {
+  const docs = await getLegalDocs();
+  return LEGAL_PAGES.flatMap(({ slug, label }) => {
+    const doc = docs.get(slug);
+    return doc === undefined
+      ? []
+      : [{ params: { legal: slug }, props: { doc, label } }];
+  });
+}) satisfies GetStaticPaths;
+
+interface Props {
+  doc: LegalDoc;
+  label: string;
+}
+
+const { doc, label } = Astro.props;
+---
+
+<ReadingLayout
+  title={`${label} · dialed.run`}
+  heading={doc.title}
+  description={`The dialed.run ${label.toLowerCase()}.`}
+  contents={doc.contents}
+>
+  <Blocks blocks={doc.blocks} />
+</ReadingLayout>
