@@ -6,7 +6,7 @@ The marketing site for [dialed.run](https://dialed.run), built with Astro and se
 
 ## Run it locally
 
-You need Node 24 (`.nvmrc`; Volta picks it up from `package.json`). The link check also needs [lychee](https://lychee.cli.rs) (`brew install lychee`).
+You need Node 24 (`.nvmrc`, which mise and `setup-node` both read). The link check also needs [lychee](https://lychee.cli.rs) (`brew install lychee`).
 
 ```sh
 npm install

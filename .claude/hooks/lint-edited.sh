@@ -14,15 +14,17 @@ case "$file" in
   *) exit 0 ;;
 esac
 
-# The project pins Node 24 with Volta; prefer it over a newer system Node.
-[ -d "$HOME/.volta/bin" ] && PATH="$HOME/.volta/bin:$PATH"
+# The project pins Node 24 in .nvmrc. Run under mise when it's installed,
+# since a hook's shell isn't an interactive one where mise has activated.
 cd "$CLAUDE_PROJECT_DIR" || exit 0
+mise_bin=$(command -v mise || { [ -x "$HOME/.local/bin/mise" ] && echo "$HOME/.local/bin/mise"; })
+run() { if [ -n "$mise_bin" ]; then "$mise_bin" exec -- "$@"; else "$@"; fi; }
 
-if ! out=$(npx eslint --max-warnings=0 "$file" 2>&1); then
+if ! out=$(run npx eslint --max-warnings=0 "$file" 2>&1); then
   echo "$out" >&2
   exit 2
 fi
-if [[ "$file" == *.ts ]] && ! out=$(npx tsc --noEmit 2>&1); then
+if [[ "$file" == *.ts ]] && ! out=$(run npx tsc --noEmit 2>&1); then
   echo "$out" >&2
   exit 2
 fi
