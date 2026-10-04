@@ -1,0 +1,60 @@
+{
+  "name": "dialed-run-site",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=24"
+  },
+  "scripts": {
+    "dev": "USE_FIXTURE_DATA=true astro dev",
+    "build": "astro sync && astro check && tsc --noEmit && astro build",
+    "build:fixture": "USE_FIXTURE_DATA=true npm run build",
+    "preview": "astro preview",
+    "check": "astro sync && astro check && tsc --noEmit",
+    "lint": "eslint --max-warnings=0 .",
+    "lint:fix": "eslint --fix .",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "verify": "npm run format:check && npm run lint && npm run check && npm run test && npm run build:fixture"
+  },
+  "simple-git-hooks": {
+    "pre-commit": "npx lint-staged"
+  },
+  "lint-staged": {
+    "*.{ts,js,mjs,cjs,astro}": [
+      "eslint --max-warnings=0 --fix",
+      "prettier --write"
+    ],
+    "*.{json,jsonc,md,css,yml,yaml}": "prettier --write"
+  },
+  "dependencies": {
+    "astro": "^7.3.5"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.10",
+    "@eslint/js": "^10.0.1",
+    "@types/node": "^24.19.1",
+    "eslint": "^10.12.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-astro": "^3.2.1",
+    "globals": "^17.13.0",
+    "lint-staged": "^17.6.0",
+    "prettier": "^3.9.9",
+    "prettier-plugin-astro": "^1.1.0",
+    "simple-git-hooks": "^2.14.0",
+    "typescript": "~6.0",
+    "typescript-eslint": "^8.71.0",
+    "vitest": "^5.0.3"
+  },
+  "volta": {
+    "node": "24.21.0"
+  },
+  "allowScripts": {
+    "esbuild@0.28.2": true,
+    "simple-git-hooks@2.14.0": true,
+    "fsevents@2.3.3": true
+  }
+}

@@ -1,0 +1,8 @@
+design-reference/
+dist/
+.astro/
+node_modules/
+package-lock.json
+src/styles/theme.generated.css
+test/__snapshots__/
+docs/HANDOFF.md
