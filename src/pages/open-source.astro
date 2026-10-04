@@ -1,0 +1,105 @@
+---
+/**
+ * /open-source (HANDOFF §7): every open-source package and asset this site
+ * ships, generated at build time. The direct production dependencies are
+ * listed by name; the licence check covers the whole tree beneath them.
+ * The app publishes its own list.
+ */
+import { readFileSync } from "node:fs";
+import { app } from "@/config/urls";
+import ReadingLayout from "@/layouts/ReadingLayout.astro";
+import { checkLicences, installedProductionPackages } from "@/lib/oss/licences";
+import { familyName, FONT_FAMILIES } from "@/theme/fonts";
+import { readThemeSources } from "@/theme/sources";
+
+const all = installedProductionPackages();
+checkLicences(all);
+const direct = Object.keys(
+  (
+    JSON.parse(readFileSync("package.json", "utf8")) as {
+      dependencies: Record<string, string>;
+    }
+  ).dependencies,
+);
+const packages = all.filter((pkg) => direct.includes(pkg.name));
+const { tokens } = await readThemeSources();
+const fonts = FONT_FAMILIES.map((font) => ({
+  ...font,
+  name: familyName(tokens.FAMILY[font.family] ?? ""),
+}));
+
+const contents = [
+  { id: "packages", title: "Packages" },
+  { id: "fonts", title: "Fonts" },
+  { id: "the-app", title: "The app" },
+];
+const row =
+  "flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1 border-t border-hairline py-3";
+---
+
+<ReadingLayout
+  title="Open source · dialed.run"
+  heading="Open source"
+  description="The open-source packages and fonts this site ships, and their licences."
+  contents={contents}
+>
+  <p slot="lead" class="m-0 type-lead">
+    This site is built from open-source software. Each package it ships, with
+    its licence.
+  </p>
+
+  <section aria-labelledby="packages" class="flex flex-col">
+    <h2 id="packages" class="m-0 pb-3 type-heading">
+      Packages
+    </h2>
+    <ul class="m-0 list-none p-0">
+      {packages.map((pkg) => (
+        <li class={row}>
+          {pkg.homepage === undefined ? (
+            <span class="font-semibold">{pkg.name}</span>
+          ) : (
+            <a href={pkg.homepage} class="font-semibold underline">
+              {pkg.name}
+            </a>
+          )}
+          <span class="mono-sm text-muted">
+            {pkg.version} · {pkg.licence}
+          </span>
+        </li>
+      ))}
+    </ul>
+    <p class="m-0 pt-3 type-small text-quiet">
+      And the {all.length - packages.length} packages these depend on, each
+      under an open-source licence.
+    </p>
+  </section>
+
+  <section aria-labelledby="fonts" class="flex flex-col">
+    <h2 id="fonts" class="m-0 pb-3 type-heading">
+      Fonts
+    </h2>
+    <ul class="m-0 list-none p-0">
+      {fonts.map((font) => (
+        <li class={row}>
+          <a href={font.source} class="font-semibold underline">
+            {font.name}
+          </a>
+          <span class="mono-sm text-muted">{font.licence}</span>
+        </li>
+      ))}
+    </ul>
+  </section>
+
+  <section aria-labelledby="the-app" class="flex flex-col gap-3">
+    <h2 id="the-app" class="m-0 type-heading">
+      The app
+    </h2>
+    <p class="m-0">
+      The dialed.run app lists its own open-source software at{" "}
+      <a href={app.openSource} class="underline">
+        app.dialed.run/open-source
+      </a>
+      .
+    </p>
+  </section>
+</ReadingLayout>
