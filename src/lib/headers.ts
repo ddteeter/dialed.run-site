@@ -6,11 +6,15 @@
  * `X-Robots-Tag: noindex`, so a stray asset or a page that forgot its meta
  * tag still stays out of search.
  */
+import { GOATCOUNTER_SCRIPT } from "./analytics";
+
 export interface HeadersInput {
   indexable: boolean;
   appOrigin: string;
   /** Set only when the invite form posts to the app (HANDOFF §4 M5 (a)). */
   inviteEndpoint: string | undefined;
+  /** Set only when GoatCounter is on. */
+  goatcounterEndpoint?: string | undefined;
 }
 
 const TURNSTILE_ORIGIN = "https://challenges.cloudflare.com";
@@ -18,6 +22,14 @@ const TURNSTILE_ORIGIN = "https://challenges.cloudflare.com";
 export function contentSecurityPolicy(input: HeadersInput): string {
   const turnstile =
     input.inviteEndpoint === undefined ? [] : [TURNSTILE_ORIGIN];
+  // count.v5.js comes from gc.zgo.at and beacons to the site's own
+  // goatcounter.com host, with an <img> fallback.
+  const counter =
+    input.goatcounterEndpoint === undefined
+      ? []
+      : [new URL(input.goatcounterEndpoint).origin];
+  const counterScript =
+    counter.length === 0 ? [] : [new URL(GOATCOUNTER_SCRIPT).origin];
   const formTargets = [
     "'self'",
     input.appOrigin,
@@ -27,12 +39,12 @@ export function contentSecurityPolicy(input: HeadersInput): string {
   ];
   const directives: [string, string[]][] = [
     ["default-src", ["'self'"]],
-    ["script-src", ["'self'", ...turnstile]],
+    ["script-src", ["'self'", ...turnstile, ...counterScript]],
     ["frame-src", turnstile.length > 0 ? turnstile : ["'none'"]],
     ["style-src", ["'self'"]],
-    ["img-src", ["'self'", "data:"]],
+    ["img-src", ["'self'", "data:", ...counter]],
     ["font-src", ["'self'"]],
-    ["connect-src", ["'self'"]],
+    ["connect-src", ["'self'", ...counter]],
     ["form-action", [...new Set(formTargets)]],
     ["base-uri", ["'none'"]],
     ["object-src", ["'none'"]],

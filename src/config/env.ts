@@ -45,6 +45,17 @@ export const envSchema = z
         .default(DEFAULT_LEGAL_SOURCE_REF),
     ),
     INVITE_ENDPOINT: optionalUrl,
+    /** GoatCounter's count URL, e.g. https://dialedrun.goatcounter.com/count. Unset: no analytics. */
+    GOATCOUNTER_ENDPOINT: z.preprocess(
+      unset,
+      z
+        .url({ protocol: /^https$/ })
+        .refine(
+          (url) => url.endsWith("/count"),
+          "must be a GoatCounter /count URL",
+        )
+        .optional(),
+    ),
     TURNSTILE_SITE_KEY: z.preprocess(unset, z.string().optional()),
     APP_ORIGIN: z.preprocess(
       unset,

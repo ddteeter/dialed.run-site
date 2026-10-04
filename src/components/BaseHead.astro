@@ -1,6 +1,7 @@
 ---
 import { env } from "@/config/env";
 import { buildHead } from "@/lib/head";
+import Analytics from "./Analytics.astro";
 import FontPreloads from "./FontPreloads.astro";
 
 interface Props {
@@ -40,4 +41,5 @@ const head = buildHead({
 <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
 <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 <link rel="manifest" href="/manifest.webmanifest" />
+<Analytics />
 <slot />

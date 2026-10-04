@@ -34,6 +34,7 @@ Everything is a public build-time variable (`src/config/env.ts`); there are no s
 | `SITE_INDEXABLE`                        | `false`                  | Only `true` or `false`; anything else fails the build.                                                                                                     |
 | `LEGAL_SOURCE_REF`                      | a pinned SHA             | The app repo ref the legal texts are read from.                                                                                                            |
 | `INVITE_ENDPOINT`, `TURNSTILE_SITE_KEY` | unset                    | Switch Invite from a link to the app's request page to a form.                                                                                             |
+| `GOATCOUNTER_ENDPOINT`                  | unset                    | GoatCounter's `/count` URL; unset means no analytics.                                                                                                      |
 | `APP_ORIGIN`                            | `https://app.dialed.run` |                                                                                                                                                            |
 
 ## Where things live

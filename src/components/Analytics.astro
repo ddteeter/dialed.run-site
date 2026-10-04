@@ -1,0 +1,22 @@
+---
+import { env } from "@/config/env";
+import { GOATCOUNTER_INTEGRITY, GOATCOUNTER_SCRIPT } from "@/lib/analytics";
+
+interface Props {
+  /** Defaults to the build's GOATCOUNTER_ENDPOINT; tests pass their own. */
+  endpoint?: string | undefined;
+}
+
+const { endpoint = env.GOATCOUNTER_ENDPOINT } = Astro.props;
+---
+
+{endpoint !== undefined && (
+  <script
+    is:inline
+    data-goatcounter={endpoint}
+    async
+    src={GOATCOUNTER_SCRIPT}
+    integrity={GOATCOUNTER_INTEGRITY}
+    crossorigin="anonymous"
+  />
+)}

@@ -37,6 +37,7 @@ jobs:
       LEGAL_SOURCE_REF: ${{ vars.LEGAL_SOURCE_REF }}
       INVITE_ENDPOINT: ${{ vars.INVITE_ENDPOINT }}
       TURNSTILE_SITE_KEY: ${{ vars.TURNSTILE_SITE_KEY }}
+      GOATCOUNTER_ENDPOINT: ${{ vars.GOATCOUNTER_ENDPOINT }}
       APP_ORIGIN: ${{ vars.APP_ORIGIN }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1

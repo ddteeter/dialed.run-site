@@ -14,6 +14,7 @@ export function cloudflareHeaders(): AstroIntegration {
           indexable: env.SITE_INDEXABLE,
           appOrigin: env.APP_ORIGIN,
           inviteEndpoint: env.INVITE_ENDPOINT,
+          goatcounterEndpoint: env.GOATCOUNTER_ENDPOINT,
         });
         await writeFile(new URL("_headers", dir), body);
         await writeFile(

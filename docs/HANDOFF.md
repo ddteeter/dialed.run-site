@@ -121,7 +121,7 @@ Build these from the board. The rules below are the ones that are easy to miss.
 ## 5. Accessibility and performance
 
 - Follow the Accessibility Contract: focus rings, 44px targets, and colour never the only signal.
-- Ship zero client JS except the unit switch and Turnstile.
+- Ship zero client JS except the unit switch, Turnstile and its failure messages (form mode only), and GoatCounter (cookieless; the owner's choice, 2026-10-04; on only when `GOATCOUNTER_ENDPOINT` is set).
 - Budget: a Lighthouse performance score ≥ 95 on Home and a guide page, and accessibility at 100 with no axe violations.
 - Self-host the fonts with `font-display: swap`, and preload the two used above the fold.
 

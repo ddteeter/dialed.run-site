@@ -44,6 +44,7 @@ Then add these repository secrets:
 | `LEGAL_SOURCE_REF`      | the SHA pinned in `src/config/env.ts` | The app repo ref that the legal texts are read from.                                                                                                                                                       |
 | `INVITE_ENDPOINT`       | unset                                 | `https://app.dialed.run/api/access-requests` once the app ships it. Until then, Request an invite links to the app's own page.                                                                             |
 | `TURNSTILE_SITE_KEY`    | unset                                 | The app's public site key, with `dialed.run` in its allowed hostnames. Required with `INVITE_ENDPOINT`. Never put the secret here.                                                                         |
+| `GOATCOUNTER_ENDPOINT`  | unset                                 | The GoatCounter site's count URL, such as `https://dialedrun.goatcounter.com/count`. Unset means no analytics.                                                                                             |
 | `APP_ORIGIN`            | `https://app.dialed.run`              |                                                                                                                                                                                                            |
 
 ### 3. `www` → apex
