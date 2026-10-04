@@ -8,10 +8,29 @@ import { loadLegalDocs, type LegalSlug } from "@/lib/legal/source";
 
 export type { LegalSlug };
 
-export const LEGAL_PAGES: readonly { slug: LegalSlug; label: string }[] = [
-  { slug: "privacy", label: "Privacy policy" },
-  { slug: "terms", label: "Terms" },
-  { slug: "copyright", label: "Copyright" },
+export const LEGAL_PAGES: readonly {
+  slug: LegalSlug;
+  label: string;
+  description: string;
+}[] = [
+  {
+    slug: "privacy",
+    label: "Privacy policy",
+    description:
+      "What dialed.run keeps about you and your runs, why, and the choices you have.",
+  },
+  {
+    slug: "terms",
+    label: "Terms",
+    description:
+      "The agreement between you and dialed.run when you use the app.",
+  },
+  {
+    slug: "copyright",
+    label: "Copyright",
+    description:
+      "How to tell dialed.run that something on it uses your work without permission.",
+  },
 ];
 
 let cached: Promise<ReadonlyMap<LegalSlug, LegalDoc>> | undefined;

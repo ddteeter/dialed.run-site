@@ -41,7 +41,7 @@ const steps = [
 
   <div class="mx-auto grid max-w-page gap-6 px-5 py-8 wide:px-6 wide:py-12 desk:grid-cols-2 desk:items-center desk:gap-12">
     <div class="flex flex-col gap-5 wide:gap-6">
-      <p class="m-0 mono-xs text-quiet">
+      <p class="m-0 mono-xs text-label">
         What to wear running · from your own runs
       </p>
       <h1 class="m-0 type-hero">Wear what worked.</h1>
@@ -69,7 +69,7 @@ const steps = [
     <ol class="mx-auto m-0 grid max-w-page list-none p-0 wide:grid-cols-3">
       {steps.map((step, index) => (
         <li class="flex flex-col gap-2 border-hairline px-5 py-8 not-last:border-b wide:px-6 wide:not-last:border-r wide:not-last:border-b-0">
-          <span class="mono-sm text-muted" aria-hidden="true">
+          <span class="mono-sm text-label" aria-hidden="true">
             {String(index + 1).padStart(2, "0")}
           </span>
           <h3 class="m-0 type-heading">{step.title}</h3>

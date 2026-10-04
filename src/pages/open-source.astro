@@ -58,11 +58,14 @@ const row =
           {pkg.homepage === undefined ? (
             <span class="font-semibold">{pkg.name}</span>
           ) : (
-            <a href={pkg.homepage} class="font-semibold underline">
+            <a
+              href={pkg.homepage}
+              class="inline-flex min-h-target min-w-target items-center font-semibold underline"
+            >
               {pkg.name}
             </a>
           )}
-          <span class="mono-sm text-muted">
+          <span class="mono-sm text-label">
             {pkg.version} · {pkg.licence}
           </span>
         </li>
@@ -81,10 +84,13 @@ const row =
     <ul class="m-0 list-none p-0">
       {fonts.map((font) => (
         <li class={row}>
-          <a href={font.source} class="font-semibold underline">
+          <a
+            href={font.source}
+            class="inline-flex min-h-target min-w-target items-center font-semibold underline"
+          >
             {font.name}
           </a>
-          <span class="mono-sm text-muted">{font.licence}</span>
+          <span class="mono-sm text-label">{font.licence}</span>
         </li>
       ))}
     </ul>

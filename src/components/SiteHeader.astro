@@ -4,7 +4,8 @@ import Wordmark from "./Wordmark.astro";
 import { app, paths } from "@/config/urls";
 
 const current = Astro.url.pathname;
-const link = "inline-flex min-h-target items-center";
+const link =
+  "inline-flex min-h-target min-w-target items-center justify-center";
 ---
 
 <header class="border-b border-hairline">

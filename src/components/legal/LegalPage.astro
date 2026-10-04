@@ -6,15 +6,16 @@ import type { LegalDoc } from "@/lib/legal/markdown";
 interface Props {
   doc: LegalDoc;
   label: string;
+  description: string;
 }
 
-const { doc, label } = Astro.props;
+const { doc, label, description } = Astro.props;
 ---
 
 <ReadingLayout
   title={`${label} · dialed.run`}
   heading={doc.title}
-  description={`The dialed.run ${label.toLowerCase()}.`}
+  description={description}
   contents={doc.contents}
 >
   <Blocks blocks={doc.blocks} />

@@ -13,6 +13,9 @@ export default defineConfig(
       "node_modules/",
       "design-reference/",
       "test/__snapshots__/",
+      ".wrangler/",
+      "test-results/",
+      "playwright-report/",
     ],
   },
   js.configs.recommended,
@@ -44,6 +47,39 @@ export default defineConfig(
       "@typescript-eslint/no-unsafe-call": "off",
       "@typescript-eslint/no-unsafe-member-access": "off",
       "@typescript-eslint/no-unsafe-argument": "off",
+    },
+  },
+  {
+    // Specs take `test` from the shared fixture, which answers every
+    // off-site request, so no spec can depend on a third party.
+    files: ["tests/e2e/**/*.ts"],
+    ignores: ["tests/e2e/fixtures.ts"],
+    rules: {
+      "no-restricted-imports": [
+        "error",
+        {
+          paths: [
+            {
+              name: "@playwright/test",
+              importNames: ["test"],
+              message: "Import test from ./fixtures.",
+            },
+          ],
+        },
+      ],
+    },
+  },
+  {
+    files: ["tests/e2e/**/*.ts"],
+    rules: {
+      "no-restricted-syntax": [
+        "error",
+        {
+          selector: "Literal[value='networkidle']",
+          message:
+            "networkidle waits for nothing in particular; wait for the thing you need.",
+        },
+      ],
     },
   },
   {

@@ -7,3 +7,6 @@ src/styles/theme.generated.css
 test/__snapshots__/
 docs/HANDOFF.md
 src/styles/fonts.generated.css
+.wrangler/
+test-results/
+playwright-report/

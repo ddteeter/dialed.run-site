@@ -18,14 +18,14 @@ export const getStaticPaths = (async () => {
   const docs = await getLegalDocs();
   const entries = await getChangelogEntries();
   return [
-    ...LEGAL_PAGES.flatMap(({ slug, label }) => {
+    ...LEGAL_PAGES.flatMap(({ slug, label, description }) => {
       const doc = docs.get(slug);
       return doc === undefined
         ? []
         : [
             {
               params: { page: slug },
-              props: { kind: "legal" as const, doc, label },
+              props: { kind: "legal" as const, doc, label, description },
             },
           ];
     }),
@@ -41,14 +41,18 @@ export const getStaticPaths = (async () => {
 }) satisfies GetStaticPaths;
 
 type Props =
-  | { kind: "legal"; doc: LegalDoc; label: string }
+  | { kind: "legal"; doc: LegalDoc; label: string; description: string }
   | { kind: "changelog"; entries: ChangelogEntry[] };
 
 const props = Astro.props;
 ---
 
 {props.kind === "legal" ? (
-  <LegalPage doc={props.doc} label={props.label} />
+  <LegalPage
+    doc={props.doc}
+    label={props.label}
+    description={props.description}
+  />
 ) : (
   <ChangelogPage entries={props.entries} />
 )}

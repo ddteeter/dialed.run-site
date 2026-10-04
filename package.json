@@ -22,7 +22,9 @@
     "theme": "node scripts/generate-theme.ts",
     "test:dist": "vitest run --project dist",
     "og": "node scripts/generate-og.ts",
-    "changelog:since": "node scripts/changelog-since.ts"
+    "changelog:since": "node scripts/changelog-since.ts",
+    "test:e2e": "playwright test",
+    "verify:all": "npm run verify && npm run test:e2e"
   },
   "simple-git-hooks": {
     "pre-commit": "npx lint-staged"
@@ -62,7 +64,8 @@
     "simple-git-hooks": "^2.14.0",
     "typescript": "~6.0",
     "typescript-eslint": "^8.71.0",
-    "vitest": "^5.0.3"
+    "vitest": "^5.0.3",
+    "wrangler": "^4.147.0"
   },
   "volta": {
     "node": "24.21.0"
@@ -70,6 +73,8 @@
   "allowScripts": {
     "esbuild@0.28.2": true,
     "simple-git-hooks@2.14.0": true,
-    "fsevents@2.3.3": true
+    "fsevents@2.3.3": true,
+    "workerd@1.20261001.1": true,
+    "esbuild@0.28.1": true
   }
 }
