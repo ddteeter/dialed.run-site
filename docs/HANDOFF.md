@@ -97,11 +97,12 @@ Build these from the board. The rules below are the ones that are easy to miss.
 - **"Have a code?"** has a code field and Join, which goes to `https://app.dialed.run/join?code=<code>`. The app validates it, so code errors live in one place.
 - **Under the form:** links to the privacy policy and a "16 and over" line.
 - **The sent page** links to the published band nearest today's feels-like temperature. Leave that link out if no band has been published.
-- **OPEN: where the request goes.** The app already has request-access (Au5), but it's an in-app server function. M5 on this host needs one of:
-  - (a) a small public, Turnstile-guarded endpoint on the app, that this page's form POSTs to before redirecting back to `/invite/sent`;
-  - (b) "Request an invite" linking to the app's own request page.
-  
-  **Default:** build the page so the form POSTs to a configurable `INVITE_ENDPOINT`, and make the page work as plain HTML with no JavaScript. Until the app endpoint exists, show (b)'s link instead. List this as an app-side dependency.
+- **Where the request goes (decided with the app, 2026-10-03): the app owns the flow, and this site owns only the page.**
+  - **The app** owns everything behind the form: the `access_requests` data, server-side Turnstile verification, rate limits, the same-answer rule, the Desk review (D7) and the invite email. **This site builds no backend for it:** no Worker or API route that stores requests, no Turnstile secret, and no email sending.
+  - **This site** owns the M5 markup: a no-JS link to the app's request page until `INVITE_ENDPOINT` is set, then a plain HTML POST form.
+  - **The endpoint contract** (an app-side task, not built yet): `POST https://app.dialed.run/api/access-requests`, `application/x-www-form-urlencoded`, with the fields `email`, `note` (optional) and `cf-turnstile-response`, and no CORS (it's a top-level form navigation). On success, or any address-related outcome, the app answers **303 to `https://dialed.run/invite/sent`**, identically for every address. On a Turnstile or validation failure it answers **303 to `https://dialed.run/invite?error=<code>`**, with the codes `turnstile`, `invalid_email` and `rate_limited`. The page renders the matching §4a failure band from the code, in the Auth board's copy (rate limits: "Too many tries. Wait a minute, then try again."). `INVITE_ENDPOINT` will be that URL.
+  - **Turnstile:** the site uses the app's site key, and the app adds `dialed.run` to the key's allowed hostnames. The secret never comes here.
+  - **The app's own request page (Au5)** stays the live UI until this site launches publicly. After that, the app redirects Au5 to `https://dialed.run/invite`, so there's one request UI.
 
 **M6 Gear.** **Not in v1. Don't build it.**
 
@@ -126,10 +127,12 @@ Build these from the board. The rules below are the ones that are easy to miss.
 
 ## 6. Data: the nightly guide artifact
 
-**This is an app-side dependency that isn't built yet.** A nightly cron in the app repo will compute guide data from **shared runs only**, enforce the privacy rule there, and write one JSON file to R2. This site's build reads it. Until it exists, build against a **fixture** in `src/data/fixtures/guide-artifact.json` that matches the contract below, and drive local builds and tests from it.
+**This is an app-side dependency that isn't built yet.** A nightly cron in the app repo will compute anonymous totals from **shared and private runs** (D-108, design round 32), enforce the privacy rule there, and write one JSON file to R2. This site's build reads it. Until it exists, build against a **fixture** in `src/data/fixtures/guide-artifact.json` that matches the contract below, and drive local builds and tests from it.
 
-**The privacy rule** is enforced in the app; this site trusts it but still never renders a missing band:
-- a band (or a sky section within one) must have **at least 5 distinct runners**, or it doesn't exist in the artifact at all;
+**The privacy rule (D-108)** is enforced in the app; this site trusts it but still never renders a missing band:
+- the totals read only the counted fields: feels-like band, sky, month, garment type and model, verdict, and region where a runner set one; never notes, photos, times, places or handles;
+- only confirmed accounts count, and runners who opted out are excluded;
+- **every figure** (a band, a sky section, a row, a split sentence) has **at least 5 distinct runners** behind it, or 20 for a brand, or it doesn't exist in the artifact at all;
 - nothing in the artifact identifies a runner;
 - the only identifying exception is the owner's own published Call card.
 
@@ -273,8 +276,8 @@ There's no mutation ratchet.
 
 ## 15. Open questions for the owner
 
-1. M5: a public endpoint on the app (a), or a link to the app's request page (b)? The default is to build for (a), with (b) as the fallback.
+1. ~~M5: a public endpoint on the app (a), or a link to the app's request page (b)?~~ **Decided:** (a), with the contract in §4 M5. (b)'s link stays until the endpoint ships.
 2. Artifact access: a public aggregates URL, or a CI secret? The default is a public URL.
 3. Analytics on this site: yes or no, and which provider?
 4. The "Why invite-only?" FAQ answer and any pricing copy: the owner confirms these.
-5. The logo, from `Logo Directions.dc.html`: which direction?
+5. ~~The logo, from `Logo Directions.dc.html`: which direction?~~ **Decided:** direction 08, the brackets (design round 31 #6): the `[dialed.run]` wordmark, the "[d]" icon on an ink tile, and one static OG card.

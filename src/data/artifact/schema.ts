@@ -1,8 +1,8 @@
 /**
  * The nightly guide artifact, contract v1 (HANDOFF §6).
  *
- * The app computes it from shared runs only and enforces the privacy rule
- * before writing it. This site still checks: a band or sky section with
+ * The app computes it as anonymous totals over shared and private runs
+ * (D-108, design round 32) and enforces the privacy rule before writing it. This site still checks: a band or sky section with
  * fewer than 5 runners, or any key the contract doesn't name, fails the
  * build. Either one means the app's side of the contract broke, and the
  * safe response is to publish nothing new rather than to guess.
