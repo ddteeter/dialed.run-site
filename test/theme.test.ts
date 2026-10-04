@@ -103,6 +103,11 @@ describe("theme.generated.css", () => {
     );
   });
 
+  it("keeps the teal surface T1's dark teal in both themes", () => {
+    const teal = pairs.find((pair) => pair.token === "--dialed-text");
+    expect(css).toContain(`--dialed-surface: ${String(teal?.dark)};`);
+  });
+
   it("drifts loudly when a token changes", () => {
     const changed = {
       ...tokens,

@@ -1,0 +1,43 @@
+---
+/**
+ * The app's A3 verdict row, static, in its Dialed-selected state (design
+ * round 31 #4): the teal slot with ink text, and four hairline slots with
+ * MONO.xs ink words. The hues mean the same thing everywhere (T2 01), so
+ * the page shows the one state with no cold hue; the only pink stays the
+ * call to action. Mirrored from the app's component, with its two-line
+ * words, since this site can't import it.
+ */
+const slots = [
+  ["Way", "cold"],
+  ["A bit", "cold"],
+  ["Dialed"],
+  ["A bit", "warm"],
+  ["Way", "warm"],
+] as const;
+---
+
+<div
+  role="img"
+  aria-label="Verdict scale: way cold to way warm, Dialed selected"
+  class="flex items-stretch gap-2"
+>
+  {slots.map((words) =>
+    words.length === 1 ? (
+      <span
+        aria-hidden="true"
+        class="flex grow-5 basis-0 items-center justify-center rounded-card bg-dialed-surface px-1 py-4 mono-md text-on-accent uppercase"
+      >
+        {words[0]}
+      </span>
+    ) : (
+      <span
+        aria-hidden="true"
+        class="grow-4 basis-0 rounded-card border border-hairline px-1 py-4 text-center mono-xs"
+      >
+        {words[0]}
+        <br />
+        {words[1]}
+      </span>
+    ),
+  )}
+</div>

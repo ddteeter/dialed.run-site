@@ -15,6 +15,8 @@
  *  - `--on-accent`, T1's light ink: text on a pink, teal or hi-viz surface
  *    is that ink in both themes (Theme board T2 rule 02), while `--ink`
  *    itself flips to paper on dark;
+ *  - `--dialed-surface`, T1's dark teal: "Teal as a surface is #00E0C6 on
+ *    both" (T1's --dialed-text note), for the verdict row's Dialed slot;
  *  - one utility per type step carrying family, size, line-height, tracking
  *    and case together, because tracking is a function of size (tokens.js
  *    law 1).
@@ -88,6 +90,12 @@ export function onAccent(pairs: T1Pair[]): string {
   return ink.light;
 }
 
+export function dialedSurface(pairs: T1Pair[]): string {
+  const teal = pairs.find((pair) => pair.token === "--dialed-text");
+  if (teal === undefined) throw new Error("T1 has no --dialed-text row");
+  return teal.dark;
+}
+
 export function deriveThemeCss(tokens: Tokens, pairs: T1Pair[]): string {
   const px = (value: number) => `${String(value)}px`;
   // Literal values, not var() references: Tailwind's --font-* and --radius-*
@@ -104,6 +112,7 @@ export function deriveThemeCss(tokens: Tokens, pairs: T1Pair[]): string {
       .map(([key, value]) => `--font-weight-${key}: ${String(value)};`),
     ...pairs.map((pair) => `--color-${name(pair.token)}: var(${pair.token});`),
     "--color-on-accent: var(--on-accent);",
+    "--color-dialed-surface: var(--dialed-surface);",
     ...Object.entries(tokens.SPACE).map(
       ([key, value]) => `--spacing-${key}: ${px(value)};`,
     ),
@@ -129,6 +138,7 @@ export function deriveThemeCss(tokens: Tokens, pairs: T1Pair[]): string {
         "color-scheme: light dark;",
         ...colourVars(pairs, "light"),
         `--on-accent: ${onAccent(pairs)};`,
+        `--dialed-surface: ${dialedSurface(pairs)};`,
       ]),
       `@media (prefers-color-scheme: dark) {\n${block(
         ":root",

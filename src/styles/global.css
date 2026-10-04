@@ -24,6 +24,12 @@
     outline-offset: 2px;
   }
 
+  /* The current page in the nav, as the boards draw it (M4). */
+  nav [aria-current="page"] {
+    font-weight: bold;
+    text-decoration: underline;
+  }
+
   @media (prefers-reduced-motion: reduce) {
     *,
     *::before,
