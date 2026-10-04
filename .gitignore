@@ -4,8 +4,10 @@
 .DS_Store
 .env
 .env.*
+.lighthouseci/
 .wrangler/
 dist/
+lighthouse-report/
 node_modules/
 playwright-report/
 test-results/

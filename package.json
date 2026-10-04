@@ -25,7 +25,8 @@
     "changelog:since": "node scripts/changelog-since.ts",
     "test:e2e": "playwright test",
     "verify:all": "npm run verify && npm run linkcheck && npm run test:e2e",
-    "linkcheck": "lychee --config lychee.toml --root-dir \"$PWD/dist\" \"dist/**/*.html\""
+    "linkcheck": "lychee --config lychee.toml --root-dir \"$PWD/dist\" \"dist/**/*.html\"",
+    "lighthouse": "npx --yes @lhci/cli@0.15.1 autorun"
   },
   "simple-git-hooks": {
     "pre-commit": "npx lint-staged"
