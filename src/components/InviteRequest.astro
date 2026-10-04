@@ -2,7 +2,8 @@
 /**
  * M5a: request an invite, in one of two modes (HANDOFF §4 M5, OPEN).
  *
- * - `endpoint` set (option a): one email field that POSTs to the app's
+ * - `endpoint` set (option a): the email and an optional note (the app's
+ *   contract; Au5's label, hint and 140-character limit), POSTed to the app's
  *   public, Turnstile-guarded endpoint, which redirects back to
  *   /invite/sent with the same answer for every address. Plain HTML; the
  *   only script is Turnstile's, managed, above the primary button.
@@ -11,7 +12,7 @@
  */
 import InviteFormErrors from "./InviteFormErrors.astro";
 import PillLink from "./PillLink.astro";
-import { INVITE_ERRORS } from "@/lib/inviteErrors";
+import { INVITE_ERRORS, NOTE_MAX } from "@/lib/inviteErrors";
 import { paths } from "@/config/urls";
 
 interface Props {
@@ -50,6 +51,33 @@ const field =
         class="m-0 bg-failure px-3 py-2 type-small text-on-accent"
       >
         {INVITE_ERRORS.invalid_email.text}
+      </p>
+    </div>
+    <div class="flex flex-col gap-2">
+      <label for="invite-note" class="mono-sm text-label">
+        Note · optional
+      </label>
+      <input
+        id="invite-note"
+        name="note"
+        type="text"
+        maxlength={NOTE_MAX}
+        autocomplete="off"
+        aria-describedby="invite-note-hint invite-note-count"
+        class={field}
+      />
+      <div class="flex items-baseline justify-between gap-3">
+        <p id="invite-note-hint" class="m-0 type-small text-quiet">
+          Where you run, or who sent you. One line.
+        </p>
+        <span id="invite-note-count" hidden class="mono-xs text-muted"></span>
+      </div>
+      <p
+        id="invite-note-error"
+        hidden
+        class="m-0 bg-failure px-3 py-2 type-small text-on-accent"
+      >
+        {INVITE_ERRORS.invalid_note.text}
       </p>
     </div>
     <div

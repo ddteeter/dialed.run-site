@@ -3,7 +3,7 @@ import HaveACode from "@/components/HaveACode.astro";
 import InviteRequest from "@/components/InviteRequest.astro";
 import InvitePage from "@/pages/invite/index.astro";
 import SentPage from "@/pages/invite/sent.astro";
-import { INVITE_ERRORS, inviteErrorCode } from "@/lib/inviteErrors";
+import { INVITE_ERRORS, inviteErrorCode, noteCount } from "@/lib/inviteErrors";
 import { parse, render } from "./render";
 
 const linkMode = {
@@ -44,7 +44,7 @@ describe("InviteRequest, once INVITE_ENDPOINT is set (option a)", async () => {
   const doc = parse(await render(InviteRequest, formMode));
   const form = doc.querySelector("form");
 
-  it("POSTs one email field to the endpoint", () => {
+  it("POSTs the email and the optional note to the endpoint", () => {
     expect(form?.getAttribute("method")).toBe("post");
     expect(form?.getAttribute("action")).toBe(formMode.endpoint);
     const inputs = [...(form?.querySelectorAll("input") ?? [])];
@@ -53,7 +53,28 @@ describe("InviteRequest, once INVITE_ENDPOINT is set (option a)", async () => {
         input.getAttribute("name"),
         input.getAttribute("type"),
       ]),
-    ).toEqual([["email", "email"]]);
+    ).toEqual([
+      ["email", "email"],
+      ["note", "text"],
+    ]);
+  });
+
+  it("keeps the note optional, one line, and within the app's 140 characters", () => {
+    const note = doc.getElementById("invite-note");
+    expect(note?.hasAttribute("required")).toBe(false);
+    expect(note?.getAttribute("maxlength")).toBe("140");
+    expect(
+      doc.querySelector('label[for="invite-note"]')?.textContent.trim(),
+    ).toBe("Note · optional");
+    expect(doc.getElementById("invite-note-hint")?.textContent.trim()).toBe(
+      "Where you run, or who sent you. One line.",
+    );
+    expect(note?.getAttribute("aria-describedby")).toBe(
+      "invite-note-hint invite-note-count",
+    );
+    expect(
+      doc.getElementById("invite-note-count")?.hasAttribute("hidden"),
+    ).toBe(true);
   });
 
   it("gives the field a visible label", () => {
@@ -126,11 +147,19 @@ describe("failures the app redirects back with", () => {
     ["?error=turnstile", "turnstile"],
     ["?error=rate_limited", "rate_limited"],
     ["?error=invalid_email", "invalid_email"],
+    ["?error=invalid_note", "invalid_note"],
     ["?error=nope", undefined],
     ["?error=toString", undefined],
     ["", undefined],
   ])("reads %j as %j", (search, code) => {
     expect(inviteErrorCode(search)).toBe(code);
+  });
+
+  it("counts the note as the app does", () => {
+    expect(noteCount(120)).toBe("120 / 140");
+    expect(INVITE_ERRORS.invalid_note.text).toBe(
+      "Keep the note under 140 characters.",
+    );
   });
 
   it("uses the boards' copy", () => {
