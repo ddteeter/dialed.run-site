@@ -1,0 +1,32 @@
+---
+import { env } from "@/config/env";
+import { buildHead } from "@/lib/head";
+
+interface Props {
+  title: string;
+  description: string;
+  noindex?: boolean;
+}
+
+const { title, description, noindex = false } = Astro.props;
+const head = buildHead({
+  title,
+  description,
+  path: Astro.url.pathname,
+  indexable: env.SITE_INDEXABLE,
+  noindex,
+});
+---
+
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>{head.title}</title>
+<meta name="description" content={head.description} />
+{head.robots && <meta name="robots" content={head.robots} />}
+{head.canonical && <link rel="canonical" href={head.canonical} />}
+<meta property="og:type" content={head.og.type} />
+<meta property="og:title" content={head.og.title} />
+<meta property="og:description" content={head.og.description} />
+<meta property="og:url" content={head.og.url} />
+<meta property="og:site_name" content="dialed.run" />
+<slot />

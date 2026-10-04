@@ -31,7 +31,8 @@
     "*.{json,jsonc,md,css,yml,yaml}": "prettier --write"
   },
   "dependencies": {
-    "astro": "^7.3.5"
+    "astro": "^7.3.5",
+    "zod": "^4.6.5"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.10",
@@ -44,6 +45,7 @@
     "lint-staged": "^17.6.0",
     "prettier": "^3.9.9",
     "prettier-plugin-astro": "^1.1.0",
+    "schema-dts": "^2.1.0",
     "simple-git-hooks": "^2.14.0",
     "typescript": "~6.0",
     "typescript-eslint": "^8.71.0",
