@@ -36,6 +36,13 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ github.token }}
 
+      # A workflow file GitHub can't parse fails without ever running a job,
+      # and nothing on the PR would say so. actionlint, pinned to a release.
+      - name: Lint the workflows
+        run: |
+          bash <(curl -fsSL https://raw.githubusercontent.com/rhysd/actionlint/v1.7.12/scripts/download-actionlint.bash) 1.7.12
+          ./actionlint -color
+
       - run: npm run format:check
       - run: npm run lint
       - run: npm run check

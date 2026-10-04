@@ -33,7 +33,6 @@ jobs:
       issues: write
     env:
       SITE_INDEXABLE: ${{ vars.SITE_INDEXABLE || 'false' }}
-      GUIDE_ARTIFACT_FILE: ${{ runner.temp }}/guide-artifact.json
       LEGAL_SOURCE_REF: ${{ vars.LEGAL_SOURCE_REF }}
       INVITE_ENDPOINT: ${{ vars.INVITE_ENDPOINT }}
       TURNSTILE_SITE_KEY: ${{ vars.TURNSTILE_SITE_KEY }}
@@ -57,6 +56,8 @@ jobs:
           aws s3 cp "s3://$BUCKET/$KEY" "$GUIDE_ARTIFACT_FILE" \
             --endpoint-url "https://$ACCOUNT.r2.cloudflarestorage.com" --no-progress
         env:
+          # The runner context exists only at step level, not in job env.
+          GUIDE_ARTIFACT_FILE: ${{ runner.temp }}/guide-artifact.json
           AWS_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
           AWS_DEFAULT_REGION: auto
@@ -67,6 +68,8 @@ jobs:
       # Fails on a missing or invalid artifact, an unknown artifact version,
       # a band under 5 runners, or a published legal text it can't draw.
       - run: npm run build
+        env:
+          GUIDE_ARTIFACT_FILE: ${{ runner.temp }}/guide-artifact.json
 
       - name: Deploy to Cloudflare
         run: npx wrangler deploy
