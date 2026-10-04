@@ -6,7 +6,7 @@
 .env.*
 .lighthouseci/
 .wrangler/
-dist/
+/dist/
 lighthouse-report/
 node_modules/
 playwright-report/

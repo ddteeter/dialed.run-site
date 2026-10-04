@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preload" href="/_astro/archivo-black-latin.[hash].woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/_astro/archivo-variable-latin.[hash].woff2" as="font" type="font/woff2" crossorigin>
+<title>Request an invite · dialed.run</title>
+<meta name="description" content="Request an invite to dialed.run, or join with the code you were sent.">
+<meta name="robots" content="noindex">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Request an invite · dialed.run">
+<meta property="og:description" content="Request an invite to dialed.run, or join with the code you were sent.">
+<meta property="og:url" content="https://dialed.run/invite">
+<meta property="og:site_name" content="dialed.run">
+<meta property="og:image" content="https://dialed.run/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="dialed.run: Wear what worked.">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="/favicon.ico" sizes="32x32">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="stylesheet" href="/_astro/BaseLayout.[hash].css">
+</head>
+<body class="flex min-h-screen flex-col">
+<a href="#main" class="sr-only focus:not-sr-only focus:absolute focus:m-2 focus:inline-flex focus:min-h-target focus:items-center focus:bg-ground focus:px-4">Skip to content</a>
+<header class="border-b border-hairline">
+<div class="mx-auto flex max-w-page items-center justify-between gap-4 px-5 py-3 wide:px-6 wide:py-4">
+<a href="/" class="inline-flex min-h-target min-w-target items-center justify-center" aria-label="dialed.run home">
+<span class="type-title whitespace-nowrap">
+<span class="text-action">[</span>dialed<span class="text-muted">.run</span>
+<span class="text-action">]</span>
+</span>
+</a>
+<nav aria-label="Main">
+<ul class="m-0 flex list-none items-center gap-8 p-0">
+<li>
+<a href="https://app.dialed.run/login" class="inline-flex min-h-target min-w-target items-center justify-center font-semibold wide:font-regular">Log in</a>
+</li>
+<li class="hidden wide:block">
+<a class="inline-flex min-h-control items-center justify-center rounded-pill bg-action px-6 font-bold whitespace-nowrap text-on-accent hover:bg-action-hover" href="/invite">Request an invite</a>
+</li>
+</ul>
+</nav>
+</div>
+</header>
+<main id="main" class="flex-1">
+<div class="mx-auto flex max-w-panel flex-col gap-4 px-5 py-8 wide:mt-12">
+<h1 class="m-0 type-title">Request an invite</h1>
+<p class="m-0">We send codes in small batches. One email when yours is ready, and nothing else.</p>
+<a class="inline-flex min-h-control items-center justify-center rounded-pill bg-action px-6 font-bold whitespace-nowrap text-on-accent hover:bg-action-hover" href="https://app.dialed.run/account/request-access">Request an invite</a>
+<p class="m-0 type-micro text-quiet">dialed.run is for runners 16 and over.</p>
+<form method="get" action="https://app.dialed.run/join" class="flex flex-col gap-2 border-t border-hairline pt-4">
+<label for="invite-code" class="font-semibold">Have a code?</label>
+<div class="flex gap-2">
+<input id="invite-code" name="code" type="text" required autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="DIAL-XXXX" class="min-h-field min-w-0 flex-1 rounded-field border border-hairline-2 bg-panel px-4 py-3 type-field text-ink placeholder:text-placeholder">
+<button type="submit" class="inline-flex min-h-control cursor-pointer items-center rounded-pill border border-ink bg-transparent px-5 type-body font-bold text-ink hover:bg-tint">Join</button>
+</div>
+</form>
+</div>
+</main>
+<footer class="type-small text-quiet">
+<div class="mx-auto flex max-w-page flex-wrap items-center justify-between gap-x-5 gap-y-2 px-5 py-6 wide:px-6">
+<ul class="m-0 flex list-none flex-wrap gap-x-5 p-0">
+<li>
+<a href="/privacy" class="inline-flex min-h-target min-w-target items-center">Privacy policy</a>
+</li>
+<li>
+<a href="/open-source" class="inline-flex min-h-target min-w-target items-center">Open source</a>
+</li>
+</ul>
+<p class="m-0 type-micro">Weather by Visual Crossing</p>
+</div>
+</footer>
+</body>
+</html>
