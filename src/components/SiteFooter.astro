@@ -1,0 +1,35 @@
+---
+import { LEGAL_PAGES, type LegalSlug } from "@/data/legal";
+import { paths } from "@/config/urls";
+
+interface Props {
+  published: ReadonlySet<LegalSlug>;
+}
+
+const { published } = Astro.props;
+const links = [
+  { href: paths.changelog, label: "Changelog" },
+  ...LEGAL_PAGES.filter(({ slug }) => published.has(slug))
+    .filter(({ slug }) => slug !== "copyright")
+    .map(({ slug, label }) => ({ href: paths[slug], label })),
+  { href: paths.openSource, label: "Open source" },
+  ...(published.has("copyright")
+    ? [{ href: paths.copyright, label: "Copyright" }]
+    : []),
+];
+---
+
+<footer class="type-small text-quiet">
+  <div class="mx-auto flex max-w-page flex-wrap items-center justify-between gap-x-5 gap-y-2 px-5 py-6 wide:px-6">
+    <ul class="m-0 flex list-none flex-wrap gap-x-5 p-0">
+      {links.map(({ href, label }) => (
+        <li>
+          <a href={href} class="inline-flex min-h-target items-center">
+            {label}
+          </a>
+        </li>
+      ))}
+    </ul>
+    <p class="m-0 type-micro">Weather by Visual Crossing</p>
+  </div>
+</footer>

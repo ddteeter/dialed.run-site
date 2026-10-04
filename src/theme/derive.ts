@@ -12,6 +12,9 @@
  *  - a Tailwind v4 theme that resets every default (`--*: initial`) and
  *    re-adds only the tokens, so a stray `text-sm` or `bg-red-500` doesn't
  *    exist;
+ *  - `--on-accent`, T1's light ink: text on a pink, teal or hi-viz surface
+ *    is that ink in both themes (Theme board T2 rule 02), while `--ink`
+ *    itself flips to paper on dark;
  *  - one utility per type step carrying family, size, line-height, tracking
  *    and case together, because tracking is a function of size (tokens.js
  *    law 1).
@@ -76,6 +79,12 @@ function typeUtility(
   return block(`@utility ${prefix}-${key}`, lines);
 }
 
+export function onAccent(pairs: T1Pair[]): string {
+  const ink = pairs.find((pair) => pair.token === "--ink");
+  if (ink === undefined) throw new Error("T1 has no --ink row");
+  return ink.light;
+}
+
 export function deriveThemeCss(tokens: Tokens, pairs: T1Pair[]): string {
   const px = (value: number) => `${String(value)}px`;
   // Literal values, not var() references: Tailwind's --font-* and --radius-*
@@ -91,6 +100,7 @@ export function deriveThemeCss(tokens: Tokens, pairs: T1Pair[]): string {
       .filter(([key]) => key !== "black")
       .map(([key, value]) => `--font-weight-${key}: ${String(value)};`),
     ...pairs.map((pair) => `--color-${name(pair.token)}: var(${pair.token});`),
+    "--color-on-accent: var(--on-accent);",
     ...Object.entries(tokens.SPACE).map(
       ([key, value]) => `--spacing-${key}: ${px(value)};`,
     ),
@@ -115,6 +125,7 @@ export function deriveThemeCss(tokens: Tokens, pairs: T1Pair[]): string {
       block(":root", [
         "color-scheme: light dark;",
         ...colourVars(pairs, "light"),
+        `--on-accent: ${onAccent(pairs)};`,
       ]),
       `@media (prefers-color-scheme: dark) {\n${block(
         ":root",

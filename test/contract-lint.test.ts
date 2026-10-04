@@ -28,6 +28,7 @@ describe("contract rules", () => {
     ["color: #2A2A26;", "no-raw-hex"],
     ['<div class="max-w-[620px]">', "no-tailwind-arbitrary-value"],
     ['<div class="bg-[#fff] p-4">', "no-tailwind-arbitrary-value"],
+    ['<div class="[color:red]">', "no-tailwind-arbitrary-value"],
     ["<button disabled>", "no-disabled-attribute"],
   ])("rejects %j", (text, rule) => {
     expect(ids(text)).toContain(rule);
@@ -43,6 +44,8 @@ describe("contract rules", () => {
     '<a href="#fed">',
     '<button aria-disabled="true">',
     '<div class="p-4 wide:p-6 max-w-column">',
+    '<a href="/">[dialed]</a>',
+    "<span>[38–52°]</span>",
     "const first = rows[0];",
   ])("allows %j", (text) => {
     expect(ids(text)).toEqual([]);

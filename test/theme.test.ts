@@ -88,6 +88,12 @@ describe("theme.generated.css", () => {
     }
   });
 
+  it("keeps text on an accent T1's light ink in both themes", () => {
+    const ink = pairs.find((pair) => pair.token === "--ink");
+    expect(css).toContain(`--on-accent: ${String(ink?.light)};`);
+    expect(css.match(/--on-accent:/g)?.length).toBe(1);
+  });
+
   it("drifts loudly when a token changes", () => {
     const changed = {
       ...tokens,

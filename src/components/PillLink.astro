@@ -1,0 +1,22 @@
+---
+/**
+ * The filled action: a pink pill with ink text in both themes (T2 rule 02).
+ * Pink is action, never failure. Filled action buttons are always pill,
+ * HEIGHT.control tall, and their text never wraps (RADIUS_RULES).
+ */
+import type { HTMLAttributes } from "astro/types";
+
+type Props = HTMLAttributes<"a"> & { href: string };
+
+const { class: className, ...attrs } = Astro.props;
+---
+
+<a
+  class:list={[
+    "inline-flex min-h-control items-center justify-center rounded-pill bg-action px-6 font-bold whitespace-nowrap text-on-accent hover:bg-action-hover",
+    className,
+  ]}
+  {...attrs}
+>
+  <slot />
+</a>

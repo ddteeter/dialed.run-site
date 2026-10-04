@@ -82,6 +82,7 @@
   --failure: #F5FF3D;
   --hiviz-text: #F5FF3D;
   --dialed-tint: #D2F0E9;
+  --on-accent: #0B0B0E;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -161,6 +162,7 @@
   --color-failure: var(--failure);
   --color-hiviz-text: var(--hiviz-text);
   --color-dialed-tint: var(--dialed-tint);
+  --color-on-accent: var(--on-accent);
   --spacing-1: 4px;
   --spacing-2: 8px;
   --spacing-3: 12px;

@@ -58,7 +58,10 @@ export function contractRules(
     },
     {
       id: "no-tailwind-arbitrary-value",
-      reject: /(?<=^|[\s"'`{])[\w:-]*\[[^\]\s]+\](?=[\s"'`}]|$)/,
+      // `utility-[value]` or `[property:value]`. Brand bracket notation
+      // in text ("[dialed]", "[38–52°]") is neither.
+      reject:
+        /(?<=^|[\s"'`{])(?:[\w:-]*-\[[^\]\s]+\]|\[[\w-]+:[^\]\s]+\])(?=[\s"'`}]|$)/,
       allow: "a theme utility (p-4, max-w-column, rounded-card)",
     },
     {

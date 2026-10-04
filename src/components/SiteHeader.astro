@@ -1,0 +1,43 @@
+---
+import PillLink from "./PillLink.astro";
+import { app, paths } from "@/config/urls";
+
+const current = Astro.url.pathname;
+const link = "inline-flex min-h-target items-center";
+---
+
+<header class="border-b border-hairline">
+  <div class="mx-auto flex max-w-page items-center justify-between gap-4 px-5 py-3 wide:px-6 wide:py-4">
+    <a
+      href={paths.home}
+      class:list={[link, "type-title"]}
+      aria-label="dialed.run home"
+    >
+      [dialed]
+    </a>
+    <nav aria-label="Main">
+      <ul class="m-0 flex list-none items-center gap-8 p-0">
+        <li class="hidden wide:block">
+          <a
+            href={paths.howItWorks}
+            class={link}
+            aria-current={current === paths.howItWorks ? "page" : undefined}
+          >
+            How it works
+          </a>
+        </li>
+        <li>
+          <a
+            href={app.login}
+            class:list={[link, "font-semibold wide:font-regular"]}
+          >
+            Log in
+          </a>
+        </li>
+        <li class="hidden wide:block">
+          <PillLink href={paths.invite}>Request an invite</PillLink>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</header>
