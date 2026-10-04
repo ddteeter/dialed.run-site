@@ -171,11 +171,7 @@ Build these from the board. The rules below are the ones that are easy to miss.
 }
 ```
 
-**OPEN: how the build reads the artifact.**
-- **Default:** a public, read-only R2 URL, or a custom domain such as `data.dialed.run/guide-artifact.json`, fetched at build time. It carries only aggregates and is safe to make public.
-- **Alternative:** read it with a CI secret.
-
-Make the source configurable (`GUIDE_ARTIFACT_URL`), with the fixture as the fallback in local dev.
+**How the build reads the artifact (decided, owner, 2026-10-04): with a CI secret.** The deploy job downloads it from R2 with a read-only R2 API token scoped to the artifact's bucket alone (secrets `R2_ACCESS_KEY_ID` and `R2_SECRET_ACCESS_KEY`). The build then reads the local copy (`GUIDE_ARTIFACT_FILE`). The deploy token has no R2 access. The bucket and key are proposed by the app (`dialed-guides`, `guide-artifact/v1.json`) and await the owner. The owner creates the bucket and the token. `GUIDE_ARTIFACT_URL` remains as an option if the artifact is ever made public. Local dev and PR builds use the fixture.
 
 ## 7. Legal pages and `/open-source`
 
@@ -242,7 +238,7 @@ There's no mutation ratchet.
 - **Hosting:** Cloudflare Workers with static assets (or Pages), configured in `wrangler.jsonc`, on the apex `dialed.run`.
 - **Redirects:** `www` returns a 301 to the apex.
 - **Account:** the same Cloudflare account as the app, since the apex and `app.` live in one DNS zone.
-- **CI deploy token:** give it its own Cloudflare API token, scoped to editing this site's Worker and assets only, never account-wide. If a token leaks from this public repo's CI, it must not be able to reach the app, D1 or R2.
+- **CI deploy token:** give it its own Cloudflare API token, with no D1, R2 or KV access. Workers Scripts → Edit can't be scoped to one Worker, so a leaked token could redeploy the app's Worker. **Accepted risk (owner, 2026-10-04):** a separate account, or deploying from outside CI, isn't worth it. See `docs/deploy.md`.
 - **Secrets:** in CI only. Never write a secret, token or key into the repo.
 - **Before the public launch:** `SITE_INDEXABLE=false`.
 
@@ -277,7 +273,7 @@ There's no mutation ratchet.
 ## 15. Open questions for the owner
 
 1. ~~M5: a public endpoint on the app (a), or a link to the app's request page (b)?~~ **Decided:** (a), with the contract in §4 M5. (b)'s link stays until the endpoint ships.
-2. Artifact access: a public aggregates URL, or a CI secret? The default is a public URL.
-3. Analytics on this site: yes or no, and which provider?
+2. ~~Artifact access: a public aggregates URL, or a CI secret?~~ **Decided:** a CI secret (§6).
+3. ~~Analytics on this site: yes or no, and which provider?~~ **Decided:** GoatCounter (cookieless), as on the owner's blog.
 4. The "Why invite-only?" FAQ answer and any pricing copy: the owner confirms these.
 5. ~~The logo, from `Logo Directions.dc.html`: which direction?~~ **Decided:** direction 08, the brackets (design round 31 #6): the `[dialed.run]` wordmark, the "[d]" icon on an ink tile, and one static OG card.

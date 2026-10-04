@@ -27,14 +27,14 @@ npm run dev                       # http://localhost:4321, from the fixture data
 
 Everything is a public build-time variable (`src/config/env.ts`); there are no secrets in the build.
 
-| Variable                                | Default                  |                                                                                                               |
-| --------------------------------------- | ------------------------ | ------------------------------------------------------------------------------------------------------------- |
-| `USE_FIXTURE_DATA`                      | `false`                  | `true` reads `src/data/fixtures/` (guide artifact and legal texts). `npm run dev` and `build:fixture` set it. |
-| `GUIDE_ARTIFACT_URL`                    | unset                    | The app's nightly artifact. Required unless `USE_FIXTURE_DATA=true`.                                          |
-| `SITE_INDEXABLE`                        | `false`                  | Only `true` or `false`; anything else fails the build.                                                        |
-| `LEGAL_SOURCE_REF`                      | a pinned SHA             | The app repo ref the legal texts are read from.                                                               |
-| `INVITE_ENDPOINT`, `TURNSTILE_SITE_KEY` | unset                    | Switch Invite from a link to the app's request page to a form.                                                |
-| `APP_ORIGIN`                            | `https://app.dialed.run` |                                                                                                               |
+| Variable                                | Default                  |                                                                                                                                                            |
+| --------------------------------------- | ------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `USE_FIXTURE_DATA`                      | `false`                  | `true` reads `src/data/fixtures/` (guide artifact and legal texts). `npm run dev` and `build:fixture` set it.                                              |
+| `GUIDE_ARTIFACT_FILE`                   | unset                    | A local copy of the app's nightly artifact; the deploy job downloads it from R2. Required unless `USE_FIXTURE_DATA=true` (or `GUIDE_ARTIFACT_URL` is set). |
+| `SITE_INDEXABLE`                        | `false`                  | Only `true` or `false`; anything else fails the build.                                                                                                     |
+| `LEGAL_SOURCE_REF`                      | a pinned SHA             | The app repo ref the legal texts are read from.                                                                                                            |
+| `INVITE_ENDPOINT`, `TURNSTILE_SITE_KEY` | unset                    | Switch Invite from a link to the app's request page to a form.                                                                                             |
+| `APP_ORIGIN`                            | `https://app.dialed.run` |                                                                                                                                                            |
 
 ## Where things live
 

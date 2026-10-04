@@ -35,6 +35,8 @@ export const envSchema = z
     SITE_INDEXABLE: flag,
     USE_FIXTURE_DATA: flag,
     GUIDE_ARTIFACT_URL: optionalUrl,
+    /** A local copy, downloaded from R2 by the deploy job (docs/deploy.md). */
+    GUIDE_ARTIFACT_FILE: z.preprocess(unset, z.string().optional()),
     LEGAL_SOURCE_REF: z.preprocess(
       unset,
       z
@@ -52,6 +54,15 @@ export const envSchema = z
         .default("https://app.dialed.run"),
     ),
   })
+  .refine(
+    (env) =>
+      env.GUIDE_ARTIFACT_URL === undefined ||
+      env.GUIDE_ARTIFACT_FILE === undefined,
+    {
+      message: "set GUIDE_ARTIFACT_FILE or GUIDE_ARTIFACT_URL, not both",
+      path: ["GUIDE_ARTIFACT_FILE"],
+    },
+  )
   .refine(
     (env) =>
       env.INVITE_ENDPOINT === undefined || env.TURNSTILE_SITE_KEY !== undefined,

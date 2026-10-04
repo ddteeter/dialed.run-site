@@ -1,3 +1,6 @@
+import { mkdtemp, writeFile } from "node:fs/promises";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
 import { describe, expect, it, vi } from "vitest";
 import fixture from "@/data/fixtures/guide-artifact.json";
 import { loadGuideArtifact } from "@/data/artifact/load";
@@ -79,6 +82,30 @@ describe("parseGuideArtifact", () => {
   });
 });
 
+describe("loadGuideArtifact, from a downloaded file", () => {
+  const base = { USE_FIXTURE_DATA: false, GUIDE_ARTIFACT_URL: undefined };
+
+  it("reads and parses the local copy", async () => {
+    const dir = await mkdtemp(join(tmpdir(), "artifact-"));
+    const file = join(dir, "guide-artifact.json");
+    await writeFile(file, JSON.stringify(fixture));
+    const artifact = await loadGuideArtifact({
+      ...base,
+      GUIDE_ARTIFACT_FILE: file,
+    });
+    expect(artifact.bands).toHaveLength(3);
+  });
+
+  it("fails when the download didn't happen", async () => {
+    await expect(
+      loadGuideArtifact({
+        ...base,
+        GUIDE_ARTIFACT_FILE: "/nonexistent/guide-artifact.json",
+      }),
+    ).rejects.toThrow(/Could not read the guide artifact/);
+  });
+});
+
 describe("loadGuideArtifact", () => {
   it("reads the fixture when USE_FIXTURE_DATA is on, without fetching", async () => {
     const fetchImpl = vi.fn<typeof fetch>();
@@ -96,7 +123,7 @@ describe("loadGuideArtifact", () => {
         USE_FIXTURE_DATA: false,
         GUIDE_ARTIFACT_URL: undefined,
       }),
-    ).rejects.toThrow(/GUIDE_ARTIFACT_URL is not set/);
+    ).rejects.toThrow(/No guide artifact: set GUIDE_ARTIFACT_FILE/);
   });
 
   const source = {

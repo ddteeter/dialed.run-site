@@ -22,26 +22,29 @@ Create a Cloudflare API token from the "Edit Cloudflare Workers" template, then 
 - **Remove:** Workers KV, R2, D1, Pages, and everything else the template includes that a static-assets Worker doesn't use.
 - **Confirm the result** against Cloudflare's current token docs before saving. Then run a first deploy by hand (`workflow_dispatch`) to find any permission that's still missing.
 
-**What this can't isolate.** As far as Cloudflare's token model goes today, Workers Scripts → Edit is account-wide: it isn't scoped to one Worker. A leaked token could deploy over any Worker in the account, the app's included, though not read its D1 or R2 data once those permissions are removed. HANDOFF §12 asks for more isolation than that. The ways to get it are a separate Cloudflare account for this site, or deploying from a machine the owner controls rather than CI. That's an open decision for the owner.
+**What this can't isolate.** As far as Cloudflare's token model goes today, Workers Scripts → Edit is account-wide: it isn't scoped to one Worker. A leaked token could deploy over any Worker in the account, the app's included, though not read its D1 or R2 data once those permissions are removed. **Accepted risk (owner, 2026-10-04):** a separate Cloudflare account and deploying from outside CI were both judged not worth it. Keep this token's permissions as narrow as the model allows, and rotate it if it might have leaked.
 
 Then add these repository secrets:
 
-| Secret                  | Value                  |
-| ----------------------- | ---------------------- |
-| `CLOUDFLARE_API_TOKEN`  | the scoped token above |
-| `CLOUDFLARE_ACCOUNT_ID` | the account's ID       |
+| Secret                  | Value                                                           |
+| ----------------------- | --------------------------------------------------------------- |
+| `CLOUDFLARE_API_TOKEN`  | the scoped token above                                          |
+| `CLOUDFLARE_ACCOUNT_ID` | the account's ID                                                |
+| `R2_ACCESS_KEY_ID`      | a read-only R2 API token, scoped to the artifact's bucket alone |
+| `R2_SECRET_ACCESS_KEY`  | its secret                                                      |
 
 ### 2. Repository variables (public values, not secrets)
 
-| Variable             | Default                               | Notes                                                                                                                                                            |
-| -------------------- | ------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `DEPLOY_ENABLED`     | unset                                 | `true` turns deploys on.                                                                                                                                         |
-| `GUIDE_ARTIFACT_URL` | unset                                 | **Required to build.** The public, read-only URL of the app's nightly anonymous-totals artifact. The build fails without it and never falls back to the fixture. |
-| `SITE_INDEXABLE`     | `false`                               | `true` only at the public launch: robots.txt allows crawling, canonicals appear, and noindex goes away.                                                          |
-| `LEGAL_SOURCE_REF`   | the SHA pinned in `src/config/env.ts` | The app repo ref that the legal texts are read from.                                                                                                             |
-| `INVITE_ENDPOINT`    | unset                                 | `https://app.dialed.run/api/access-requests` once the app ships it. Until then, Request an invite links to the app's own page.                                   |
-| `TURNSTILE_SITE_KEY` | unset                                 | The app's public site key, with `dialed.run` in its allowed hostnames. Required with `INVITE_ENDPOINT`. Never put the secret here.                               |
-| `APP_ORIGIN`         | `https://app.dialed.run`              |                                                                                                                                                                  |
+| Variable                | Default                               | Notes                                                                                                                                                                                                      |
+| ----------------------- | ------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `DEPLOY_ENABLED`        | unset                                 | `true` turns deploys on.                                                                                                                                                                                   |
+| `GUIDE_ARTIFACT_BUCKET` | unset                                 | **Required to build.** The R2 bucket holding the app's nightly anonymous-totals artifact (proposed: `dialed-guides`).                                                                                      |
+| `GUIDE_ARTIFACT_KEY`    | unset                                 | **Required to build.** Its object key (proposed: `guide-artifact/v1.json`). The deploy job downloads it with the R2 secrets above. A failed download fails the deploy; it never falls back to the fixture. |
+| `SITE_INDEXABLE`        | `false`                               | `true` only at the public launch: robots.txt allows crawling, canonicals appear, and noindex goes away.                                                                                                    |
+| `LEGAL_SOURCE_REF`      | the SHA pinned in `src/config/env.ts` | The app repo ref that the legal texts are read from.                                                                                                                                                       |
+| `INVITE_ENDPOINT`       | unset                                 | `https://app.dialed.run/api/access-requests` once the app ships it. Until then, Request an invite links to the app's own page.                                                                             |
+| `TURNSTILE_SITE_KEY`    | unset                                 | The app's public site key, with `dialed.run` in its allowed hostnames. Required with `INVITE_ENDPOINT`. Never put the secret here.                                                                         |
+| `APP_ORIGIN`            | `https://app.dialed.run`              |                                                                                                                                                                                                            |
 
 ### 3. `www` → apex
 

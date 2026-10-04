@@ -40,6 +40,15 @@ describe("readEnv", () => {
     ).toThrow(/TURNSTILE_SITE_KEY/);
   });
 
+  it("takes one artifact source, not two", () => {
+    expect(() =>
+      readEnv({
+        GUIDE_ARTIFACT_FILE: "/tmp/guide-artifact.json",
+        GUIDE_ARTIFACT_URL: "https://data.dialed.run/guide-artifact.json",
+      }),
+    ).toThrow(/not both/);
+  });
+
   it("rejects an app origin with a trailing slash", () => {
     expect(() => readEnv({ APP_ORIGIN: "https://app.dialed.run/" })).toThrow(
       /APP_ORIGIN/,
