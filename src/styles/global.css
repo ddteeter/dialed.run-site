@@ -24,6 +24,17 @@
     outline-offset: 2px;
   }
 
+  /*
+   * Form Contract 02: a field failure is border weight, not colour. The
+   * border goes 1px to 2px ink, and the padding gives back 1px so the box
+   * doesn't resize.
+   */
+  input[aria-invalid="true"] {
+    border-width: 2px;
+    border-color: var(--ink);
+    padding: calc(var(--space-3) - 1px) calc(var(--space-4) - 1px);
+  }
+
   /* The current page in the nav, as the boards draw it (M4). */
   nav [aria-current="page"] {
     font-weight: bold;

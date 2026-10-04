@@ -3,6 +3,7 @@ import HaveACode from "@/components/HaveACode.astro";
 import InviteRequest from "@/components/InviteRequest.astro";
 import InvitePage from "@/pages/invite/index.astro";
 import SentPage from "@/pages/invite/sent.astro";
+import { INVITE_ERRORS, inviteErrorCode } from "@/lib/inviteErrors";
 import { parse, render } from "./render";
 
 const linkMode = {
@@ -117,5 +118,43 @@ describe("invite pages", () => {
       doc.querySelector('meta[name="robots"]')?.getAttribute("content"),
     ).toBe("noindex");
     expect(doc.body.textContent).not.toMatch(/@/);
+  });
+});
+
+describe("failures the app redirects back with", () => {
+  it.each([
+    ["?error=turnstile", "turnstile"],
+    ["?error=rate_limited", "rate_limited"],
+    ["?error=invalid_email", "invalid_email"],
+    ["?error=nope", undefined],
+    ["?error=toString", undefined],
+    ["", undefined],
+  ])("reads %j as %j", (search, code) => {
+    expect(inviteErrorCode(search)).toBe(code);
+  });
+
+  it("uses the boards' copy", () => {
+    expect(INVITE_ERRORS.rate_limited.text).toBe(
+      "Too many tries. Wait a minute, then try again.",
+    );
+    expect(INVITE_ERRORS.turnstile.text).toBe(
+      "We couldn't check this browser. Reload the page and try again.",
+    );
+  });
+
+  it("puts the rate-limit band above the button and the Turnstile band under it, hidden until needed", async () => {
+    const doc = parse(await render(InviteRequest, formMode));
+    const form = doc.querySelector("form");
+    const order = [
+      ...(form?.querySelectorAll("[data-invite-error], button") ?? []),
+    ].map((el) => el.getAttribute("data-invite-error") ?? el.tagName);
+    expect(order).toEqual(["rate_limited", "BUTTON", "turnstile"]);
+    for (const band of form?.querySelectorAll("[data-invite-error]") ?? []) {
+      expect(band.hasAttribute("hidden")).toBe(true);
+    }
+    expect(doc.querySelectorAll('[role="status"]')).toHaveLength(1);
+    expect(
+      doc.getElementById("invite-email-error")?.hasAttribute("hidden"),
+    ).toBe(true);
   });
 });
