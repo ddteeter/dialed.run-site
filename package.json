@@ -18,7 +18,8 @@
     "format:check": "prettier --check .",
     "test": "vitest run",
     "test:watch": "vitest",
-    "verify": "npm run format:check && npm run lint && npm run check && npm run test && npm run build:fixture"
+    "verify": "npm run format:check && npm run lint && npm run check && npm run test && npm run build:fixture",
+    "theme": "node scripts/generate-theme.ts"
   },
   "simple-git-hooks": {
     "pre-commit": "npx lint-staged"
@@ -31,7 +32,9 @@
     "*.{json,jsonc,md,css,yml,yaml}": "prettier --write"
   },
   "dependencies": {
+    "@tailwindcss/vite": "^4.3.3",
     "astro": "^7.3.5",
+    "tailwindcss": "^4.3.3",
     "zod": "^4.6.5"
   },
   "devDependencies": {

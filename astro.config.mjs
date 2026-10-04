@@ -1,5 +1,6 @@
 import { defineConfig } from "astro/config";
 import { fileURLToPath } from "node:url";
+import tailwindcss from "@tailwindcss/vite";
 import { cloudflareHeaders } from "./src/integrations/headers";
 
 // https://astro.build/config
@@ -16,6 +17,7 @@ export default defineConfig({
   },
   integrations: [cloudflareHeaders()],
   vite: {
+    plugins: [tailwindcss()],
     // Vite 8 no longer applies tsconfig `paths` to CSS `@import`, so the
     // alias is registered here as well.
     resolve: {

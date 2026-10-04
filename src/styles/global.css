@@ -1,0 +1,35 @@
+@import "tailwindcss";
+@import "./theme.generated.css";
+
+@layer base {
+  html {
+    background: var(--ground);
+    color: var(--ink);
+  }
+
+  body {
+    @apply type-body;
+    margin: 0;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /*
+   * Accessibility Contract 06: 2px solid, offset 2px, in the text colour of
+   * the ground. Pills get a pill outline because the outline follows the
+   * element's own radius.
+   */
+  :focus-visible {
+    outline: 2px solid var(--ink);
+    outline-offset: 2px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      transition-duration: 90ms !important;
+      transition-property: opacity !important;
+      animation: none !important;
+    }
+  }
+}
