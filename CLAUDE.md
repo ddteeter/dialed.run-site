@@ -17,3 +17,11 @@ This is the marketing site for dialed.run, at the apex `dialed.run`. The app is 
 - **Changelog.** Claude drafts entries from merged app PRs, and the owner approves them through a PR. Never auto-publish.
 - **Quality.** Strict TypeScript, lint, Prettier, Vitest for every generator, Playwright smoke and axe, HTML snapshots from the fixture, and a link check. A test pins the generated tokens against `tokens.js`.
 - **Commits.** Small, each passing the checks. Open a PR for review, and don't push straight to `main` once CI exists.
+
+## Before calling work done
+
+- `npm run verify:all`: format, lint, types (`astro check` and `tsc`), unit tests, the fixture build, the dist and snapshot tests, the link check, and Playwright with axe against `wrangler dev`. Run `npm run lighthouse` too when a page's weight or markup changed.
+- Use the npm scripts, never bare `npx tsc` or `npx astro`: the scripts carry the flags and the order.
+- A theme or font change: `npm run theme` (and `npm run og` if the card's type or colour moved), then commit the generated files.
+- A markup change that the snapshots catch: review the diff, then `npx vitest run --project dist -u`.
+- Node 24 is pinned with Volta. A newer system Node on `PATH` breaks some tools, so put `~/.volta/bin` first.
