@@ -1,0 +1,71 @@
+---
+/**
+ * The root pages that exist only when their content does:
+ * - /privacy, /terms, /copyright: only the texts the app repo has marked
+ *   published (HANDOFF §7). An unpublished text is a 404 here too.
+ * - /changelog: only once there's an entry (design round 31 #5a).
+ * - /how-it-works: only after the public launch, SITE_INDEXABLE (HANDOFF §3,
+ *   design round 34 c).
+ * One route, so two dynamic routes never compete for the same paths.
+ */
+import type { GetStaticPaths } from "astro";
+import ChangelogPage from "@/components/changelog/ChangelogPage.astro";
+import HowItWorksPage from "@/components/HowItWorksPage.astro";
+import { env } from "@/config/env";
+import LegalPage from "@/components/legal/LegalPage.astro";
+import { getChangelogEntries } from "@/data/changelog";
+import { getLegalDocs, LEGAL_PAGES } from "@/data/legal";
+import type { ChangelogEntry } from "@/lib/changelog/entries";
+import type { LegalDoc } from "@/lib/legal/markdown";
+
+export const getStaticPaths = (async () => {
+  const docs = await getLegalDocs();
+  const entries = await getChangelogEntries();
+  return [
+    ...LEGAL_PAGES.flatMap(({ slug, label, description }) => {
+      const doc = docs.get(slug);
+      return doc === undefined
+        ? []
+        : [
+            {
+              params: { page: slug },
+              props: { kind: "legal" as const, doc, label, description },
+            },
+          ];
+    }),
+    ...(entries.length === 0
+      ? []
+      : [
+          {
+            params: { page: "changelog" },
+            props: { kind: "changelog" as const, entries },
+          },
+        ]),
+    ...(env.SITE_INDEXABLE
+      ? [
+          {
+            params: { page: "how-it-works" },
+            props: { kind: "how-it-works" as const },
+          },
+        ]
+      : []),
+  ];
+}) satisfies GetStaticPaths;
+
+type Props =
+  | { kind: "legal"; doc: LegalDoc; label: string; description: string }
+  | { kind: "changelog"; entries: ChangelogEntry[] }
+  | { kind: "how-it-works" };
+
+const props = Astro.props;
+---
+
+{props.kind === "legal" && (
+  <LegalPage
+    doc={props.doc}
+    label={props.label}
+    description={props.description}
+  />
+)}
+{props.kind === "changelog" && <ChangelogPage entries={props.entries} />}
+{props.kind === "how-it-works" && <HowItWorksPage />}

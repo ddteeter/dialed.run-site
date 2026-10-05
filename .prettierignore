@@ -1,0 +1,14 @@
+design-reference/
+/dist/
+.astro/
+node_modules/
+package-lock.json
+src/styles/theme.generated.css
+test/dist/__snapshots__/
+docs/HANDOFF.md
+src/styles/fonts.generated.css
+.wrangler/
+test-results/
+playwright-report/
+lighthouse-report/
+.lighthouseci/

@@ -1,0 +1,40 @@
+---
+/**
+ * "Have a code?": a GET form to the app's /join?code=. The app validates
+ * the code there, so code errors live in one place (HANDOFF §4 M5).
+ */
+interface Props {
+  joinUrl: string;
+}
+
+const { joinUrl } = Astro.props;
+---
+
+<form
+  method="get"
+  action={joinUrl}
+  class="flex flex-col gap-2 border-t border-hairline pt-4"
+>
+  <label for="invite-code" class="font-semibold">
+    Have a code?
+  </label>
+  <div class="flex gap-2">
+    <input
+      id="invite-code"
+      name="code"
+      type="text"
+      required
+      autocomplete="off"
+      autocapitalize="characters"
+      spellcheck="false"
+      placeholder="DIAL-XXXX"
+      class="min-h-field min-w-0 flex-1 rounded-field border border-hairline-2 bg-panel px-4 py-3 type-field text-ink placeholder:text-placeholder"
+    />
+    <button
+      type="submit"
+      class="inline-flex min-h-control cursor-pointer items-center rounded-pill border border-ink bg-transparent px-5 type-body font-bold text-ink hover:bg-tint"
+    >
+      Join
+    </button>
+  </div>
+</form>

@@ -1,0 +1,113 @@
+---
+/**
+ * M4 How it works, in the legal reading layout. Rendered by
+ * src/pages/[page].astro only once SITE_INDEXABLE is on: before the public
+ * launch the site is Home and Invite (HANDOFF §3; design round 34 c). "The loop" and "The call"
+ * follow M1's steps at lead length. "How the guides are made" (#totals) is
+ * design round 32's disclosure: what's counted, when a figure shows, and
+ * who counts. Every disclosure elsewhere links here.
+ */
+import JsonLd from "@/components/JsonLd.astro";
+import VerdictRow from "@/components/VerdictRow.astro";
+import { FAQS } from "@/data/content/how-it-works";
+import ReadingLayout from "@/layouts/ReadingLayout.astro";
+import { faqPage } from "@/lib/jsonLd";
+
+const contents = [
+  { id: "the-loop", title: "The loop" },
+  { id: "the-verdict", title: "The verdict" },
+  { id: "the-call", title: "The call" },
+  { id: "totals", title: "How the guides are made" },
+  { id: "questions", title: "Questions" },
+];
+const section = "flex flex-col gap-4";
+const h2 = "m-0 type-heading";
+---
+
+<ReadingLayout
+  title="How it works · dialed.run"
+  heading="How it works"
+  description="How dialed.run turns what you wore, the weather and how it felt into tomorrow's call."
+  contents={contents}
+>
+  <JsonLd slot="head" node={faqPage(FAQS)} />
+  <p slot="lead" class="m-0 type-lead">
+    Every run is a measurement: what you wore, what the weather was, and how it
+    felt. dialed.run keeps a record per garment and per temperature range, so
+    the advice is based on your clothes and how you run warm or cold, not on a
+    chart.
+  </p>
+
+  <section aria-labelledby="the-loop" class={section}>
+    <h2 id="the-loop" class={h2}>
+      The loop
+    </h2>
+    <p class="m-0 type-lead">
+      Log the run from Strava or a file, and the weather comes with it, fetched
+      for when and where you ran. Then say how it went, from way cold to way
+      warm, and which piece was off if one was. That takes ten seconds, and
+      every run you log adds to your record.
+    </p>
+  </section>
+
+  <section aria-labelledby="the-verdict" class={section}>
+    <h2 id="the-verdict" class={h2}>
+      The verdict
+    </h2>
+    <VerdictRow />
+    <p class="m-0 text-quiet">
+      One tap after the run, plus which piece was off if one was.
+    </p>
+  </section>
+
+  <section aria-labelledby="the-call" class={section}>
+    <h2 id="the-call" class={h2}>
+      The call
+    </h2>
+    <p class="m-0 type-lead">
+      The night before your next run, dialed.run reads the forecast and calls
+      your kit from what worked for you at that temperature and in that sky.
+      It's your own record, so it knows whether you run warm or cold.
+    </p>
+  </section>
+
+  <section aria-labelledby="totals" class={section}>
+    <h2 id="totals" class={h2}>
+      How the guides are made
+    </h2>
+    <p class="m-0">
+      <strong class="font-semibold">What's counted.</strong> Each run adds its
+      feels-like temperature, sky and month, the type, brand and model of each
+      piece you wore, and your verdict. Your region counts too, if you've set
+      one in Settings. Never your name, handle, notes or photos, and never where
+      the run started or the time of day.
+    </p>
+    <p class="m-0">
+      <strong class="font-semibold">When a figure shows.</strong> Every number
+      we publish needs at least 5 different runners behind it, or 20 if it's
+      about a brand. That goes for every row, section and sentence. Below that,
+      the figure is left out. It's never shown as "fewer than 5".
+    </p>
+    <p class="m-0">
+      <strong class="font-semibold">Who counts.</strong> Confirmed accounts
+      only. If you've turned off Count my runs in anonymous totals, your runs
+      are left out. So are removed entries, banned accounts, accounts being
+      deleted, and runs where you set the conditions yourself.
+    </p>
+  </section>
+
+  <section
+    aria-labelledby="questions"
+    class="flex flex-col border-t border-ink"
+  >
+    <h2 id="questions" class="m-0 pt-5 pb-2 type-heading">
+      Questions
+    </h2>
+    {FAQS.map(({ question, answer }) => (
+      <div class="flex flex-col gap-2 border-t border-hairline py-4">
+        <h3 class="m-0 type-body font-semibold">{question}</h3>
+        <p class="m-0 text-quiet">{answer}</p>
+      </div>
+    ))}
+  </section>
+</ReadingLayout>

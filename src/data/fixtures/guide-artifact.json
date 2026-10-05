@@ -1,0 +1,159 @@
+{
+  "version": 1,
+  "generatedAt": "2026-10-03T03:00:00Z",
+  "totals": { "sharedRuns": 1240 },
+  "bands": [
+    {
+      "slug": "23-32f",
+      "label": { "f": "23–32°F", "c": "-5–0°C" },
+      "runs": 212,
+      "runners": 31,
+      "updated": "2026-10-03",
+      "kitLine": "Long sleeve, jacket, tights, gloves, beanie",
+      "lead": "Most runners were dialed in a long sleeve under a jacket, with tights, gloves and a beanie.",
+      "skies": [
+        {
+          "sky": "dry",
+          "runs": 150,
+          "runners": 24,
+          "parts": [
+            {
+              "part": "top",
+              "types": [
+                { "type": "Long sleeve + jacket", "dialedPct": 71, "runs": 96 }
+              ]
+            },
+            {
+              "part": "bottom",
+              "types": [{ "type": "Tights", "dialedPct": 84, "runs": 131 }]
+            }
+          ],
+          "wentWrong": [
+            { "type": "Long sleeve", "direction": "cold", "runs": 22, "of": 31 }
+          ]
+        }
+      ],
+      "reviews": []
+    },
+    {
+      "slug": "32-41f",
+      "label": { "f": "32–41°F", "c": "0–5°C" },
+      "runs": 388,
+      "runners": 46,
+      "updated": "2026-10-03",
+      "kitLine": "Long sleeve, tights, light gloves",
+      "lead": "Most runners were dialed in a long sleeve, tights and light gloves. Shorts worked above 37°F feels-like when it was dry, and ran cold below it.",
+      "skies": [
+        {
+          "sky": "dry",
+          "runs": 241,
+          "runners": 31,
+          "parts": [
+            {
+              "part": "top",
+              "types": [
+                { "type": "Long sleeve", "dialedPct": 74, "runs": 120 },
+                {
+                  "type": "Short sleeve + arm sleeves",
+                  "dialedPct": 52,
+                  "runs": 23
+                }
+              ]
+            },
+            {
+              "part": "bottom",
+              "types": [
+                { "type": "Tights", "dialedPct": 81, "runs": 140 },
+                { "type": "Shorts", "dialedPct": 41, "runs": 58 }
+              ]
+            },
+            {
+              "part": "hands",
+              "types": [
+                { "type": "Light gloves", "dialedPct": 77, "runs": 102 }
+              ]
+            }
+          ],
+          "wentWrong": [
+            { "type": "Shorts", "direction": "cold", "runs": 34, "of": 58 },
+            { "type": "Jacket", "direction": "warm", "runs": 19, "of": 27 }
+          ]
+        },
+        {
+          "sky": "damp",
+          "runs": 98,
+          "runners": 14,
+          "parts": [
+            {
+              "part": "top",
+              "types": [{ "type": "Long sleeve", "dialedPct": 69, "runs": 51 }]
+            }
+          ],
+          "wentWrong": [
+            { "type": "Vest", "direction": "warm", "runs": 9, "of": 15 }
+          ]
+        },
+        {
+          "sky": "rain",
+          "runs": 49,
+          "runners": 8,
+          "parts": [
+            {
+              "part": "top",
+              "types": [
+                { "type": "Long sleeve + shell", "dialedPct": 63, "runs": 30 }
+              ]
+            }
+          ],
+          "wentWrong": [
+            { "type": "Long sleeve", "direction": "cold", "runs": 12, "of": 19 }
+          ]
+        }
+      ],
+      "reviews": [
+        {
+          "name": "Example long sleeve",
+          "dialedRuns": 8,
+          "runs": 11,
+          "url": "https://biglongrun.com/reviews/example-long-sleeve"
+        }
+      ]
+    },
+    {
+      "slug": "41-50f",
+      "label": { "f": "41–50°F", "c": "5–10°C" },
+      "runs": 301,
+      "runners": 44,
+      "updated": "2026-10-03",
+      "kitLine": "Long sleeve, shorts",
+      "lead": "Most runners were dialed in a long sleeve and shorts.",
+      "skies": [
+        {
+          "sky": "dry",
+          "runs": 220,
+          "runners": 37,
+          "parts": [
+            {
+              "part": "bottom",
+              "types": [{ "type": "Shorts", "dialedPct": 79, "runs": 180 }]
+            }
+          ],
+          "wentWrong": [
+            { "type": "Tights", "direction": "warm", "runs": 21, "of": 30 }
+          ]
+        }
+      ],
+      "reviews": []
+    }
+  ],
+  "callCard": {
+    "when": "TOMORROW · 6:10 AM",
+    "conditions": { "f": 38, "feelsF": 33, "sky": "damp" },
+    "items": [
+      { "type": "Long sleeve, merino", "dialed": 7, "of": 9 },
+      { "type": "Tights", "dialed": 11, "of": 12 },
+      { "type": "Light gloves", "dialed": 5, "of": 6 }
+    ],
+    "note": "Last time it was this damp you wore the vest and ran a bit warm. Leave it."
+  }
+}

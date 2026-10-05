@@ -1,0 +1,19 @@
+// dialed.run: the marketing site, as a static-assets-only Worker on the apex.
+// Deployed by .github/workflows/deploy.yml with a token scoped to this Worker
+// (docs/deploy.md). No secrets here, and no Worker script: every request is
+// a file in dist/.
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "dialed-run-site",
+  "compatibility_date": "2026-10-01",
+  "assets": {
+    "directory": "./dist",
+    // /how-it-works serves how-it-works.html; /how-it-works/ and
+    // /how-it-works.html 307 to it. One URL per page.
+    "html_handling": "drop-trailing-slash",
+    // dist/404.html, with a 404 status, for any path with no file.
+    "not_found_handling": "404-page",
+  },
+  "routes": [{ "pattern": "dialed.run", "custom_domain": true }],
+  "observability": { "enabled": false },
+}

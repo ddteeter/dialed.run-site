@@ -1,0 +1,46 @@
+---
+/**
+ * The 404 (design round 31 #5b): the reading column, noindex, the same nav
+ * and footer, and no call to action, since a 404 is a wrong turn rather
+ * than a sales moment. "What to wear" joins the links once a band is
+ * published, and How it works at the public launch.
+ */
+import { env } from "@/config/env";
+import { paths } from "@/config/urls";
+import ReadingLayout from "@/layouts/ReadingLayout.astro";
+
+const links = [
+  { href: paths.home, label: "Home" },
+  // How it works is live only after the public launch.
+  ...(env.SITE_INDEXABLE
+    ? [{ href: paths.howItWorks, label: "How it works" }]
+    : []),
+];
+---
+
+<ReadingLayout
+  title="Not found · dialed.run"
+  heading="Nothing at this address"
+  description="This page doesn't exist on dialed.run."
+  contents={[]}
+  noindex
+>
+  <p slot="lead" class="m-0 type-lead">
+    The link may be mistyped, or the page has moved.
+  </p>
+  <p slot="eyebrow" class="m-0 mono-xs text-muted">
+    404
+  </p>
+  <ul class="m-0 flex list-none flex-col border-t border-hairline p-0">
+    {links.map(({ href, label }) => (
+      <li class="border-b border-hairline">
+        <a
+          href={href}
+          class="flex min-h-target items-center justify-between py-2"
+        >
+          {label} <span aria-hidden="true">›</span>
+        </a>
+      </li>
+    ))}
+  </ul>
+</ReadingLayout>

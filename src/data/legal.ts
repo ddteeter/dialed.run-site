@@ -1,0 +1,48 @@
+/**
+ * The published legal texts for this build. A text the app repo hasn't
+ * marked `published: true` has no page here and no link to it (HANDOFF §7).
+ */
+import { env } from "@/config/env";
+import type { LegalDoc } from "@/lib/legal/markdown";
+import { loadLegalDocs, type LegalSlug } from "@/lib/legal/source";
+
+export type { LegalSlug };
+
+export const LEGAL_PAGES: readonly {
+  slug: LegalSlug;
+  label: string;
+  description: string;
+}[] = [
+  {
+    slug: "privacy",
+    label: "Privacy policy",
+    description:
+      "What dialed.run keeps about you and your runs, why, and the choices you have.",
+  },
+  {
+    slug: "terms",
+    label: "Terms",
+    description:
+      "The agreement between you and dialed.run when you use the app.",
+  },
+  {
+    slug: "copyright",
+    label: "Copyright",
+    description:
+      "How to tell dialed.run that something on it uses your work without permission.",
+  },
+];
+
+let cached: Promise<ReadonlyMap<LegalSlug, LegalDoc>> | undefined;
+
+/** Fetched once per build and shared by every page. */
+export function getLegalDocs(): Promise<ReadonlyMap<LegalSlug, LegalDoc>> {
+  cached ??= loadLegalDocs(env);
+  return cached;
+}
+
+export async function getPublishedLegalSlugs(): Promise<
+  ReadonlySet<LegalSlug>
+> {
+  return new Set((await getLegalDocs()).keys());
+}

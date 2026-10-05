@@ -1,0 +1,7 @@
+# Link check over the built site (npm run linkcheck), offline: every
+# internal link and #fragment must resolve to a file in dist/. External
+# links (the app host included, which isn't live yet) are out of scope here.
+offline = true
+include_fragments = "full"
+fallback_extensions = ["html"]
+no_progress = true

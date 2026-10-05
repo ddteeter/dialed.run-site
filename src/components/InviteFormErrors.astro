@@ -1,0 +1,104 @@
+---
+/**
+ * Shows the failure the app redirected back with (/invite?error=<code>),
+ * per the Form Contract: one role="status" sentence, then focus. A field
+ * failure marks its field (email or note) (2px ink border, hi-viz band under it);
+ * a form failure is a band, never yellow on a field. Rendered only in form
+ * mode, so link mode ships no script. Without JS the form still works; the
+ * band just doesn't show.
+ */
+import { INVITE_ERRORS, type InviteErrorCode } from "@/lib/inviteErrors";
+
+interface Props {
+  /** The form failures to place here: above the button, or under it. */
+  codes: readonly InviteErrorCode[];
+  /** The one role="status" region for the form goes with one placement. */
+  withStatus?: boolean;
+}
+
+const { codes, withStatus = false } = Astro.props;
+const forms = codes.map((code) => [code, INVITE_ERRORS[code]] as const);
+---
+
+{withStatus && <p id="invite-status" role="status" class="sr-only" />}
+{forms.map(([code, error]) => (
+  <div
+    data-invite-error={code}
+    hidden
+    class="flex flex-col gap-1 border border-ink px-4 py-3"
+  >
+    <span class="mono-xs">{error.kicker}</span>
+    <span class="type-small">{error.text}</span>
+  </div>
+))}
+
+<script>
+  import {
+    INVITE_ERRORS,
+    inviteErrorCode,
+    NOTE_COUNT_FROM,
+    noteCount,
+  } from "@/lib/inviteErrors";
+
+  // The note's counter, as the app draws it: hidden until 120 of 140
+  // characters, then "120 / 140". The status region says it once, on
+  // reaching 120, so a screen reader doesn't hear every keystroke.
+  const note = document.getElementById("invite-note");
+  const count = document.getElementById("invite-note-count");
+  if (note instanceof HTMLInputElement && count) {
+    let before = note.value.length;
+    note.addEventListener("input", () => {
+      const after = note.value.length;
+      count.hidden = after < NOTE_COUNT_FROM;
+      count.textContent = noteCount(after);
+      const status = document.getElementById("invite-status");
+      if (status && before < NOTE_COUNT_FROM && after >= NOTE_COUNT_FROM) {
+        status.textContent = noteCount(after);
+      }
+      before = after;
+    });
+  }
+
+  const code = inviteErrorCode(window.location.search);
+  if (code !== undefined) {
+    const error = INVITE_ERRORS[code];
+    const status = document.getElementById("invite-status");
+    if (status) status.textContent = error.status;
+    if (error.kind === "field") {
+      const field = document.getElementById(error.field);
+      const band = document.getElementById(`${error.field}-error`);
+      if (field instanceof HTMLInputElement && band) {
+        band.hidden = false;
+        field.setAttribute("aria-invalid", "true");
+        const described = field.getAttribute("aria-describedby");
+        field.setAttribute(
+          "aria-describedby",
+          described === null ? band.id : `${band.id} ${described}`,
+        );
+        field.focus();
+        // The field clears its mark on input, not on blur (Form Contract 02).
+        field.addEventListener(
+          "input",
+          () => {
+            band.hidden = true;
+            field.removeAttribute("aria-invalid");
+          },
+          { once: true },
+        );
+      }
+    } else {
+      const band = document.querySelector<HTMLElement>(
+        `[data-invite-error="${code}"]`,
+      );
+      if (band) band.hidden = false;
+      // Form Contract 03: the primary becomes Try again and takes focus.
+      const submit =
+        document.querySelector<HTMLButtonElement>("#invite-submit");
+      if (submit) {
+        submit.textContent = "Try again";
+        submit.focus();
+      }
+    }
+    history.replaceState(null, "", window.location.pathname);
+  }
+</script>

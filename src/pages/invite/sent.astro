@@ -1,0 +1,29 @@
+---
+/**
+ * M5b: the same answer for every address, whether it's new, already on
+ * the list, or already a runner. The address isn't echoed: this page is
+ * plain HTML, and carrying it in the redirect URL would put it in logs.
+ *
+ * The link to the published band nearest today's feels-like arrives with
+ * the guides; with no published band it's left out.
+ */
+import { app } from "@/config/urls";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+---
+
+<BaseLayout
+  title="You're on the list · dialed.run"
+  description="Your invite request is in. We'll email you when your code is ready."
+  noindex
+>
+  <div class="mx-auto flex max-w-panel flex-col gap-4 px-5 py-8 wide:mt-12">
+    <h1 class="m-0 type-title">You're on the list</h1>
+    <p class="m-0 type-lead">When your code is ready we'll email you.</p>
+    <p class="m-0">
+      Already have an account?{" "}
+      <a href={app.login} class="font-semibold underline">
+        Log in
+      </a>
+    </p>
+  </div>
+</BaseLayout>
