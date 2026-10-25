@@ -41,6 +41,7 @@ Everything is a public build-time variable (`src/config/env.ts`); there are no s
 ## Where things live
 
 - `design-reference/`: the design snapshot. Read-only; refresh it by re-copying.
+- `src/lib/oss/`: the `/open-source` list. `postbuild` regenerates `open-source-list.json` from what the build ships; when dependencies change, run `npm run build` and commit it (CI fails on a stale list).
 - `src/theme/`: derives `src/styles/*.generated.css` from the contracts, and the contract lint.
 - `src/data/`: the guide artifact (schema, loader, fixture), the legal texts and the changelog.
 - `src/pages/`: Home, Invite, How it works, `/open-source`, the 404, and `[page].astro` for the pages that exist only when their content does (legal texts, changelog).

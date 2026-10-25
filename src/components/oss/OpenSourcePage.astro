@@ -1,0 +1,160 @@
+---
+/**
+ * /open-source (HANDOFF §7): every open-source piece the website ships,
+ * grouped by licence with the type first, then the tools that build it.
+ * The lead says so first and links the app's own list, so a visitor who
+ * came for the app's credits isn't left with the website's four pieces.
+ * Board: Round 40 Rulings, item 83, after the app's page (design 151;
+ * round 40 #82). No search, no "Show all" and no script: every row shows,
+ * last on the page, where find-in-page reaches it (revisit past ~60).
+ *
+ * - **The contents** carry each group's count, as the app's do.
+ * - **A group** is headed by its licence and count. "Read the MIT
+ *   licence" opens the full text once, above the rows. A row is the name,
+ *   the shipped version, "Project", and the copyright line; "Notice"
+ *   where the package ships an Apache NOTICE, and "Licence" where its own
+ *   text says something the group's doesn't.
+ * - **Tools we build with** is last: what the site is built and tested
+ *   with, none of which ships, each row naming its licence where the
+ *   copyright line would go. The lead counts only what ships.
+ *
+ * The rows are generated, never written: scripts/open-source-list.ts.
+ */
+import { app } from "@/config/urls";
+import ReadingLayout from "@/layouts/ReadingLayout.astro";
+import { pieceCount, readLabel, type LicenceGroup } from "@/lib/oss/groups";
+
+interface Props {
+  groups: readonly LicenceGroup[];
+  tools: LicenceGroup;
+}
+
+const { groups, tools } = Astro.props;
+const contents = [
+  ...groups.map(({ id, name, pieces }) => ({
+    id,
+    title: name,
+    count: String(pieces.length),
+  })),
+  { id: tools.id, title: tools.name, count: String(tools.pieces.length) },
+];
+const all = [...groups, tools];
+
+function countLine(group: LicenceGroup): string {
+  const count = String(group.pieces.length);
+  if (group.kind === "type") return `${count} · TYPE`;
+  if (group.kind === "tools") return `${count} · NOT SHIPPED`;
+  return count;
+}
+
+const link =
+  "inline-flex min-h-target min-w-target items-center type-small underline";
+const summary =
+  "inline-flex min-h-target cursor-pointer items-center type-small underline";
+---
+
+<ReadingLayout
+  title="Open source · dialed.run"
+  heading="Open source"
+  description="The open-source packages and fonts the dialed.run website ships, their licences, and the tools it's built with."
+  contents={contents}
+>
+  <p slot="lead" class="m-0 type-lead">
+    This page covers the dialed.run website. The app keeps its own list, at{" "}
+    <a href={app.openSource} class="underline">
+      app.dialed.run/open-source
+    </a>
+    . The website runs on code and type that people chose to give away. Here are
+    all {pieceCount(groups)} pieces it ships, grouped by licence, with a link to
+    each project.
+  </p>
+
+  {all.map((group) => (
+    <section aria-labelledby={group.id} class="flex flex-col gap-3">
+      <div class="flex items-baseline justify-between gap-3">
+        <h2 id={group.id} class="m-0 type-heading">
+          {group.name}
+        </h2>
+        <span class="mono-sm text-muted">{countLine(group)}</span>
+      </div>
+      {group.kind === "type" && (
+        <p class="m-0 type-small text-quiet">
+          The typefaces you read everything in.
+        </p>
+      )}
+      {group.kind === "tools" && (
+        <p class="m-0 type-small text-quiet">
+          We build and test the website with these. None of them ships in it, so
+          each is credited by name and licence.
+        </p>
+      )}
+      {group.text !== undefined && (
+        <details>
+          <summary class={summary}>{readLabel(group)}</summary>
+          <pre
+            class="m-0 mt-2 font-text type-small whitespace-pre-wrap"
+            set:text={group.text}
+          />
+        </details>
+      )}
+      <ul class="m-0 flex list-none flex-col p-0">
+        {group.pieces.map((piece) => (
+          <li class="row grid items-baseline gap-x-3 border-t border-hairline py-3">
+            <span class="font-semibold">
+              {piece.name}
+              {piece.version !== undefined && (
+                <Fragment>
+                  {" "}
+                  <span class="mono-sm font-normal text-muted">
+                    {piece.version}
+                  </span>
+                </Fragment>
+              )}
+            </span>
+            {piece.project !== undefined && (
+              <a href={piece.project} class={link}>
+                Project
+              </a>
+            )}
+            {group.kind === "tools"
+              ? piece.licence !== undefined && (
+                  <span class="col-span-full mono-xs text-muted">
+                    {piece.licence}
+                  </span>
+                )
+              : piece.copyright !== undefined && (
+                  <span class="col-span-full type-small text-quiet">
+                    © {piece.copyright}
+                  </span>
+                )}
+            {piece.notice !== undefined && (
+              <details class="col-span-full">
+                <summary class={summary}>Notice</summary>
+                <pre
+                  class="m-0 mt-2 font-text type-small whitespace-pre-wrap"
+                  set:text={piece.notice}
+                />
+              </details>
+            )}
+            {piece.text !== undefined && (
+              <details class="col-span-full">
+                <summary class={summary}>Licence</summary>
+                <pre
+                  class="m-0 mt-2 font-text type-small whitespace-pre-wrap"
+                  set:text={piece.text}
+                />
+              </details>
+            )}
+          </li>
+        ))}
+      </ul>
+    </section>
+  ))}
+</ReadingLayout>
+
+<style>
+  /* Name and version, then Project at the right; the line under spans both. */
+  .row {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+</style>
