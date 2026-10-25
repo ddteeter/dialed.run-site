@@ -2,8 +2,8 @@
  * Writes src/lib/oss/open-source-list.json for /open-source, mirroring the
  * app's scripts/open-source-list.ts (design 151). Plumbing only: it reads
  * Vite's licence report (moved to .oss/ by src/integrations/oss-report.ts),
- * the built stylesheets' banners, `npm query '*'`, package.json and the
- * fonts, and hands them to src/lib/oss/list.ts.
+ * the built stylesheets' banners, `npm query '*'` (read through npm's
+ * `normalize-package-data`), package.json and the fonts, and hands them to src/lib/oss/list.ts.
  *
  * **Run by `postbuild`**, because the report exists only after a build.
  * The list stays committed, so tests and dev read it without building.
@@ -18,7 +18,7 @@ import { fileURLToPath } from "node:url";
 import { z } from "zod";
 import { OSS_REPORT } from "../src/integrations/oss-report.ts";
 import {
-  nodeSchema,
+  installedNodes,
   openSourceList,
   reportSchema,
   typePieces,
@@ -50,7 +50,7 @@ function installed(): InstalledNode[] {
     encoding: "utf8",
     maxBuffer: 256 * 1024 * 1024,
   });
-  return nodeSchema.parse(JSON.parse(out));
+  return installedNodes(JSON.parse(out));
 }
 
 /** The first file in `dir` whose name matches, as text. */

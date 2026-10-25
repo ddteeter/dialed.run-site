@@ -1,16 +1,16 @@
 {
   "type": [
     {
-      "name": "Archivo Black",
-      "licence": "OFL-1.1",
-      "copyright": "2020 The Archivo Project Authors",
-      "project": "https://github.com/Omnibus-Type/ArchivoBlack"
-    },
-    {
       "name": "Archivo",
       "licence": "OFL-1.1",
       "copyright": "2020 The Archivo Project Authors",
       "project": "https://github.com/Omnibus-Type/Archivo"
+    },
+    {
+      "name": "Archivo Black",
+      "licence": "OFL-1.1",
+      "copyright": "2017 The Archivo Black Project Authors",
+      "project": "https://github.com/Omnibus-Type/ArchivoBlack"
     },
     {
       "name": "IBM Plex Mono",
@@ -39,7 +39,7 @@
       "name": "@axe-core/playwright",
       "version": "4.13.0",
       "licence": "MPL-2.0",
-      "project": "https://github.com/dequelabs/axe-core-npm"
+      "project": "https://github.com/dequelabs/axe-core-npm#readme"
     },
     {
       "name": "@eslint/js",
@@ -72,6 +72,12 @@
       "project": "https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/node"
     },
     {
+      "name": "@types/normalize-package-data",
+      "version": "2.4.4",
+      "licence": "MIT",
+      "project": "https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/normalize-package-data"
+    },
+    {
       "name": "astro",
       "version": "7.3.5",
       "licence": "MIT",
@@ -99,7 +105,7 @@
       "name": "globals",
       "version": "17.13.0",
       "licence": "MIT",
-      "project": "https://github.com/sindresorhus/globals"
+      "project": "https://github.com/sindresorhus/globals#readme"
     },
     {
       "name": "linkedom",
@@ -117,19 +123,25 @@
       "name": "mdast-util-from-markdown",
       "version": "2.1.0",
       "licence": "MIT",
-      "project": "https://github.com/syntax-tree/mdast-util-from-markdown"
+      "project": "https://github.com/syntax-tree/mdast-util-from-markdown#readme"
     },
     {
       "name": "mdast-util-gfm-table",
       "version": "2.0.0",
       "licence": "MIT",
-      "project": "https://github.com/syntax-tree/mdast-util-gfm-table"
+      "project": "https://github.com/syntax-tree/mdast-util-gfm-table#readme"
     },
     {
       "name": "micromark-extension-gfm-table",
       "version": "2.1.2",
       "licence": "MIT",
-      "project": "https://github.com/micromark/micromark-extension-gfm-table"
+      "project": "https://github.com/micromark/micromark-extension-gfm-table#readme"
+    },
+    {
+      "name": "normalize-package-data",
+      "version": "9.0.0",
+      "licence": "BSD-2-Clause",
+      "project": "https://github.com/npm/normalize-package-data#readme"
     },
     {
       "name": "prettier",
@@ -153,7 +165,7 @@
       "name": "simple-git-hooks",
       "version": "2.14.0",
       "licence": "MIT",
-      "project": "https://github.com/toplenboren/simple-git-hooks"
+      "project": "https://github.com/toplenboren/simple-git-hooks#readme"
     },
     {
       "name": "typescript",

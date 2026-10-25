@@ -10,7 +10,8 @@ interface Props {
   title: string;
   heading: string;
   description: string;
-  contents: readonly { id: string; title: string }[];
+  /** `count`, where given, sits at the right of its entry in MONO.sm. */
+  contents: readonly { id: string; title: string; count?: string }[];
   noindex?: boolean;
 }
 
@@ -34,16 +35,28 @@ const { title, heading, description, contents, noindex = false } = Astro.props;
             Contents
           </h2>
           <ul class="m-0 list-none p-0">
-            {contents.map(({ id, title: label }) => (
-              <li>
-                <a
-                  href={`#${id}`}
-                  class="inline-flex min-h-target min-w-target items-center"
-                >
-                  {label}
-                </a>
-              </li>
-            ))}
+            {contents.map(({ id, title: label, count }) =>
+              count === undefined ? (
+                <li>
+                  <a
+                    href={`#${id}`}
+                    class="inline-flex min-h-target min-w-target items-center"
+                  >
+                    {label}
+                  </a>
+                </li>
+              ) : (
+                <li class="flex items-center justify-between gap-3 border-t border-hairline">
+                  <a
+                    href={`#${id}`}
+                    class="inline-flex min-h-target min-w-target items-center"
+                  >
+                    {label}
+                  </a>
+                  <span class="mono-sm text-muted">{count}</span>
+                </li>
+              ),
+            )}
           </ul>
         </nav>
       )}
