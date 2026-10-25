@@ -1,5 +1,12 @@
 # Weekly, grouped, and seven days behind a release, so a compromised
 # version has time to be caught before it reaches this repo.
+#
+# Only minor and patch updates are grouped: a major version gets a PR of
+# its own, so one that the tree can't take yet (TypeScript 7 before
+# @astrojs/check supports it) fails alone instead of holding back the rest.
+#
+# On npm PRs, the open-source list is refreshed by the "Open-source list"
+# and "Commit the open-source list" workflows (docs/dependabot.md).
 version: 2
 updates:
   - package-ecosystem: github-actions
@@ -11,6 +18,7 @@ updates:
     groups:
       actions:
         patterns: ["*"]
+        update-types: [minor, patch]
   - package-ecosystem: npm
     directory: /
     schedule:
@@ -18,10 +26,16 @@ updates:
     open-pull-requests-limit: 5
     cooldown:
       default-days: 7
+    ignore:
+      # Node is pinned to 24 (.nvmrc); its types move with that pin, by hand.
+      - dependency-name: "@types/node"
+        update-types: [version-update:semver-major]
     groups:
       production:
         dependency-type: production
         patterns: ["*"]
+        update-types: [minor, patch]
       development:
         dependency-type: development
         patterns: ["*"]
+        update-types: [minor, patch]
