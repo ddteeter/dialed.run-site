@@ -5,6 +5,7 @@
 .env
 .env.*
 .lighthouseci/
+.oss/
 .wrangler/
 /dist/
 lighthouse-report/

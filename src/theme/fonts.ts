@@ -7,7 +7,8 @@
  *
  * scripts/generate-theme.ts writes src/styles/fonts.generated.css from this,
  * BaseLayout preloads the faces marked `preload`, and /open-source lists
- * FONT_FAMILIES.
+ * FONT_FAMILIES, under the OFL text in ./OFL-1.1.txt. The copyright lines
+ * are the families' OFL notices, as the app's public/fonts/OFL.txt gives them.
  */
 export const LATIN =
   "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD";
@@ -82,6 +83,8 @@ export const FONT_FILES: readonly FontFile[] = [
 export interface FontFamilyCredit {
   family: FamilyKey;
   licence: "OFL-1.1";
+  /** The holder, as the family's OFL notice names it, without "Copyright". */
+  copyright: string;
   source: string;
 }
 
@@ -89,14 +92,21 @@ export const FONT_FAMILIES: readonly FontFamilyCredit[] = [
   {
     family: "display",
     licence: "OFL-1.1",
+    copyright: "2020 The Archivo Project Authors",
     source: "https://github.com/Omnibus-Type/ArchivoBlack",
   },
   {
     family: "text",
     licence: "OFL-1.1",
+    copyright: "2020 The Archivo Project Authors",
     source: "https://github.com/Omnibus-Type/Archivo",
   },
-  { family: "mono", licence: "OFL-1.1", source: "https://github.com/IBM/plex" },
+  {
+    family: "mono",
+    licence: "OFL-1.1",
+    copyright: '2017 IBM Corp. with Reserved Font Name "Plex"',
+    source: "https://github.com/IBM/plex",
+  },
 ];
 
 /** "'Archivo Black', Archivo, Helvetica, sans-serif" → "Archivo Black". */

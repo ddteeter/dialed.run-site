@@ -45,12 +45,21 @@ export function isRecognised(expression: string | undefined): boolean {
 }
 
 /** Throws, naming every package whose licence is missing or unrecognised. */
-export function checkLicences(packages: readonly InstalledPackage[]): void {
+export function checkLicences(
+  packages: readonly {
+    readonly name: string;
+    readonly version?: string | undefined;
+    readonly licence: string | undefined;
+  }[],
+): void {
   const bad = packages.filter((pkg) => !isRecognised(pkg.licence));
   if (bad.length > 0) {
     throw new Error(
       `Packages with a missing or unrecognised licence:\n${bad
-        .map((pkg) => `  ${pkg.name}@${pkg.version}: ${pkg.licence ?? "none"}`)
+        .map(
+          (pkg) =>
+            `  ${pkg.name}@${pkg.version ?? "?"}: ${pkg.licence ?? "none"}`,
+        )
         .join("\n")}`,
     );
   }

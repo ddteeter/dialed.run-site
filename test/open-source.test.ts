@@ -30,18 +30,16 @@ describe("checkLicences", () => {
   it("names every package with a missing or unrecognised licence", () => {
     expect(() => {
       checkLicences([
-        { name: "fine", version: "1.0.0", licence: "MIT", homepage: undefined },
+        { name: "fine", version: "1.0.0", licence: "MIT" },
         {
           name: "none",
           version: "1.0.0",
           licence: undefined,
-          homepage: undefined,
         },
         {
           name: "odd",
           version: "2.0.0",
           licence: "Custom",
-          homepage: undefined,
         },
       ]);
     }).toThrow(/none@1\.0\.0: none\n {2}odd@2\.0\.0: Custom/);
