@@ -8,7 +8,9 @@
  * scripts/generate-theme.ts writes src/styles/fonts.generated.css from this,
  * BaseLayout preloads the faces marked `preload`, and /open-source lists
  * FONT_FAMILIES, under the OFL text in ./OFL-1.1.txt. The copyright lines
- * are the families' OFL notices, as the app's public/fonts/OFL.txt gives them.
+ * are each family's own OFL notice, as Google Fonts (google/fonts, ofl/)
+ * ships it with these files. Archivo Black is its own project, with its
+ * own holder.
  */
 export const LATIN =
   "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD";
@@ -92,7 +94,7 @@ export const FONT_FAMILIES: readonly FontFamilyCredit[] = [
   {
     family: "display",
     licence: "OFL-1.1",
-    copyright: "2020 The Archivo Project Authors",
+    copyright: "2017 The Archivo Black Project Authors",
     source: "https://github.com/Omnibus-Type/ArchivoBlack",
   },
   {

@@ -24,6 +24,7 @@
 <link rel="manifest" href="/manifest.webmanifest">
 <link rel="stylesheet" href="/_astro/BaseLayout.[hash].css">
 <link rel="stylesheet" href="/_astro/ReadingLayout.[hash].css">
+<link rel="stylesheet" href="/_astro/open-source.[hash].css">
 </head>
 <body class="flex min-h-screen flex-col">
 <a href="#main" class="sr-only focus:not-sr-only focus:absolute focus:m-2 focus:inline-flex focus:min-h-target focus:items-center focus:bg-ground focus:px-4">Skip to content</a>
@@ -56,22 +57,27 @@
 <nav aria-labelledby="contents-title" id="contents" class="reading-nav">
 <h2 id="contents-title" class="m-0 pb-2 mono-xs text-muted">Contents</h2>
 <ul class="m-0 list-none p-0">
-<li>
+<li class="flex items-center justify-between gap-3 border-t border-hairline">
 <a href="#sil-open-font-license-11" class="inline-flex min-h-target min-w-target items-center">SIL Open Font License 1.1</a>
+<span class="mono-sm text-muted">3</span>
 </li>
-<li>
+<li class="flex items-center justify-between gap-3 border-t border-hairline">
 <a href="#mit" class="inline-flex min-h-target min-w-target items-center">MIT</a>
+<span class="mono-sm text-muted">1</span>
 </li>
-<li>
+<li class="flex items-center justify-between gap-3 border-t border-hairline">
 <a href="#tools-we-build-with" class="inline-flex min-h-target min-w-target items-center">Tools we build with</a>
+<span class="mono-sm text-muted">26</span>
 </li>
 </ul>
 </nav>
 <div class="reading-body flex flex-col gap-6">
 <section aria-labelledby="sil-open-font-license-11" class="flex flex-col gap-3">
+<div class="flex items-baseline justify-between gap-3">
 <h2 id="sil-open-font-license-11" class="m-0 type-heading">SIL Open Font License 1.1</h2>
-<p class="m-0 mono-sm text-muted">3 · Type</p>
-<p class="m-0">The typefaces you read everything in.</p>
+<span class="mono-sm text-muted">3 · TYPE</span>
+</div>
+<p class="m-0 type-small text-quiet">The typefaces you read everything in.</p>
 <details>
 <summary class="inline-flex min-h-target cursor-pointer items-center type-small underline">Read the licence text</summary>
 <pre class="m-0 mt-2 font-text type-small whitespace-pre-wrap">SIL OPEN FONT LICENSE Version 1.1 - 26 February 2007
@@ -161,32 +167,28 @@ FROM, OUT OF THE USE OR INABILITY TO USE THE FONT SOFTWARE OR FROM
 OTHER DEALINGS IN THE FONT SOFTWARE.</pre>
 </details>
 <ul class="m-0 flex list-none flex-col p-0">
-<li class="flex flex-col gap-1 border-t border-hairline py-3">
-<div class="flex flex-wrap items-center gap-x-4">
+<li class="row grid items-baseline gap-x-3 border-t border-hairline py-3">
 <span class="font-semibold">Archivo Black</span>
 <a href="https://github.com/Omnibus-Type/ArchivoBlack" class="inline-flex min-h-target min-w-target items-center type-small underline">Project</a>
-</div>
-<span class="type-small text-muted">© 2020 The Archivo Project Authors</span>
+<span class="col-span-full type-small text-quiet">© 2017 The Archivo Black Project Authors</span>
 </li>
-<li class="flex flex-col gap-1 border-t border-hairline py-3">
-<div class="flex flex-wrap items-center gap-x-4">
+<li class="row grid items-baseline gap-x-3 border-t border-hairline py-3">
 <span class="font-semibold">Archivo</span>
 <a href="https://github.com/Omnibus-Type/Archivo" class="inline-flex min-h-target min-w-target items-center type-small underline">Project</a>
-</div>
-<span class="type-small text-muted">© 2020 The Archivo Project Authors</span>
+<span class="col-span-full type-small text-quiet">© 2020 The Archivo Project Authors</span>
 </li>
-<li class="flex flex-col gap-1 border-t border-hairline py-3">
-<div class="flex flex-wrap items-center gap-x-4">
+<li class="row grid items-baseline gap-x-3 border-t border-hairline py-3">
 <span class="font-semibold">IBM Plex Mono</span>
 <a href="https://github.com/IBM/plex" class="inline-flex min-h-target min-w-target items-center type-small underline">Project</a>
-</div>
-<span class="type-small text-muted">© 2017 IBM Corp. with Reserved Font Name &quot;Plex&quot;</span>
+<span class="col-span-full type-small text-quiet">© 2017 IBM Corp. with Reserved Font Name &quot;Plex&quot;</span>
 </li>
 </ul>
 </section>
 <section aria-labelledby="mit" class="flex flex-col gap-3">
+<div class="flex items-baseline justify-between gap-3">
 <h2 id="mit" class="m-0 type-heading">MIT</h2>
-<p class="m-0 mono-sm text-muted">1</p>
+<span class="mono-sm text-muted">1</span>
+</div>
 <details>
 <summary class="inline-flex min-h-target cursor-pointer items-center type-small underline">Read the MIT licence</summary>
 <pre class="m-0 mt-2 font-text type-small whitespace-pre-wrap">Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -208,228 +210,176 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.</pre>
 </details>
 <ul class="m-0 flex list-none flex-col p-0">
-<li class="flex flex-col gap-1 border-t border-hairline py-3">
-<div class="flex flex-wrap items-center gap-x-4">
-<span class="font-semibold">tailwindcss</span>
-<span class="mono-sm text-muted">4.3.3</span>
+<li class="row grid items-baseline gap-x-3 border-t border-hairline py-3">
+<span class="font-semibold">tailwindcss <span class="mono-sm font-normal text-muted">4.3.3</span>
+</span>
 <a href="https://tailwindcss.com" class="inline-flex min-h-target min-w-target items-center type-small underline">Project</a>
-</div>
-<span class="type-small text-muted">© Tailwind Labs, Inc</span>
+<span class="col-span-full type-small text-quiet">© Tailwind Labs, Inc</span>
 </li>
 </ul>
 </section>
 <section aria-labelledby="tools-we-build-with" class="flex flex-col gap-3">
+<div class="flex items-baseline justify-between gap-3">
 <h2 id="tools-we-build-with" class="m-0 type-heading">Tools we build with</h2>
-<p class="m-0 mono-sm text-muted">26 · NOT SHIPPED</p>
-<p class="m-0 type-small text-quiet">We build and test this site with these. None of them ships in it, so each is credited by name and licence.</p>
+<span class="mono-sm text-muted">26 · NOT SHIPPED</span>
+</div>
+<p class="m-0 type-small text-quiet">We build and test the website with these. None of them ships in it, so each is credited by name and licence.</p>
 <ul class="m-0 flex list-none flex-col p-0">
-<li class="flex flex-col gap-1 border-t border-hairline py-3">
-<div class="flex flex-wrap items-center gap-x-4">
-<span class="font-semibold">@astrojs/check</span>
-<span class="mono-sm text-muted">0.9.10</span>
+<li class="row grid items-baseline gap-x-3 border-t border-hairline py-3">
+<span class="font-semibold">@astrojs/check <span class="mono-sm font-normal text-muted">0.9.10</span>
+</span>
 <a href="https://github.com/withastro/astro/tree/main/packages/language-tools/astro-check" class="inline-flex min-h-target min-w-target items-center type-small underline">Project</a>
-</div>
-<span class="mono-xs text-muted">MIT</span>
+<span class="col-span-full mono-xs text-muted">MIT</span>
 </li>
-<li class="flex flex-col gap-1 border-t border-hairline py-3">
-<div class="flex flex-wrap items-center gap-x-4">
-<span class="font-semibold">@axe-core/playwright</span>
-<span class="mono-sm text-muted">4.13.0</span>
+<li class="row grid items-baseline gap-x-3 border-t border-hairline py-3">
+<span class="font-semibold">@axe-core/playwright <span class="mono-sm font-normal text-muted">4.13.0</span>
+</span>
 <a href="https://github.com/dequelabs/axe-core-npm" class="inline-flex min-h-target min-w-target items-center type-small underline">Project</a>
-</div>
-<span class="mono-xs text-muted">MPL-2.0</span>
+<span class="col-span-full mono-xs text-muted">MPL-2.0</span>
 </li>
-<li class="flex flex-col gap-1 border-t border-hairline py-3">
-<div class="flex flex-wrap items-center gap-x-4">
-<span class="font-semibold">@eslint/js</span>
-<span class="mono-sm text-muted">10.0.1</span>
+<li class="row grid items-baseline gap-x-3 border-t border-hairline py-3">
+<span class="font-semibold">@eslint/js <span class="mono-sm font-normal text-muted">10.0.1</span>
+</span>
 <a href="https://eslint.org" class="inline-flex min-h-target min-w-target items-center type-small underline">Project</a>
-</div>
-<span class="mono-xs text-muted">MIT</span>
+<span class="col-span-full mono-xs text-muted">MIT</span>
 </li>
-<li class="flex flex-col gap-1 border-t border-hairline py-3">
-<div class="flex flex-wrap items-center gap-x-4">
-<span class="font-semibold">@playwright/test</span>
-<span class="mono-sm text-muted">1.63.0</span>
+<li class="row grid items-baseline gap-x-3 border-t border-hairline py-3">
+<span class="font-semibold">@playwright/test <span class="mono-sm font-normal text-muted">1.63.0</span>
+</span>
 <a href="https://playwright.dev" class="inline-flex min-h-target min-w-target items-center type-small underline">Project</a>
-</div>
-<span class="mono-xs text-muted">Apache-2.0</span>
+<span class="col-span-full mono-xs text-muted">Apache-2.0</span>
 </li>
-<li class="flex flex-col gap-1 border-t border-hairline py-3">
-<div class="flex flex-wrap items-center gap-x-4">
-<span class="font-semibold">@tailwindcss/vite</span>
-<span class="mono-sm text-muted">4.3.3</span>
+<li class="row grid items-baseline gap-x-3 border-t border-hairline py-3">
+<span class="font-semibold">@tailwindcss/vite <span class="mono-sm font-normal text-muted">4.3.3</span>
+</span>
 <a href="https://tailwindcss.com" class="inline-flex min-h-target min-w-target items-center type-small underline">Project</a>
-</div>
-<span class="mono-xs text-muted">MIT</span>
+<span class="col-span-full mono-xs text-muted">MIT</span>
 </li>
-<li class="flex flex-col gap-1 border-t border-hairline py-3">
-<div class="flex flex-wrap items-center gap-x-4">
-<span class="font-semibold">@types/mdast</span>
-<span class="mono-sm text-muted">4.0.4</span>
+<li class="row grid items-baseline gap-x-3 border-t border-hairline py-3">
+<span class="font-semibold">@types/mdast <span class="mono-sm font-normal text-muted">4.0.4</span>
+</span>
 <a href="https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/mdast" class="inline-flex min-h-target min-w-target items-center type-small underline">Project</a>
-</div>
-<span class="mono-xs text-muted">MIT</span>
+<span class="col-span-full mono-xs text-muted">MIT</span>
 </li>
-<li class="flex flex-col gap-1 border-t border-hairline py-3">
-<div class="flex flex-wrap items-center gap-x-4">
-<span class="font-semibold">@types/node</span>
-<span class="mono-sm text-muted">24.19.1</span>
+<li class="row grid items-baseline gap-x-3 border-t border-hairline py-3">
+<span class="font-semibold">@types/node <span class="mono-sm font-normal text-muted">24.19.1</span>
+</span>
 <a href="https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/node" class="inline-flex min-h-target min-w-target items-center type-small underline">Project</a>
-</div>
-<span class="mono-xs text-muted">MIT</span>
+<span class="col-span-full mono-xs text-muted">MIT</span>
 </li>
-<li class="flex flex-col gap-1 border-t border-hairline py-3">
-<div class="flex flex-wrap items-center gap-x-4">
-<span class="font-semibold">astro</span>
-<span class="mono-sm text-muted">7.3.5</span>
+<li class="row grid items-baseline gap-x-3 border-t border-hairline py-3">
+<span class="font-semibold">astro <span class="mono-sm font-normal text-muted">7.3.5</span>
+</span>
 <a href="https://astro.build" class="inline-flex min-h-target min-w-target items-center type-small underline">Project</a>
-</div>
-<span class="mono-xs text-muted">MIT</span>
+<span class="col-span-full mono-xs text-muted">MIT</span>
 </li>
-<li class="flex flex-col gap-1 border-t border-hairline py-3">
-<div class="flex flex-wrap items-center gap-x-4">
-<span class="font-semibold">eslint</span>
-<span class="mono-sm text-muted">10.12.0</span>
+<li class="row grid items-baseline gap-x-3 border-t border-hairline py-3">
+<span class="font-semibold">eslint <span class="mono-sm font-normal text-muted">10.12.0</span>
+</span>
 <a href="https://eslint.org" class="inline-flex min-h-target min-w-target items-center type-small underline">Project</a>
-</div>
-<span class="mono-xs text-muted">MIT</span>
+<span class="col-span-full mono-xs text-muted">MIT</span>
 </li>
-<li class="flex flex-col gap-1 border-t border-hairline py-3">
-<div class="flex flex-wrap items-center gap-x-4">
-<span class="font-semibold">eslint-config-prettier</span>
-<span class="mono-sm text-muted">10.1.8</span>
+<li class="row grid items-baseline gap-x-3 border-t border-hairline py-3">
+<span class="font-semibold">eslint-config-prettier <span class="mono-sm font-normal text-muted">10.1.8</span>
+</span>
 <a href="https://github.com/prettier/eslint-config-prettier#readme" class="inline-flex min-h-target min-w-target items-center type-small underline">Project</a>
-</div>
-<span class="mono-xs text-muted">MIT</span>
+<span class="col-span-full mono-xs text-muted">MIT</span>
 </li>
-<li class="flex flex-col gap-1 border-t border-hairline py-3">
-<div class="flex flex-wrap items-center gap-x-4">
-<span class="font-semibold">eslint-plugin-astro</span>
-<span class="mono-sm text-muted">3.2.1</span>
+<li class="row grid items-baseline gap-x-3 border-t border-hairline py-3">
+<span class="font-semibold">eslint-plugin-astro <span class="mono-sm font-normal text-muted">3.2.1</span>
+</span>
 <a href="https://ota-meshi.github.io/eslint-plugin-astro/" class="inline-flex min-h-target min-w-target items-center type-small underline">Project</a>
-</div>
-<span class="mono-xs text-muted">MIT</span>
+<span class="col-span-full mono-xs text-muted">MIT</span>
 </li>
-<li class="flex flex-col gap-1 border-t border-hairline py-3">
-<div class="flex flex-wrap items-center gap-x-4">
-<span class="font-semibold">globals</span>
-<span class="mono-sm text-muted">17.13.0</span>
+<li class="row grid items-baseline gap-x-3 border-t border-hairline py-3">
+<span class="font-semibold">globals <span class="mono-sm font-normal text-muted">17.13.0</span>
+</span>
 <a href="https://github.com/sindresorhus/globals" class="inline-flex min-h-target min-w-target items-center type-small underline">Project</a>
-</div>
-<span class="mono-xs text-muted">MIT</span>
+<span class="col-span-full mono-xs text-muted">MIT</span>
 </li>
-<li class="flex flex-col gap-1 border-t border-hairline py-3">
-<div class="flex flex-wrap items-center gap-x-4">
-<span class="font-semibold">linkedom</span>
-<span class="mono-sm text-muted">0.18.13</span>
+<li class="row grid items-baseline gap-x-3 border-t border-hairline py-3">
+<span class="font-semibold">linkedom <span class="mono-sm font-normal text-muted">0.18.13</span>
+</span>
 <a href="https://github.com/WebReflection/linkedom#readme" class="inline-flex min-h-target min-w-target items-center type-small underline">Project</a>
-</div>
-<span class="mono-xs text-muted">ISC</span>
+<span class="col-span-full mono-xs text-muted">ISC</span>
 </li>
-<li class="flex flex-col gap-1 border-t border-hairline py-3">
-<div class="flex flex-wrap items-center gap-x-4">
-<span class="font-semibold">lint-staged</span>
-<span class="mono-sm text-muted">17.6.0</span>
+<li class="row grid items-baseline gap-x-3 border-t border-hairline py-3">
+<span class="font-semibold">lint-staged <span class="mono-sm font-normal text-muted">17.6.0</span>
+</span>
 <a href="https://github.com/lint-staged/lint-staged#readme" class="inline-flex min-h-target min-w-target items-center type-small underline">Project</a>
-</div>
-<span class="mono-xs text-muted">MIT</span>
+<span class="col-span-full mono-xs text-muted">MIT</span>
 </li>
-<li class="flex flex-col gap-1 border-t border-hairline py-3">
-<div class="flex flex-wrap items-center gap-x-4">
-<span class="font-semibold">mdast-util-from-markdown</span>
-<span class="mono-sm text-muted">2.1.0</span>
+<li class="row grid items-baseline gap-x-3 border-t border-hairline py-3">
+<span class="font-semibold">mdast-util-from-markdown <span class="mono-sm font-normal text-muted">2.1.0</span>
+</span>
 <a href="https://github.com/syntax-tree/mdast-util-from-markdown" class="inline-flex min-h-target min-w-target items-center type-small underline">Project</a>
-</div>
-<span class="mono-xs text-muted">MIT</span>
+<span class="col-span-full mono-xs text-muted">MIT</span>
 </li>
-<li class="flex flex-col gap-1 border-t border-hairline py-3">
-<div class="flex flex-wrap items-center gap-x-4">
-<span class="font-semibold">mdast-util-gfm-table</span>
-<span class="mono-sm text-muted">2.0.0</span>
+<li class="row grid items-baseline gap-x-3 border-t border-hairline py-3">
+<span class="font-semibold">mdast-util-gfm-table <span class="mono-sm font-normal text-muted">2.0.0</span>
+</span>
 <a href="https://github.com/syntax-tree/mdast-util-gfm-table" class="inline-flex min-h-target min-w-target items-center type-small underline">Project</a>
-</div>
-<span class="mono-xs text-muted">MIT</span>
+<span class="col-span-full mono-xs text-muted">MIT</span>
 </li>
-<li class="flex flex-col gap-1 border-t border-hairline py-3">
-<div class="flex flex-wrap items-center gap-x-4">
-<span class="font-semibold">micromark-extension-gfm-table</span>
-<span class="mono-sm text-muted">2.1.2</span>
+<li class="row grid items-baseline gap-x-3 border-t border-hairline py-3">
+<span class="font-semibold">micromark-extension-gfm-table <span class="mono-sm font-normal text-muted">2.1.2</span>
+</span>
 <a href="https://github.com/micromark/micromark-extension-gfm-table" class="inline-flex min-h-target min-w-target items-center type-small underline">Project</a>
-</div>
-<span class="mono-xs text-muted">MIT</span>
+<span class="col-span-full mono-xs text-muted">MIT</span>
 </li>
-<li class="flex flex-col gap-1 border-t border-hairline py-3">
-<div class="flex flex-wrap items-center gap-x-4">
-<span class="font-semibold">prettier</span>
-<span class="mono-sm text-muted">3.9.9</span>
+<li class="row grid items-baseline gap-x-3 border-t border-hairline py-3">
+<span class="font-semibold">prettier <span class="mono-sm font-normal text-muted">3.9.9</span>
+</span>
 <a href="https://prettier.io" class="inline-flex min-h-target min-w-target items-center type-small underline">Project</a>
-</div>
-<span class="mono-xs text-muted">MIT</span>
+<span class="col-span-full mono-xs text-muted">MIT</span>
 </li>
-<li class="flex flex-col gap-1 border-t border-hairline py-3">
-<div class="flex flex-wrap items-center gap-x-4">
-<span class="font-semibold">prettier-plugin-astro</span>
-<span class="mono-sm text-muted">1.1.0</span>
+<li class="row grid items-baseline gap-x-3 border-t border-hairline py-3">
+<span class="font-semibold">prettier-plugin-astro <span class="mono-sm font-normal text-muted">1.1.0</span>
+</span>
 <a href="https://github.com/withastro/prettier-plugin-astro/" class="inline-flex min-h-target min-w-target items-center type-small underline">Project</a>
-</div>
-<span class="mono-xs text-muted">MIT</span>
+<span class="col-span-full mono-xs text-muted">MIT</span>
 </li>
-<li class="flex flex-col gap-1 border-t border-hairline py-3">
-<div class="flex flex-wrap items-center gap-x-4">
-<span class="font-semibold">schema-dts</span>
-<span class="mono-sm text-muted">2.1.0</span>
+<li class="row grid items-baseline gap-x-3 border-t border-hairline py-3">
+<span class="font-semibold">schema-dts <span class="mono-sm font-normal text-muted">2.1.0</span>
+</span>
 <a href="https://opensource.google/projects/schema-dts" class="inline-flex min-h-target min-w-target items-center type-small underline">Project</a>
-</div>
-<span class="mono-xs text-muted">Apache-2.0</span>
+<span class="col-span-full mono-xs text-muted">Apache-2.0</span>
 </li>
-<li class="flex flex-col gap-1 border-t border-hairline py-3">
-<div class="flex flex-wrap items-center gap-x-4">
-<span class="font-semibold">simple-git-hooks</span>
-<span class="mono-sm text-muted">2.14.0</span>
+<li class="row grid items-baseline gap-x-3 border-t border-hairline py-3">
+<span class="font-semibold">simple-git-hooks <span class="mono-sm font-normal text-muted">2.14.0</span>
+</span>
 <a href="https://github.com/toplenboren/simple-git-hooks" class="inline-flex min-h-target min-w-target items-center type-small underline">Project</a>
-</div>
-<span class="mono-xs text-muted">MIT</span>
+<span class="col-span-full mono-xs text-muted">MIT</span>
 </li>
-<li class="flex flex-col gap-1 border-t border-hairline py-3">
-<div class="flex flex-wrap items-center gap-x-4">
-<span class="font-semibold">typescript</span>
-<span class="mono-sm text-muted">6.0.3</span>
+<li class="row grid items-baseline gap-x-3 border-t border-hairline py-3">
+<span class="font-semibold">typescript <span class="mono-sm font-normal text-muted">6.0.3</span>
+</span>
 <a href="https://www.typescriptlang.org/" class="inline-flex min-h-target min-w-target items-center type-small underline">Project</a>
-</div>
-<span class="mono-xs text-muted">Apache-2.0</span>
+<span class="col-span-full mono-xs text-muted">Apache-2.0</span>
 </li>
-<li class="flex flex-col gap-1 border-t border-hairline py-3">
-<div class="flex flex-wrap items-center gap-x-4">
-<span class="font-semibold">typescript-eslint</span>
-<span class="mono-sm text-muted">8.71.0</span>
+<li class="row grid items-baseline gap-x-3 border-t border-hairline py-3">
+<span class="font-semibold">typescript-eslint <span class="mono-sm font-normal text-muted">8.71.0</span>
+</span>
 <a href="https://typescript-eslint.io/packages/typescript-eslint" class="inline-flex min-h-target min-w-target items-center type-small underline">Project</a>
-</div>
-<span class="mono-xs text-muted">MIT</span>
+<span class="col-span-full mono-xs text-muted">MIT</span>
 </li>
-<li class="flex flex-col gap-1 border-t border-hairline py-3">
-<div class="flex flex-wrap items-center gap-x-4">
-<span class="font-semibold">vitest</span>
-<span class="mono-sm text-muted">5.0.3</span>
+<li class="row grid items-baseline gap-x-3 border-t border-hairline py-3">
+<span class="font-semibold">vitest <span class="mono-sm font-normal text-muted">5.0.3</span>
+</span>
 <a href="https://vitest.dev" class="inline-flex min-h-target min-w-target items-center type-small underline">Project</a>
-</div>
-<span class="mono-xs text-muted">MIT</span>
+<span class="col-span-full mono-xs text-muted">MIT</span>
 </li>
-<li class="flex flex-col gap-1 border-t border-hairline py-3">
-<div class="flex flex-wrap items-center gap-x-4">
-<span class="font-semibold">wrangler</span>
-<span class="mono-sm text-muted">4.147.0</span>
+<li class="row grid items-baseline gap-x-3 border-t border-hairline py-3">
+<span class="font-semibold">wrangler <span class="mono-sm font-normal text-muted">4.147.0</span>
+</span>
 <a href="https://github.com/cloudflare/workers-sdk#readme" class="inline-flex min-h-target min-w-target items-center type-small underline">Project</a>
-</div>
-<span class="mono-xs text-muted">MIT OR Apache-2.0</span>
+<span class="col-span-full mono-xs text-muted">MIT OR Apache-2.0</span>
 </li>
-<li class="flex flex-col gap-1 border-t border-hairline py-3">
-<div class="flex flex-wrap items-center gap-x-4">
-<span class="font-semibold">zod</span>
-<span class="mono-sm text-muted">4.6.5</span>
+<li class="row grid items-baseline gap-x-3 border-t border-hairline py-3">
+<span class="font-semibold">zod <span class="mono-sm font-normal text-muted">4.6.5</span>
+</span>
 <a href="https://zod.dev" class="inline-flex min-h-target min-w-target items-center type-small underline">Project</a>
-</div>
-<span class="mono-xs text-muted">MIT</span>
+<span class="col-span-full mono-xs text-muted">MIT</span>
 </li>
 </ul>
 </section>

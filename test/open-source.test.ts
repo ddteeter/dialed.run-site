@@ -141,7 +141,7 @@ describe("/open-source", async () => {
       { url: "https://dialed.run/open-source" },
     ),
   );
-  const section = (id: string) => doc.getElementById(id)?.parentElement;
+  const section = (id: string) => doc.getElementById(id)?.closest("section");
 
   it("puts the type first, the licences largest first, then the tools last", () => {
     expect(
@@ -164,6 +164,20 @@ describe("/open-source", async () => {
     ]);
   });
 
+  it("counts each group in the contents (round 40 #83f)", () => {
+    expect(
+      [...doc.querySelectorAll("#contents li")].map((li) => [
+        li.querySelector("a")?.textContent.trim(),
+        li.querySelector(".mono-sm")?.textContent,
+      ]),
+    ).toEqual([
+      ["SIL Open Font License 1.1", "1"],
+      ["MIT", "2"],
+      ["Apache 2.0", "1"],
+      ["Tools we build with", "1"],
+    ]);
+  });
+
   it("counts only what ships in the lead", () => {
     expect(doc.querySelector(".type-lead")?.textContent).toContain(
       "all 4 pieces it ships",
@@ -172,7 +186,7 @@ describe("/open-source", async () => {
 
   it("prints each group's count, and its licence text once", () => {
     expect(section("sil-open-font-license-11")?.textContent).toContain(
-      "1 · Type",
+      "1 · TYPE",
     );
     const mit = section("mit");
     expect(mit?.querySelector(".mono-sm")?.textContent).toBe("2");

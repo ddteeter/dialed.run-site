@@ -4,9 +4,11 @@
  * grouped by licence with the type first, then the tools that build it.
  * The lead says so first and links the app's own list, so a visitor who
  * came for the app's credits isn't left with the website's four pieces.
- * It has no board; it follows the app's page (design 151; round 40 #82),
- * minus the search and "Show all", which a list this short doesn't need.
+ * Board: Round 40 Rulings, item 83, after the app's page (design 151;
+ * round 40 #82). No search, no "Show all" and no script: every row shows,
+ * last on the page, where find-in-page reaches it (revisit past ~60).
  *
+ * - **The contents** carry each group's count, as the app's do.
  * - **A group** is headed by its licence and count. "Read the MIT
  *   licence" opens the full text once, above the rows. A row is the name,
  *   the shipped version, "Project", and the copyright line; "Notice"
@@ -29,14 +31,18 @@ interface Props {
 
 const { groups, tools } = Astro.props;
 const contents = [
-  ...groups.map(({ id, name }) => ({ id, title: name })),
-  { id: tools.id, title: tools.name },
+  ...groups.map(({ id, name, pieces }) => ({
+    id,
+    title: name,
+    count: String(pieces.length),
+  })),
+  { id: tools.id, title: tools.name, count: String(tools.pieces.length) },
 ];
 const all = [...groups, tools];
 
 function countLine(group: LicenceGroup): string {
   const count = String(group.pieces.length);
-  if (group.kind === "type") return `${count} · Type`;
+  if (group.kind === "type") return `${count} · TYPE`;
   if (group.kind === "tools") return `${count} · NOT SHIPPED`;
   return count;
 }
@@ -65,16 +71,20 @@ const summary =
 
   {all.map((group) => (
     <section aria-labelledby={group.id} class="flex flex-col gap-3">
-      <h2 id={group.id} class="m-0 type-heading">
-        {group.name}
-      </h2>
-      <p class="m-0 mono-sm text-muted">{countLine(group)}</p>
+      <div class="flex items-baseline justify-between gap-3">
+        <h2 id={group.id} class="m-0 type-heading">
+          {group.name}
+        </h2>
+        <span class="mono-sm text-muted">{countLine(group)}</span>
+      </div>
       {group.kind === "type" && (
-        <p class="m-0">The typefaces you read everything in.</p>
+        <p class="m-0 type-small text-quiet">
+          The typefaces you read everything in.
+        </p>
       )}
       {group.kind === "tools" && (
         <p class="m-0 type-small text-quiet">
-          We build and test this site with these. None of them ships in it, so
+          We build and test the website with these. None of them ships in it, so
           each is credited by name and licence.
         </p>
       )}
@@ -89,27 +99,36 @@ const summary =
       )}
       <ul class="m-0 flex list-none flex-col p-0">
         {group.pieces.map((piece) => (
-          <li class="flex flex-col gap-1 border-t border-hairline py-3">
-            <div class="flex flex-wrap items-center gap-x-4">
-              <span class="font-semibold">{piece.name}</span>
+          <li class="row grid items-baseline gap-x-3 border-t border-hairline py-3">
+            <span class="font-semibold">
+              {piece.name}
               {piece.version !== undefined && (
-                <span class="mono-sm text-muted">{piece.version}</span>
+                <Fragment>
+                  {" "}
+                  <span class="mono-sm font-normal text-muted">
+                    {piece.version}
+                  </span>
+                </Fragment>
               )}
-              {piece.project !== undefined && (
-                <a href={piece.project} class={link}>
-                  Project
-                </a>
-              )}
-            </div>
+            </span>
+            {piece.project !== undefined && (
+              <a href={piece.project} class={link}>
+                Project
+              </a>
+            )}
             {group.kind === "tools"
               ? piece.licence !== undefined && (
-                  <span class="mono-xs text-muted">{piece.licence}</span>
+                  <span class="col-span-full mono-xs text-muted">
+                    {piece.licence}
+                  </span>
                 )
               : piece.copyright !== undefined && (
-                  <span class="type-small text-muted">© {piece.copyright}</span>
+                  <span class="col-span-full type-small text-quiet">
+                    © {piece.copyright}
+                  </span>
                 )}
             {piece.notice !== undefined && (
-              <details>
+              <details class="col-span-full">
                 <summary class={summary}>Notice</summary>
                 <pre
                   class="m-0 mt-2 font-text type-small whitespace-pre-wrap"
@@ -118,7 +137,7 @@ const summary =
               </details>
             )}
             {piece.text !== undefined && (
-              <details>
+              <details class="col-span-full">
                 <summary class={summary}>Licence</summary>
                 <pre
                   class="m-0 mt-2 font-text type-small whitespace-pre-wrap"
@@ -132,3 +151,10 @@ const summary =
     </section>
   ))}
 </ReadingLayout>
+
+<style>
+  /* Name and version, then Project at the right; the line under spans both. */
+  .row {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+</style>
