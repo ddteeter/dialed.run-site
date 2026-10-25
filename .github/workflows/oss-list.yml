@@ -1,0 +1,57 @@
+name: Open-source list
+
+# On a Dependabot npm PR, rebuilds src/lib/oss/open-source-list.json and
+# uploads it. Dependabot can't run the build, so without this every PR
+# that changes a dependency fails CI's stale-list check.
+#
+# Read-only: this runs the bumped packages' code, so it gets no write
+# token and no secrets. "Commit the open-source list" (oss-list-commit.yml)
+# runs from main on workflow_run, checks what this uploaded, and commits
+# it to the PR. See docs/dependabot.md.
+on:
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  list:
+    # A same-repo Dependabot npm branch only; a fork can't name its way in.
+    if: >-
+      startsWith(github.head_ref, 'dependabot/npm_and_yarn/') &&
+      github.event.pull_request.head.repo.full_name == github.repository &&
+      github.event.pull_request.user.login == 'dependabot[bot]'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      USE_FIXTURE_DATA: "true"
+    steps:
+      # The PR's head, which is what the list will be committed onto.
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          persist-credentials: false
+
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - run: npm ci
+
+      # postbuild rewrites the list, then fails under CI because it changed.
+      # That failure is what this workflow is for, so it doesn't stop the run.
+      - name: Build, which rewrites the list
+        run: npm run build:fixture
+        continue-on-error: true
+
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: open-source-list
+          path: src/lib/oss/open-source-list.json
+          if-no-files-found: error
+          retention-days: 1
