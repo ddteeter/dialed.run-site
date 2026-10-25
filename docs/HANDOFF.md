@@ -186,7 +186,7 @@ Build these from the board. The rules below are the ones that are easy to miss.
 - **Ships:** Vite's `build.license` report for the client build, plus each package a stylesheet's preserved banner names (Tailwind's base styles). Each row has its licence text and copyright line. The prerender build never reaches a visitor, so it isn't counted.
 - **Type:** the fonts in `src/theme/fonts.ts`, under the OFL text in `src/theme/OFL-1.1.txt`.
 - **Tools we build with:** every direct dependency and devDependency that doesn't ship, by name, version, licence and project.
-- **The app's list** is linked at `https://app.dialed.run/open-source`. Each property credits what it ships; a mirrored copy of the app's list would drift.
+- **The app's list** stays on the app, at `https://app.dialed.run/open-source`. The page's lead says first that it covers the website and links there. The app's committed list could be fetched at a pinned ref, as the legal texts are, but the site doesn't distribute the app's code, so the app's page meets those licences; pulling it in would mean about 170 rows and a pin to keep current (owner, 2026-10-25).
 
 `postbuild` writes `src/lib/oss/open-source-list.json`, which is committed. Under `CI`, a build that changes it fails: when dependencies change, run `npm run build` and commit the list. The build fails if a shipped package has a missing or unrecognised licence. The text logic (`src/lib/oss/licence-text.ts`) is ported verbatim from the app: change it there first.
 

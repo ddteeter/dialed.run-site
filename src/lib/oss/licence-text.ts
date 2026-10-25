@@ -34,9 +34,14 @@ export interface Bundled {
   readonly version: string;
   readonly identifier?: string | undefined;
   readonly text?: string | undefined;
-  readonly author?: unknown;
-  readonly homepage?: unknown;
-  readonly repository?: unknown;
+  /**
+  The author's name, as `normalize-package-data` reads package.json.
+  */
+  readonly author?: string | undefined;
+  /**
+  The homepage, which `normalize-package-data` derives from a hosted repository.
+  */
+  readonly homepage?: string | undefined;
   readonly notice?: string | undefined;
 }
 
@@ -92,45 +97,20 @@ export function holdersOf(text: string): string | undefined {
 }
 
 /**
- * package.json's author as a name: "Name <address> (site)" is "Name", and
- * an address alone is no name.
+ * An author's name as a copyright holder: an address alone is no name.
+ * `normalize-package-data` has already cut "Name <address> (site)" to
+ * "Name", but reads a bare "someone@example.com" as a name.
  */
-export function authorOf(author: unknown): string | undefined {
-  const raw =
-    typeof author === "object" && author !== null && "name" in author
-      ? author.name
-      : author;
-  if (typeof raw !== "string") return undefined;
-  const name = String(raw.split(/[<(]/u, 1)[0]).trim();
-  const isAddress = !name.includes(" ") && name.includes("@");
-  return name === "" || isAddress ? undefined : name;
+function holderNamed(author: string | undefined): string | undefined {
+  const isAddress = author?.includes("@") === true && !author.includes(" ");
+  return author === "" || isAddress ? undefined : author;
 }
 
 /**
- * A package's project as a web address: its homepage, or its repository,
- * which package.json allows as a git URL, an object holding one, or npm's
- * `owner/repo` shorthand. Anything not `https://` gets no link.
- */
-export function projectOf(
-  homepage: unknown,
-  repository: unknown,
-): string | undefined {
-  if (typeof homepage === "string" && homepage.startsWith("https://")) {
-    return homepage;
-  }
-  const raw =
-    typeof repository === "object" && repository !== null && "url" in repository
-      ? repository.url
-      : repository;
-  if (typeof raw !== "string") return undefined;
-  const shorthand = /^(?:github:)?([\w.-]+\/[\w.-]+)$/u.exec(raw);
-  if (shorthand !== null) return `https://github.com/${String(shorthand[1])}`;
-  const url = raw
-    .replace(/^git\+/u, "")
-    .replace(/^git:\/\//u, "https://")
-    .replace(/^ssh:\/\/git@/u, "https://")
-    .replace(/\.git$/u, "");
-  return url.startsWith("https://") ? url : undefined;
+A page the project row may link to: https only, since it reaches an href.
+*/
+function linkTo(homepage: string | undefined): string | undefined {
+  return homepage?.startsWith("https://") === true ? homepage : undefined;
 }
 
 /**
@@ -241,8 +221,8 @@ export function shippedList(bundled: readonly Bundled[]): {
   const rows = Array.from(unique.values(), (entry) => {
     const copyright =
       (entry.text === undefined ? undefined : holdersOf(entry.text)) ??
-      authorOf(entry.author);
-    const project = projectOf(entry.homepage, entry.repository);
+      holderNamed(entry.author);
+    const project = linkTo(entry.homepage);
     const notice = entry.notice?.trim();
     const piece: ListedPiece = {
       name: entry.name,
@@ -293,8 +273,7 @@ export interface Tool {
   readonly name: string;
   readonly version: string;
   readonly license?: unknown;
-  readonly homepage?: unknown;
-  readonly repository?: unknown;
+  readonly homepage?: string | undefined;
 }
 
 /**
@@ -309,14 +288,14 @@ function declaredLicence(name: string, license: unknown): string {
 }
 
 /**
- * "Built with" (design 151): the tools that build the app and do not ship
+ * "Tools we build with" (design 151; round 40 #82): the tools that build the app and do not ship
  * in it, one row each with its licence and project — no licence text and
  * no copyright line, which a licence asks for only on a copy distributed.
  */
 export function toolList(tools: readonly Tool[]): readonly ListedPiece[] {
   return tools
     .map((tool) => {
-      const project = projectOf(tool.homepage, tool.repository);
+      const project = linkTo(tool.homepage);
       return {
         name: tool.name,
         version: tool.version,
