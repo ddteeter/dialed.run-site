@@ -9,6 +9,7 @@
   "scripts": {
     "dev": "USE_FIXTURE_DATA=true astro dev",
     "build": "astro sync && astro check && tsc --noEmit && astro build",
+    "postbuild": "node scripts/open-source-list.ts",
     "build:fixture": "USE_FIXTURE_DATA=true npm run build",
     "preview": "astro preview",
     "check": "astro sync && astro check && tsc --noEmit",
