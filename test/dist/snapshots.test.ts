@@ -19,12 +19,15 @@ function normalise(html: string): string {
 }
 
 describe("HTML snapshots, fixture build", () => {
-  it.each(["index.html", "invite.html", "privacy.html", "404.html"])(
-    "%s",
-    async (page) => {
-      await expect(normalise(readDist(page))).toMatchFileSnapshot(
-        `__snapshots__/${page}`,
-      );
-    },
-  );
+  it.each([
+    "index.html",
+    "invite.html",
+    "privacy.html",
+    "open-source.html",
+    "404.html",
+  ])("%s", async (page) => {
+    await expect(normalise(readDist(page))).toMatchFileSnapshot(
+      `__snapshots__/${page}`,
+    );
+  });
 });
