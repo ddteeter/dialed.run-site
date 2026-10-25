@@ -1,7 +1,9 @@
 ---
 /**
- * /open-source (HANDOFF §7): every open-source piece this site ships,
+ * /open-source (HANDOFF §7): every open-source piece the website ships,
  * grouped by licence with the type first, then the tools that build it.
+ * The lead says so first and links the app's own list, so a visitor who
+ * came for the app's credits isn't left with the website's four pieces.
  * It has no board; it follows the app's page (design 151; round 40 #82),
  * minus the search and "Show all", which a list this short doesn't need.
  *
@@ -10,7 +12,6 @@
  *   the shipped version, "Project", and the copyright line; "Notice"
  *   where the package ships an Apache NOTICE, and "Licence" where its own
  *   text says something the group's doesn't.
- * - **The app** keeps its own list, linked.
  * - **Tools we build with** is last: what the site is built and tested
  *   with, none of which ships, each row naming its licence where the
  *   copyright line would go. The lead counts only what ships.
@@ -29,7 +30,6 @@ interface Props {
 const { groups, tools } = Astro.props;
 const contents = [
   ...groups.map(({ id, name }) => ({ id, title: name })),
-  { id: "the-app", title: "The app" },
   { id: tools.id, title: tools.name },
 ];
 const all = [...groups, tools];
@@ -50,99 +50,85 @@ const summary =
 <ReadingLayout
   title="Open source · dialed.run"
   heading="Open source"
-  description="The open-source packages and fonts this site ships, their licences, and the tools it's built with."
+  description="The open-source packages and fonts the dialed.run website ships, their licences, and the tools it's built with."
   contents={contents}
 >
   <p slot="lead" class="m-0 type-lead">
-    This site runs on code and type that people chose to give away. Here are all{" "}
-    {pieceCount(groups)} pieces it ships, grouped by licence, with a link to
+    This page covers the dialed.run website. The app keeps its own list, at{" "}
+    <a href={app.openSource} class="underline">
+      app.dialed.run/open-source
+    </a>
+    . The website runs on code and type that people chose to give away. Here are
+    all {pieceCount(groups)} pieces it ships, grouped by licence, with a link to
     each project.
   </p>
 
-  {all.map((group, index) => (
-    <Fragment>
-      {index === groups.length && (
-        <section aria-labelledby="the-app" class="flex flex-col gap-3">
-          <h2 id="the-app" class="m-0 type-heading">
-            The app
-          </h2>
-          <p class="m-0">
-            The dialed.run app lists its own open-source software at{" "}
-            <a href={app.openSource} class="underline">
-              app.dialed.run/open-source
-            </a>
-            .
-          </p>
-        </section>
+  {all.map((group) => (
+    <section aria-labelledby={group.id} class="flex flex-col gap-3">
+      <h2 id={group.id} class="m-0 type-heading">
+        {group.name}
+      </h2>
+      <p class="m-0 mono-sm text-muted">{countLine(group)}</p>
+      {group.kind === "type" && (
+        <p class="m-0">The typefaces you read everything in.</p>
       )}
-      <section aria-labelledby={group.id} class="flex flex-col gap-3">
-        <h2 id={group.id} class="m-0 type-heading">
-          {group.name}
-        </h2>
-        <p class="m-0 mono-sm text-muted">{countLine(group)}</p>
-        {group.kind === "type" && (
-          <p class="m-0">The typefaces you read everything in.</p>
-        )}
-        {group.kind === "tools" && (
-          <p class="m-0 type-small text-quiet">
-            We build and test this site with these. None of them ships in it, so
-            each is credited by name and licence.
-          </p>
-        )}
-        {group.text !== undefined && (
-          <details>
-            <summary class={summary}>{readLabel(group)}</summary>
-            <pre
-              class="m-0 mt-2 font-text type-small whitespace-pre-wrap"
-              set:text={group.text}
-            />
-          </details>
-        )}
-        <ul class="m-0 flex list-none flex-col p-0">
-          {group.pieces.map((piece) => (
-            <li class="flex flex-col gap-1 border-t border-hairline py-3">
-              <div class="flex flex-wrap items-center gap-x-4">
-                <span class="font-semibold">{piece.name}</span>
-                {piece.version !== undefined && (
-                  <span class="mono-sm text-muted">{piece.version}</span>
-                )}
-                {piece.project !== undefined && (
-                  <a href={piece.project} class={link}>
-                    Project
-                  </a>
-                )}
-              </div>
-              {group.kind === "tools"
-                ? piece.licence !== undefined && (
-                    <span class="mono-xs text-muted">{piece.licence}</span>
-                  )
-                : piece.copyright !== undefined && (
-                    <span class="type-small text-muted">
-                      © {piece.copyright}
-                    </span>
-                  )}
-              {piece.notice !== undefined && (
-                <details>
-                  <summary class={summary}>Notice</summary>
-                  <pre
-                    class="m-0 mt-2 font-text type-small whitespace-pre-wrap"
-                    set:text={piece.notice}
-                  />
-                </details>
+      {group.kind === "tools" && (
+        <p class="m-0 type-small text-quiet">
+          We build and test this site with these. None of them ships in it, so
+          each is credited by name and licence.
+        </p>
+      )}
+      {group.text !== undefined && (
+        <details>
+          <summary class={summary}>{readLabel(group)}</summary>
+          <pre
+            class="m-0 mt-2 font-text type-small whitespace-pre-wrap"
+            set:text={group.text}
+          />
+        </details>
+      )}
+      <ul class="m-0 flex list-none flex-col p-0">
+        {group.pieces.map((piece) => (
+          <li class="flex flex-col gap-1 border-t border-hairline py-3">
+            <div class="flex flex-wrap items-center gap-x-4">
+              <span class="font-semibold">{piece.name}</span>
+              {piece.version !== undefined && (
+                <span class="mono-sm text-muted">{piece.version}</span>
               )}
-              {piece.text !== undefined && (
-                <details>
-                  <summary class={summary}>Licence</summary>
-                  <pre
-                    class="m-0 mt-2 font-text type-small whitespace-pre-wrap"
-                    set:text={piece.text}
-                  />
-                </details>
+              {piece.project !== undefined && (
+                <a href={piece.project} class={link}>
+                  Project
+                </a>
               )}
-            </li>
-          ))}
-        </ul>
-      </section>
-    </Fragment>
+            </div>
+            {group.kind === "tools"
+              ? piece.licence !== undefined && (
+                  <span class="mono-xs text-muted">{piece.licence}</span>
+                )
+              : piece.copyright !== undefined && (
+                  <span class="type-small text-muted">© {piece.copyright}</span>
+                )}
+            {piece.notice !== undefined && (
+              <details>
+                <summary class={summary}>Notice</summary>
+                <pre
+                  class="m-0 mt-2 font-text type-small whitespace-pre-wrap"
+                  set:text={piece.notice}
+                />
+              </details>
+            )}
+            {piece.text !== undefined && (
+              <details>
+                <summary class={summary}>Licence</summary>
+                <pre
+                  class="m-0 mt-2 font-text type-small whitespace-pre-wrap"
+                  set:text={piece.text}
+                />
+              </details>
+            )}
+          </li>
+        ))}
+      </ul>
+    </section>
   ))}
 </ReadingLayout>

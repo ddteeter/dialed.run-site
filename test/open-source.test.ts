@@ -143,7 +143,7 @@ describe("/open-source", async () => {
   );
   const section = (id: string) => doc.getElementById(id)?.parentElement;
 
-  it("puts the type first, the licences largest first, the app, then the tools last", () => {
+  it("puts the type first, the licences largest first, then the tools last", () => {
     expect(
       [...doc.querySelectorAll("#contents a")].map((a) =>
         a.getAttribute("href"),
@@ -152,7 +152,6 @@ describe("/open-source", async () => {
       "#sil-open-font-license-11",
       "#mit",
       "#apache-20",
-      "#the-app",
       "#tools-we-build-with",
     ]);
     expect(
@@ -161,7 +160,6 @@ describe("/open-source", async () => {
       "sil-open-font-license-11",
       "mit",
       "apache-20",
-      "the-app",
       "tools-we-build-with",
     ]);
   });
@@ -202,10 +200,15 @@ describe("/open-source", async () => {
     expect(summaries).toEqual(["Notice", "Licence"]);
   });
 
-  it("links the app's own list", () => {
-    expect(section("the-app")?.querySelector("a")?.getAttribute("href")).toBe(
+  it("says first that it covers the website, and links the app's own list", () => {
+    const lead = doc.querySelector(".type-lead");
+    expect(lead?.textContent).toMatch(
+      /^\s*This page covers the dialed\.run website\. The app keeps its own list, at\s+app\.dialed\.run\/open-source\./,
+    );
+    expect(lead?.querySelector("a")?.getAttribute("href")).toBe(
       "https://app.dialed.run/open-source",
     );
+    expect(doc.getElementById("the-app")).toBeNull();
   });
 
   it("credits a tool by licence in place of a copyright line, and says none ships", () => {
