@@ -135,8 +135,8 @@ describe("typePieces", () => {
         mono: "'IBM Plex Mono', monospace",
       }).map((piece) => [piece.name, piece.licence, piece.copyright]),
     ).toEqual([
-      ["Archivo Black", "OFL-1.1", "2017 The Archivo Black Project Authors"],
       ["Archivo", "OFL-1.1", "2020 The Archivo Project Authors"],
+      ["Archivo Black", "OFL-1.1", "2017 The Archivo Black Project Authors"],
       [
         "IBM Plex Mono",
         "OFL-1.1",

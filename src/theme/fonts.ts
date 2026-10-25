@@ -90,18 +90,19 @@ export interface FontFamilyCredit {
   source: string;
 }
 
+/** In /open-source's order (round 40 #83c): Archivo, Archivo Black, IBM Plex Mono. */
 export const FONT_FAMILIES: readonly FontFamilyCredit[] = [
-  {
-    family: "display",
-    licence: "OFL-1.1",
-    copyright: "2017 The Archivo Black Project Authors",
-    source: "https://github.com/Omnibus-Type/ArchivoBlack",
-  },
   {
     family: "text",
     licence: "OFL-1.1",
     copyright: "2020 The Archivo Project Authors",
     source: "https://github.com/Omnibus-Type/Archivo",
+  },
+  {
+    family: "display",
+    licence: "OFL-1.1",
+    copyright: "2017 The Archivo Black Project Authors",
+    source: "https://github.com/Omnibus-Type/ArchivoBlack",
   },
   {
     family: "mono",
