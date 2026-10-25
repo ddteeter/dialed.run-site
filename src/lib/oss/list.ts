@@ -15,6 +15,7 @@
  * test can give it anything. The text work is ./licence-text.ts, ported
  * from the app.
  */
+import normalize from "normalize-package-data";
 import { z } from "zod";
 import {
   familyName,
@@ -41,20 +42,35 @@ export const reportSchema = z.array(
 );
 export type ReportEntry = z.infer<typeof reportSchema>[number];
 
-/** What `npm query '*'` says of each installed package that this reads. */
-export const nodeSchema = z.array(
-  z.object({
-    name: z.string().optional(),
-    version: z.string().optional(),
-    location: z.string(),
-    path: z.string(),
-    license: z.unknown().optional(),
-    author: z.unknown().optional(),
-    homepage: z.unknown().optional(),
-    repository: z.unknown().optional(),
-  }),
-);
-export type InstalledNode = z.infer<typeof nodeSchema>[number];
+/**
+ * What this reads of each installed package, once npm's own
+ * `normalize-package-data` has read its package.json: the author cut to a
+ * name, and a homepage, derived from the repository where the package is
+ * on a known git host. Parsed after normalising, not trusted.
+ */
+const personSchema = z.object({ name: z.string().optional() });
+const nodeSchema = z.object({
+  name: z.string().optional(),
+  version: z.string().optional(),
+  location: z.string(),
+  path: z.string(),
+  license: z.unknown().optional(),
+  // An empty author ("") is left as it is.
+  author: z.union([personSchema, z.literal("")]).optional(),
+  homepage: z.string().optional(),
+});
+export type InstalledNode = z.infer<typeof nodeSchema>;
+
+/** `npm query '*'`'s output, each package.json normalised as npm reads it. */
+export function installedNodes(json: unknown): InstalledNode[] {
+  return z
+    .array(z.record(z.string(), z.unknown()))
+    .parse(json)
+    .map((manifest) => {
+      normalize(manifest);
+      return nodeSchema.parse(manifest);
+    });
+}
 
 /** A package's own files, read from its installed directory. */
 export interface PackageFiles {
@@ -90,9 +106,8 @@ export function bundledFrom(
         entry.identifier ??
         (typeof node.license === "string" ? node.license : undefined),
       text: entry.text ?? files.licence(node.path)?.trim(),
-      author: node.author,
+      author: node.author === "" ? undefined : node.author?.name,
       homepage: node.homepage,
-      repository: node.repository,
       notice: files.notice(node.path),
     };
   });

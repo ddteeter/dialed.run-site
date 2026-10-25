@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import {
   bundledFrom,
+  installedNodes,
   openSourceList,
   toolsFrom,
   typePieces,
@@ -30,6 +31,39 @@ const NO_FILES: PackageFiles = {
 const TAILWIND_CSS =
   "/*! tailwindcss v4.3.3 | MIT License | https://tailwindcss.com */\n.a{}";
 
+describe("installedNodes", () => {
+  const manifest = (more: Record<string, unknown>) => ({
+    name: "a",
+    version: "1.0.0",
+    location: "node_modules/a",
+    path: "/x/node_modules/a",
+    ...more,
+  });
+
+  it("reads each package.json as npm does: the author cut to a name, the homepage from a hosted repository", () => {
+    const [read] = installedNodes([
+      manifest({
+        author: "A Person <a@x.y> (https://a.dev)",
+        repository: "owner/repo",
+      }),
+    ]);
+    expect(read?.author).toEqual({ name: "A Person" });
+    expect(read?.homepage).toBe("https://github.com/owner/repo#readme");
+  });
+
+  it("keeps a homepage the package gives, and an empty author as it is", () => {
+    const [read] = installedNodes([
+      manifest({ author: "", homepage: "https://a.dev", repository: "o/r" }),
+    ]);
+    expect(read?.author).toBe("");
+    expect(read?.homepage).toBe("https://a.dev");
+  });
+
+  it("refuses output that isn't a list of objects", () => {
+    expect(() => installedNodes({ name: "a" })).toThrow();
+  });
+});
+
 describe("bundledFrom", () => {
   it("joins a report entry to its installed copy, keeping the report's licence and text", () => {
     const [entry] = bundledFrom(
@@ -39,9 +73,8 @@ describe("bundledFrom", () => {
         node("a", "2.0.0", { license: "MIT" }),
         node("a", "1.0.0", {
           license: "MIT",
-          author: "A Person",
+          author: { name: "A Person" },
           homepage: "https://a.dev",
-          repository: "a/a",
         }),
       ],
       { licence: () => "file words", notice: (dir) => `notice in ${dir}` },
@@ -53,7 +86,6 @@ describe("bundledFrom", () => {
       text: "Words",
       author: "A Person",
       homepage: "https://a.dev",
-      repository: "a/a",
       notice: "notice in /x/node_modules/a",
     });
   });
@@ -79,6 +111,16 @@ describe("bundledFrom", () => {
       identifier: "MIT",
       text: "MIT words",
     });
+  });
+
+  it("gives an empty author no name", () => {
+    const [entry] = bundledFrom(
+      [{ name: "a", version: "1" }],
+      [],
+      [node("a", "1", { author: "" })],
+      NO_FILES,
+    );
+    expect(entry?.author).toBeUndefined();
   });
 
   it("leaves the licence unknown when package.json's isn't text", () => {
