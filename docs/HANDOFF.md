@@ -182,7 +182,13 @@ Build these from the board. The rules below are the ones that are easy to miss.
 - **Heading ids:** GitHub-compatible, including duplicate suffixes.
 - **Parsing:** use a real parser (mdast or remark), and **fail the build on any unsupported node**. The app does the same; see its `account/legal-markdown.ts`.
 
-**`/open-source`** lists every open-source package and asset that **this site** ships: npm dependencies, the fonts (OFL), and anything vendored. Generate it at build time and never hand-write it. It also lists the **app's** entries, from an artifact the app will publish; until that exists, link to `https://app.dialed.run/open-source`. Add a test that fails the build if a shipped package has a missing or unrecognised licence.
+**`/open-source`** lists what **this site** ships, generated at every build and never hand-written. It mirrors the app's page (the app's design 151):
+- **Ships:** Vite's `build.license` report for the client build, plus each package a stylesheet's preserved banner names (Tailwind's base styles). Each row has its licence text and copyright line. The prerender build never reaches a visitor, so it isn't counted.
+- **Type:** the fonts in `src/theme/fonts.ts`, under the OFL text in `src/theme/OFL-1.1.txt`.
+- **Tools we build with:** every direct dependency and devDependency that doesn't ship, by name, version, licence and project.
+- **The app's list** is linked at `https://app.dialed.run/open-source`. Each property credits what it ships; a mirrored copy of the app's list would drift.
+
+`postbuild` writes `src/lib/oss/open-source-list.json`, which is committed. Under `CI`, a build that changes it fails: when dependencies change, run `npm run build` and commit the list. The build fails if a shipped package has a missing or unrecognised licence. The text logic (`src/lib/oss/licence-text.ts`) is ported verbatim from the app: change it there first.
 
 ## 8. Changelog: Claude drafts, the owner approves
 
@@ -267,7 +273,6 @@ There's no mutation ratchet.
 - The **two-host move** to `app.dialed.run`: `BETTER_AUTH_URL`, the OAuth redirect URIs and the Strava callback domain, cookies, email links and CSP. This is a deployment-sweep step.
 - The **nightly guide-artifact cron**, writing to R2: it computes the aggregates, enforces the 5-runner rule, and publishes the contract in §6 as a zod schema.
 - A **public request-access endpoint** for M5, if the owner picks option (a).
-- An **open-source list artifact** from the app build.
 - The **"What's new" row (M7b)**, which reads `/changelog.xml`.
 - The **personal read API** for biglongrun (separate; designed in the app repo).
 

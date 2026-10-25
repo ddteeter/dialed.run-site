@@ -23,5 +23,6 @@ This is the marketing site for dialed.run, at the apex `dialed.run`. The app is 
 - `npm run verify:all`: format, lint, types (`astro check` and `tsc`), unit tests, the fixture build, the dist and snapshot tests, the link check, and Playwright with axe against `wrangler dev`. Run `npm run lighthouse` too when a page's weight or markup changed.
 - Use the npm scripts, never bare `npx tsc` or `npx astro`: the scripts carry the flags and the order.
 - A theme or font change: `npm run theme` (and `npm run og` if the card's type or colour moved), then commit the generated files.
+- A dependency change: `npm run build`, then commit `src/lib/oss/open-source-list.json`. CI fails on a stale list.
 - A markup change that the snapshots catch: review the diff, then `npx vitest run --project dist -u`.
 - Node 24 is pinned in `.nvmrc`, which mise reads. Outside an interactive shell (hooks, scripts), run commands through `mise exec --`: a newer system Node on `PATH` breaks some tools.
