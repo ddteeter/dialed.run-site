@@ -6,7 +6,8 @@
 # @astrojs/check supports it) fails alone instead of holding back the rest.
 #
 # On npm PRs, the open-source list is refreshed by the "Open-source list"
-# and "Commit the open-source list" workflows (docs/dependabot.md).
+# and "Commit the open-source list" workflows, and "Dependabot PR" merges
+# compatible updates by itself (docs/dependabot.md).
 version: 2
 updates:
   - package-ecosystem: github-actions
