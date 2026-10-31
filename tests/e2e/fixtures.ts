@@ -27,7 +27,12 @@ export const test = base.extend<Fixtures>({
       if (baseURL !== undefined && url.startsWith(baseURL))
         return route.continue();
       offsite.push(url);
-      return route.fulfill({ status: 204, body: "" });
+      // A navigation answered with 204 never commits, and under Playwright
+      // 1.64 the click that started it waits until the test times out, so a
+      // navigation gets an empty document instead.
+      return route.request().isNavigationRequest()
+        ? route.fulfill({ status: 200, contentType: "text/html", body: "" })
+        : route.fulfill({ status: 204, body: "" });
     });
     await use(offsite);
   },
