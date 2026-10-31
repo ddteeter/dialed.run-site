@@ -187,7 +187,7 @@
     },
     {
       "name": "wrangler",
-      "version": "4.152.0",
+      "version": "4.156.0",
       "licence": "MIT OR Apache-2.0",
       "project": "https://github.com/cloudflare/workers-sdk#readme"
     },
