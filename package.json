@@ -42,7 +42,7 @@
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.3.3",
-    "astro": "^7.3.5",
+    "astro": "^7.4.2",
     "mdast-util-from-markdown": "^2.1.0",
     "mdast-util-gfm-table": "^2.0.0",
     "micromark-extension-gfm-table": "^2.1.2",

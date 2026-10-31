@@ -79,7 +79,7 @@
     },
     {
       "name": "astro",
-      "version": "7.3.5",
+      "version": "7.4.2",
       "licence": "MIT",
       "project": "https://astro.build"
     },
@@ -193,7 +193,7 @@
     },
     {
       "name": "zod",
-      "version": "4.6.5",
+      "version": "4.6.7",
       "licence": "MIT",
       "project": "https://zod.dev"
     }
