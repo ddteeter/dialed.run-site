@@ -1,16 +1,20 @@
 name: CI
 
-# Every PR: the fixture build, the unit and dist tests, the link check,
-# the Playwright smoke and axe suite, and Lighthouse. No secrets are used
-# or needed.
+# Every PR, and every push to main: the fixture build, the unit and dist
+# tests, the link check, the Playwright smoke and axe suite, and
+# Lighthouse. No secrets are used or needed. main doesn't require a PR to
+# be up to date before it merges, so Dependabot's PRs can merge unattended;
+# the push run is what tests two merges together.
 on:
   pull_request:
+  push:
+    branches: [main]
   workflow_dispatch:
 
 permissions:
   contents: read
 
-# A newer push to the same PR supersedes the run in flight.
+# A newer push to the same PR, or to main, supersedes the run in flight.
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true

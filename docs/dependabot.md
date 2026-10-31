@@ -17,6 +17,8 @@ The flow is ported from dialed.run (its `docs/dependencies.md`), minus that repo
 3. **Dependabot PR** (`dependabot-pr.yml`) classifies it. If every package in it is an npm update that semver calls compatible (a minor at 1.0 or above, or a patch anywhere but 0.0.x), published by the same maintainers, auto-merge is armed. GitHub merges it with a merge commit, as the App, once `checks` passes on the head commit, and the push to `main` starts the deploy. GitHub arms auto-merge only while a check is pending, so if `checks` has already passed, the job merges at once, still only at the commit it classified.
 4. **Anything else waits for you:** majors, 0.x minors, 0.0.x updates, new maintainers, and every GitHub Actions bump (Actions run with this repo's secrets, and the App can't merge a change to `.github/workflows/`).
 
+`main` doesn't require a PR to be up to date before it merges, or each automatic merge would leave every other Dependabot PR waiting for a rebase. CI runs again on every push to `main`, so two updates that each passed but break together show up there.
+
 **When a self-merging PR fails**, nothing merges and the PR stays open. Fix it on Dependabot's branch, or close it and let next week's run try again. **When a family can't move yet**, close its PR with a comment, or add an `ignore` for that major in `dependabot.yml` saying why and until when.
 
 To refresh the list by hand instead: check out the PR's branch, run `npm run build`, and push the list.
