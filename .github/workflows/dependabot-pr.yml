@@ -1,0 +1,115 @@
+name: Dependabot PR
+
+# What happens to a Dependabot PR (docs/dependabot.md). Two jobs:
+#
+#   classify    reads the update from Dependabot's own metadata and decides
+#               whether it may merge itself.
+#   auto-merge  arms GitHub auto-merge, which merges once the required
+#               `checks` passes on the head commit. Nothing merges otherwise.
+#
+# Anything that may not merge itself waits for the owner. Ported from
+# dialed.run's dependabot-pr.yml, without its Claude impact review.
+#
+# GATES. Every job is gated on the PR's AUTHOR and head repository, never
+# on `github.actor`: under pull_request_target the actor is whoever caused
+# the latest event, and there is a public technique for making Dependabot
+# the actor of a synchronize on someone else's fork PR. fetch-metadata then
+# checks the author, the head commit's author and its signature again, and
+# fails otherwise. Neither of its `skip-*-verification` inputs is ever set.
+#
+# NO PR CODE. pull_request_target runs THIS file from main, with this
+# repo's secrets, so no job here runs code from the PR or its packages: no
+# npm, no build, no checkout at all. CI runs the PR's code, with a
+# read-only token and no secrets.
+#
+# PINS. Every `uses:` is a full commit SHA with its version in a comment. A
+# tag can be repointed by whoever controls it, and auto-merge holds the
+# merge token. Dependabot keeps the pins current.
+on:
+  pull_request_target:
+    types: [opened, reopened, synchronize]
+
+permissions: {}
+
+jobs:
+  classify:
+    # The third clause only SKIPS: a synchronize someone other than
+    # Dependabot caused is the open-source-list commit (oss-list-commit.yml),
+    # and the decision made on Dependabot's own push already stands.
+    if: >-
+      github.event.pull_request.user.login == 'dependabot[bot]' &&
+      github.event.pull_request.head.repo.full_name == github.repository &&
+      (github.event.action != 'synchronize' || github.actor == 'dependabot[bot]')
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: read
+      pull-requests: read
+    outputs:
+      merge: ${{ steps.decide.outputs.merge }}
+    steps:
+      - id: metadata
+        uses: dependabot/fetch-metadata@25dd0e34f4fe68f24cc83900b1fe3fe149efef98 # v3.1.0
+        with:
+          github-token: ${{ github.token }}
+
+      # Merges itself only when EVERY dependency in the PR is an npm minor or
+      # patch update that semver calls compatible, published by the same
+      # maintainers as the version it replaces: a minor at 1.0 or above, or
+      # a patch anywhere but 0.0.x. Under semver a 0.x minor is a breaking
+      # change and a 0.0.x anything is; a maintainer change is what an
+      # account takeover looks like from here. A minor or patch keeps the
+      # major (and a patch the minor), so the new version's leading digits
+      # are the old one's.
+      - id: decide
+        env:
+          ECOSYSTEM: ${{ steps.metadata.outputs.package-ecosystem }}
+          UPDATES: ${{ steps.metadata.outputs.updated-dependencies-json }}
+        run: |
+          set -euo pipefail
+          merge=$(jq -r --arg ecosystem "$ECOSYSTEM" '
+            $ecosystem == "npm_and_yarn" and length > 0 and all(.[];
+              (.newVersion // "") as $version
+              | (.maintainerChanges != true)
+              and ((.updateType == "version-update:semver-minor"
+                    and ($version | test("^[1-9]")))
+                or (.updateType == "version-update:semver-patch"
+                    and ($version | test("^([1-9]|0\\.[1-9])")))))
+          ' <<<"$UPDATES")
+          echo "merge=$merge" >>"$GITHUB_OUTPUT"
+          jq -r '.[] | "- \(.dependencyName): \(.prevVersion // "?") -> \(.newVersion // "?") (\(.updateType), \(.dependencyType))\(if .maintainerChanges == true then " [new maintainer]" else "" end)"' <<<"$UPDATES"
+          echo "May merge itself: $merge"
+
+  auto-merge:
+    needs: classify
+    if: needs.classify.outputs.merge == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    # The App's key lives only in this environment, which only `main` can
+    # use; under pull_request_target that is the ref this runs as.
+    environment: dependabot-merge
+    permissions: {}
+    steps:
+      # A merge made with GITHUB_TOKEN starts no workflow, so main's deploy
+      # would never see it. The App is an ordinary actor: its merge does. It
+      # is not a bypass actor, so its merge waits on `checks` like any other.
+      - id: app
+        uses: actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510 # v3.3.0
+        with:
+          app-id: ${{ vars.AUTOMATION_APP_ID }}
+          private-key: ${{ secrets.AUTOMATION_APP_PRIVATE_KEY }}
+          permission-contents: write
+          permission-pull-requests: write
+
+      # A merge commit, as every other merge in this repo is, of the commit
+      # classify read. GitHub arms auto-merge only while a check is still
+      # pending; once every required check has passed (a re-run, or CI
+      # finishing first) it refuses, and the PR is merged now instead.
+      # Branch protection decides either way.
+      - run: |
+          gh pr merge --auto --merge --match-head-commit "$HEAD_SHA" "$PR_URL" ||
+            gh pr merge --merge --match-head-commit "$HEAD_SHA" "$PR_URL"
+        env:
+          PR_URL: ${{ github.event.pull_request.html_url }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+          GH_TOKEN: ${{ steps.app.outputs.token }}
