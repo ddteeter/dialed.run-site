@@ -85,7 +85,7 @@
     },
     {
       "name": "eslint",
-      "version": "10.13.0",
+      "version": "10.14.0",
       "licence": "MIT",
       "project": "https://eslint.org"
     },
@@ -103,13 +103,13 @@
     },
     {
       "name": "globals",
-      "version": "17.13.0",
+      "version": "17.14.0",
       "licence": "MIT",
       "project": "https://github.com/sindresorhus/globals#readme"
     },
     {
       "name": "linkedom",
-      "version": "0.18.14",
+      "version": "0.18.15",
       "licence": "ISC",
       "project": "https://github.com/WebReflection/linkedom#readme"
     },
@@ -175,7 +175,7 @@
     },
     {
       "name": "typescript-eslint",
-      "version": "8.72.0",
+      "version": "8.72.1",
       "licence": "MIT",
       "project": "https://typescript-eslint.io/packages/typescript-eslint"
     },
