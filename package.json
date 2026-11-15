@@ -41,10 +41,10 @@
     "*.{json,jsonc,md,css,yml,yaml}": "prettier --write"
   },
   "dependencies": {
-    "@tailwindcss/vite": "^4.3.3",
+    "@tailwindcss/vite": "^4.3.5",
     "astro": "^7.4.7",
     "mdast-util-from-markdown": "^2.1.0",
-    "mdast-util-gfm-table": "^2.0.0",
+    "mdast-util-gfm-table": "^2.0.1",
     "micromark-extension-gfm-table": "^2.1.2",
     "tailwindcss": "^4.3.3",
     "zod": "^4.6.5"
