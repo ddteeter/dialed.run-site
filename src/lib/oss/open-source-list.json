@@ -22,7 +22,7 @@
   "packages": [
     {
       "name": "tailwindcss",
-      "version": "4.3.3",
+      "version": "4.3.5",
       "licence": "MIT",
       "copyright": "Tailwind Labs, Inc",
       "project": "https://tailwindcss.com"
@@ -55,7 +55,7 @@
     },
     {
       "name": "@tailwindcss/vite",
-      "version": "4.3.3",
+      "version": "4.3.5",
       "licence": "MIT",
       "project": "https://tailwindcss.com"
     },
@@ -127,7 +127,7 @@
     },
     {
       "name": "mdast-util-gfm-table",
-      "version": "2.0.0",
+      "version": "2.0.1",
       "licence": "MIT",
       "project": "https://github.com/syntax-tree/mdast-util-gfm-table#readme"
     },
